@@ -3,14 +3,18 @@ owner: travnettech # Your GitHub organization or username, where this repository
 repo: ncl_status # The name of this repository
 
 sites:
-  - name: Nelson College London Website
+  - name: Website
     url: https://nelsoncollege.ac.uk
-  - name: Nelson VLE
+  - name: Virtual Learning Environment VLE
     url: https://nclvle.co.uk
   - name: Nelson One
     url: https://one.nelsoncollege.ac.uk
   - name: Nelson Portal
     url: https://portal.nelsoncollege.ac.uk
+  - name: Knowledge Exchange Centre
+    url: https://kec.nelsoncollege.ac.uk
+  - name: NCL Alumni Association
+    url: https://alumni.nelsoncollege.ac.uk
 
 status-website:
   # Add your custom domain name, or remove the `cname` line if you don't have a domain
