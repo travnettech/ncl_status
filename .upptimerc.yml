@@ -24,7 +24,7 @@ status-website:
   logoUrl: https://portal.nelsoncollege.ac.uk/files/logo-main.svg
   name: Nelson Status
   introTitle: "**Welcome to Nelson Status page.**"
-  introMessage: From here you will be able find real-time information about the status of our environments as well as updates about scheduled maintenance and past incidents. To better understand the content of this page, and which areas pertain to you, please contact it@nelsoncollege.ac.uk.
+  introMessage: From here you will be able find real-time information about the status of our environments as well as updates about scheduled maintenance and past incidents. To better understand the content of this page, and which areas pertain to you, please contact [**it@nelsoncollege.ac.uk**].
   navbar:
     - title: Status
       href: /
