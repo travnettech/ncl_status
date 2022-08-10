@@ -5,16 +5,22 @@ repo: ncl_status # The name of this repository
 sites:
   - name: Website
     url: https://nelsoncollege.ac.uk
+    icon: https://portal.nelsoncollege.ac.uk/files/logo-main.svg
   - name: Virtual Learning Environment VLE
     url: https://nclvle.co.uk
+    icon: https://portal-nelsoncollege-files.s3.eu-west-2.amazonaws.com/logo/VLE_NCL.svg
   - name: Nelson One
     url: https://one.nelsoncollege.ac.uk
+    icon: https://portal-nelsoncollege-files.s3.eu-west-2.amazonaws.com/logo/One_NCL.svg
   - name: Nelson Portal
     url: https://portal.nelsoncollege.ac.uk
+    icon: https://portal.nelsoncollege.ac.uk/files/logo-main.svg
   - name: Knowledge Exchange Centre
     url: https://kec.nelsoncollege.ac.uk
+    icon: https://portal-nelsoncollege-files.s3.eu-west-2.amazonaws.com/logo/KEC_NCL.svg
   - name: NCL Alumni Association
     url: https://alumni.nelsoncollege.ac.uk
+    icon: https://portal-nelsoncollege-files.s3.eu-west-2.amazonaws.com/logo/Alumni_NCL.svg
 
 status-website:
   # Add your custom domain name, or remove the `cname` line if you don't have a domain
