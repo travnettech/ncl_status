@@ -23,8 +23,8 @@ status-website:
   introMessage: To better understand the content of this page, and which areas pertain to you, please contact it@nelsoncollege.ac.uk.
     - title: Status
       href: /
-    - title: Nelson College London
-      href: https://nelsoncollege.ac.uk
+    - title: GitHub
+      href: https://github.com/$OWNER/$REPO
 
 # Upptime also supports notifications, assigning issues, and more
 # See https://upptime.js.org/docs/configuration
