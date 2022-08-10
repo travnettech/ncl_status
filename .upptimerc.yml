@@ -19,8 +19,8 @@ status-website:
   # baseUrl: /your-repo-name
   logoUrl: https://portal.nelsoncollege.ac.uk/files/logo-main.svg
   name: Upptime
-  introTitle: "**Upptime** is the open-source uptime monitor and status page, powered entirely by GitHub."
-  introMessage: This is a sample status page which uses **real-time** data from our [GitHub repository](https://github.com/upptime/upptime). No server required — just GitHub Actions, Issues, and Pages. [**Get your own for free**](https://github.com/upptime/upptime)
+  introTitle: "**Welcome to Nelson Status page.** From here you will be able find real-time information about the status of our environments as well as updates about scheduled maintenance and past incidents."
+  introMessage: To better understand the content of this page, and which areas pertain to you, please contact it@nelsoncollege.ac.uk.
   navbar:
     - title: Status
       href: /
