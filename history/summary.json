@@ -23,18 +23,18 @@
     "icon": "https://portal-nelsoncollege-files.s3.eu-west-2.amazonaws.com/logo/VLE_NCL.svg",
     "slug": "virtual-learning-environment-vle",
     "status": "down",
-    "uptime": "98.60%",
-    "uptimeDay": "99.99%",
-    "uptimeWeek": "91.62%",
-    "uptimeMonth": "98.07%",
-    "uptimeYear": "98.60%",
+    "uptime": "98.43%",
+    "uptimeDay": "92.81%",
+    "uptimeWeek": "90.59%",
+    "uptimeMonth": "97.83%",
+    "uptimeYear": "98.43%",
     "time": 628,
     "timeDay": 472,
     "timeWeek": 628,
     "timeMonth": 619,
     "timeYear": 628,
     "dailyMinutesDown": {
-      "2022-09-21": 0,
+      "2022-09-21": 104,
       "2022-09-15": 845
     }
   },
@@ -79,7 +79,7 @@
     "url": "https://kec.nelsoncollege.ac.uk",
     "icon": "https://portal-nelsoncollege-files.s3.eu-west-2.amazonaws.com/logo/KEC_NCL.svg",
     "slug": "knowledge-exchange-centre",
-    "status": "up",
+    "status": "down",
     "uptime": "100.00%",
     "uptimeDay": "100.00%",
     "uptimeWeek": "100.00%",
@@ -90,7 +90,9 @@
     "timeWeek": 989,
     "timeMonth": 759,
     "timeYear": 712,
-    "dailyMinutesDown": {}
+    "dailyMinutesDown": {
+      "2022-09-21": 0
+    }
   },
   {
     "name": "NCL Alumni Association",
