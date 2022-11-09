@@ -66,19 +66,19 @@
     "url": "https://portal.nelsoncollege.ac.uk",
     "icon": "https://portal.nelsoncollege.ac.uk/files/logo-main.svg",
     "slug": "nelson-portal",
-    "status": "down",
-    "uptime": "100.00%",
-    "uptimeDay": "99.99%",
-    "uptimeWeek": "100.00%",
-    "uptimeMonth": "100.00%",
-    "uptimeYear": "100.00%",
-    "time": 1666,
-    "timeDay": 12836,
-    "timeWeek": 2950,
-    "timeMonth": 2002,
-    "timeYear": 1666,
+    "status": "up",
+    "uptime": "99.97%",
+    "uptimeDay": "97.33%",
+    "uptimeWeek": "99.62%",
+    "uptimeMonth": "99.91%",
+    "uptimeYear": "99.97%",
+    "time": 1663,
+    "timeDay": 7111,
+    "timeWeek": 2755,
+    "timeMonth": 1983,
+    "timeYear": 1663,
     "dailyMinutesDown": {
-      "2022-11-09": 0
+      "2022-11-09": 38
     }
   },
   {
