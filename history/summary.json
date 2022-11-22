@@ -10,11 +10,11 @@
     "uptimeWeek": "100.00%",
     "uptimeMonth": "100.00%",
     "uptimeYear": "99.91%",
-    "time": 709,
-    "timeDay": 500,
-    "timeWeek": 668,
-    "timeMonth": 729,
-    "timeYear": 709,
+    "time": 711,
+    "timeDay": 953,
+    "timeWeek": 733,
+    "timeMonth": 743,
+    "timeYear": 711,
     "dailyMinutesDown": {
       "2022-09-21": 136
     }
@@ -25,16 +25,16 @@
     "icon": "https://portal-nelsoncollege-files.s3.eu-west-2.amazonaws.com/logo/VLE_NCL.svg",
     "slug": "virtual-learning-environment-vle",
     "status": "up",
-    "uptime": "99.24%",
+    "uptime": "99.25%",
     "uptimeDay": "100.00%",
     "uptimeWeek": "100.00%",
     "uptimeMonth": "100.00%",
-    "uptimeYear": "99.24%",
-    "time": 688,
-    "timeDay": 550,
-    "timeWeek": 619,
-    "timeMonth": 667,
-    "timeYear": 688,
+    "uptimeYear": "99.25%",
+    "time": 690,
+    "timeDay": 829,
+    "timeWeek": 662,
+    "timeMonth": 676,
+    "timeYear": 690,
     "dailyMinutesDown": {
       "2022-09-21": 268,
       "2022-09-15": 845
@@ -51,11 +51,11 @@
     "uptimeWeek": "100.00%",
     "uptimeMonth": "100.00%",
     "uptimeYear": "99.97%",
-    "time": 677,
-    "timeDay": 463,
-    "timeWeek": 1220,
-    "timeMonth": 762,
-    "timeYear": 677,
+    "time": 678,
+    "timeDay": 854,
+    "timeWeek": 1276,
+    "timeMonth": 773,
+    "timeYear": 678,
     "dailyMinutesDown": {
       "2022-10-01": 43,
       "2022-09-30": 1
@@ -72,11 +72,11 @@
     "uptimeWeek": "100.00%",
     "uptimeMonth": "99.91%",
     "uptimeYear": "99.97%",
-    "time": 1851,
-    "timeDay": 1105,
-    "timeWeek": 1487,
-    "timeMonth": 2451,
-    "timeYear": 1851,
+    "time": 1847,
+    "timeDay": 1315,
+    "timeWeek": 1547,
+    "timeMonth": 2462,
+    "timeYear": 1847,
     "dailyMinutesDown": {
       "2022-11-09": 38
     }
@@ -92,11 +92,11 @@
     "uptimeWeek": "100.00%",
     "uptimeMonth": "100.00%",
     "uptimeYear": "99.89%",
-    "time": 710,
-    "timeDay": 434,
-    "timeWeek": 555,
-    "timeMonth": 589,
-    "timeYear": 710,
+    "time": 711,
+    "timeDay": 798,
+    "timeWeek": 608,
+    "timeMonth": 601,
+    "timeYear": 711,
     "dailyMinutesDown": {
       "2022-09-21": 165
     }
@@ -112,11 +112,11 @@
     "uptimeWeek": "100.00%",
     "uptimeMonth": "100.00%",
     "uptimeYear": "99.97%",
-    "time": 712,
-    "timeDay": 511,
-    "timeWeek": 678,
-    "timeMonth": 673,
-    "timeYear": 712,
+    "time": 714,
+    "timeDay": 944,
+    "timeWeek": 740,
+    "timeMonth": 686,
+    "timeYear": 714,
     "dailyMinutesDown": {
       "2022-10-01": 43,
       "2022-09-30": 1
