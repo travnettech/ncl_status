@@ -77,9 +77,9 @@
     "url": "https://portal.nelsoncollege.ac.uk",
     "icon": "https://portal.nelsoncollege.ac.uk/files/logo-main.svg",
     "slug": "nelson-portal",
-    "status": "up",
+    "status": "down",
     "uptime": "99.97%",
-    "uptimeDay": "94.91%",
+    "uptimeDay": "94.90%",
     "uptimeWeek": "99.27%",
     "uptimeMonth": "99.83%",
     "uptimeYear": "99.97%",
@@ -89,6 +89,7 @@
     "timeMonth": 1448,
     "timeYear": 1480,
     "dailyMinutesDown": {
+      "2023-06-27": 0,
       "2023-06-26": 73,
       "2023-04-03": 19,
       "2022-11-09": 38
