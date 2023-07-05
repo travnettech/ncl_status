@@ -37,7 +37,7 @@
     "time": 907,
     "timeDay": 622,
     "timeWeek": 675,
-    "timeMonth": 1124,
+    "timeMonth": 1116,
     "timeYear": 907,
     "dailyMinutesDown": {
       "2023-06-12": 81,
@@ -77,9 +77,9 @@
     "url": "https://portal.nelsoncollege.ac.uk",
     "icon": "https://portal.nelsoncollege.ac.uk/files/logo-main.svg",
     "slug": "nelson-portal",
-    "status": "up",
+    "status": "down",
     "uptime": "99.96%",
-    "uptimeDay": "100.00%",
+    "uptimeDay": "99.99%",
     "uptimeWeek": "100.00%",
     "uptimeMonth": "99.72%",
     "uptimeYear": "99.96%",
@@ -89,6 +89,7 @@
     "timeMonth": 1404,
     "timeYear": 1470,
     "dailyMinutesDown": {
+      "2023-07-05": 0,
       "2023-06-27": 51,
       "2023-06-26": 73,
       "2023-04-03": 19,
