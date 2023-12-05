@@ -167,19 +167,19 @@
     "url": "https://alumni.nelsoncollege.ac.uk",
     "icon": "https://portal-nelsoncollege-files.s3.eu-west-2.amazonaws.com/logo/Alumni_NCL.svg",
     "slug": "ncl-alumni-association",
-    "status": "down",
+    "status": "up",
     "uptime": "99.99%",
-    "uptimeDay": "99.98%",
-    "uptimeWeek": "100.00%",
-    "uptimeMonth": "100.00%",
+    "uptimeDay": "99.45%",
+    "uptimeWeek": "99.92%",
+    "uptimeMonth": "99.98%",
     "uptimeYear": "100.00%",
     "time": 683,
-    "timeDay": 950,
-    "timeWeek": 667,
-    "timeMonth": 677,
+    "timeDay": 738,
+    "timeWeek": 650,
+    "timeMonth": 672,
     "timeYear": 672,
     "dailyMinutesDown": {
-      "2023-12-05": 0
+      "2023-12-05": 8
     }
   }
 ]
