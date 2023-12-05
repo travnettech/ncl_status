@@ -9,17 +9,16 @@
     "uptimeDay": "100.00%",
     "uptimeWeek": "100.00%",
     "uptimeMonth": "100.00%",
-    "uptimeYear": "99.97%",
-    "time": 801,
-    "timeDay": 1208,
-    "timeWeek": 1458,
-    "timeMonth": 1603,
-    "timeYear": 829,
+    "uptimeYear": "99.98%",
+    "time": 804,
+    "timeDay": 1860,
+    "timeWeek": 1501,
+    "timeMonth": 1615,
+    "timeYear": 832,
     "dailyMinutesDown": {
       "2023-10-23": 54,
       "2023-01-25": 41,
-      "2022-12-23": 17,
-      "2022-12-05": 24
+      "2022-12-23": 17
     }
   },
   {
@@ -29,15 +28,15 @@
     "slug": "virtual-learning-environment-vle",
     "status": "up",
     "uptime": "99.66%",
-    "uptimeDay": "90.99%",
+    "uptimeDay": "96.83%",
     "uptimeWeek": "96.97%",
     "uptimeMonth": "98.16%",
-    "uptimeYear": "99.76%",
-    "time": 1007,
-    "timeDay": 1463,
-    "timeWeek": 1565,
-    "timeMonth": 1199,
-    "timeYear": 1073,
+    "uptimeYear": "99.77%",
+    "time": 1006,
+    "timeDay": 670,
+    "timeWeek": 1483,
+    "timeMonth": 1207,
+    "timeYear": 1074,
     "dailyMinutesDown": {
       "2023-12-04": 46,
       "2023-12-03": 84,
@@ -57,8 +56,7 @@
       "2023-06-12": 81,
       "2023-05-02": 27,
       "2023-02-05": 64,
-      "2022-12-23": 16,
-      "2022-12-05": 24
+      "2022-12-23": 16
     }
   },
   {
@@ -72,11 +70,11 @@
     "uptimeWeek": "100.00%",
     "uptimeMonth": "100.00%",
     "uptimeYear": "99.99%",
-    "time": 780,
-    "timeDay": 657,
-    "timeWeek": 779,
-    "timeMonth": 845,
-    "timeYear": 817,
+    "time": 781,
+    "timeDay": 924,
+    "timeWeek": 816,
+    "timeMonth": 858,
+    "timeYear": 818,
     "dailyMinutesDown": {
       "2023-10-01": 19,
       "2023-01-25": 54
@@ -94,9 +92,9 @@
     "uptimeMonth": "100.00%",
     "uptimeYear": "96.11%",
     "time": 1419,
-    "timeDay": 856,
-    "timeWeek": 1071,
-    "timeMonth": 1139,
+    "timeDay": 1356,
+    "timeWeek": 1128,
+    "timeMonth": 1152,
     "timeYear": 1295,
     "dailyMinutesDown": {
       "2023-09-30": 25,
@@ -130,15 +128,15 @@
     "slug": "knowledge-exchange-centre",
     "status": "up",
     "uptime": "97.87%",
-    "uptimeDay": "92.36%",
+    "uptimeDay": "96.94%",
     "uptimeWeek": "97.71%",
     "uptimeMonth": "98.75%",
-    "uptimeYear": "97.22%",
-    "time": 913,
-    "timeDay": 858,
-    "timeWeek": 3387,
-    "timeMonth": 1407,
-    "timeYear": 963,
+    "uptimeYear": "97.23%",
+    "time": 914,
+    "timeDay": 1036,
+    "timeWeek": 3423,
+    "timeMonth": 1420,
+    "timeYear": 964,
     "dailyMinutesDown": {
       "2023-12-04": 44,
       "2023-12-03": 66,
@@ -161,8 +159,7 @@
       "2023-10-23": 1440,
       "2023-10-22": 6,
       "2023-06-12": 22,
-      "2022-12-23": 16,
-      "2022-12-05": 24
+      "2022-12-23": 16
     }
   },
   {
@@ -176,11 +173,11 @@
     "uptimeWeek": "100.00%",
     "uptimeMonth": "100.00%",
     "uptimeYear": "100.00%",
-    "time": 682,
-    "timeDay": 499,
-    "timeWeek": 619,
-    "timeMonth": 662,
-    "timeYear": 671,
+    "time": 683,
+    "timeDay": 950,
+    "timeWeek": 667,
+    "timeMonth": 677,
+    "timeYear": 672,
     "dailyMinutesDown": {}
   }
 ]
