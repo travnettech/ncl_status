@@ -15,9 +15,6 @@ sites:
   - name: Nelson Portal
     url: https://portal.nelsoncollege.ac.uk
     icon: https://portal.nelsoncollege.ac.uk/files/logo-main.svg
-  - name: Knowledge Exchange Centre
-    url: https://kec.nelsoncollege.ac.uk
-    icon: https://portal-nelsoncollege-files.s3.eu-west-2.amazonaws.com/logo/KEC_NCL.svg
   - name: NCL Alumni Association
     url: https://alumni.nelsoncollege.ac.uk
     icon: https://portal-nelsoncollege-files.s3.eu-west-2.amazonaws.com/logo/Alumni_NCL.svg
