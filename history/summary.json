@@ -26,18 +26,19 @@
     "url": "https://nclvle.co.uk",
     "icon": "https://portal-nelsoncollege-files.s3.eu-west-2.amazonaws.com/logo/VLE_NCL.svg",
     "slug": "virtual-learning-environment-vle",
-    "status": "up",
-    "uptime": "98.70%",
-    "uptimeDay": "99.80%",
+    "status": "down",
+    "uptime": "98.71%",
+    "uptimeDay": "99.99%",
     "uptimeWeek": "73.82%",
     "uptimeMonth": "83.58%",
-    "uptimeYear": "97.45%",
+    "uptimeYear": "97.47%",
     "time": 1431,
-    "timeDay": 998,
+    "timeDay": 683,
     "timeWeek": 865,
     "timeMonth": 2605,
     "timeYear": 1431,
     "dailyMinutesDown": {
+      "2024-07-25": 0,
       "2024-07-24": 23,
       "2024-07-23": 826,
       "2024-07-22": 620,
@@ -98,8 +99,7 @@
       "2023-12-25": 29,
       "2023-12-23": 66,
       "2023-12-20": 93,
-      "2023-12-19": 105,
-      "2023-12-18": 104
+      "2023-12-19": 105
     }
   },
   {
