@@ -5,7 +5,7 @@ repo: ncl_status # The name of this repository
 sites:
   - name: Website
     url: https://nelsoncollege.ac.uk
-    icon: https://portal.nelsoncollege.ac.uk/files/logo-main.svg
+    icon: https://portal-nelsoncollege-files.s3.eu-west-2.amazonaws.com/logo/NCL_logo.svg
   - name: Virtual Learning Environment VLE
     url: https://nclvle.co.uk
     icon: https://portal-nelsoncollege-files.s3.eu-west-2.amazonaws.com/logo/VLE_NCL.svg
@@ -14,7 +14,7 @@ sites:
     icon: https://portal-nelsoncollege-files.s3.eu-west-2.amazonaws.com/logo/One_NCL.svg
   - name: Nelson Portal
     url: https://portal.nelsoncollege.ac.uk
-    icon: https://portal.nelsoncollege.ac.uk/files/logo-main.svg
+    icon: https://portal-nelsoncollege-files.s3.eu-west-2.amazonaws.com/logo/NCL_logo.svg
   - name: NCL Alumni Association
     url: https://alumni.nelsoncollege.ac.uk
     icon: https://portal-nelsoncollege-files.s3.eu-west-2.amazonaws.com/logo/Alumni_NCL.svg
@@ -24,7 +24,7 @@ status-website:
   # Uncomment the `baseUrl` line if you don't have a custom domain and add your repo name there
   cname: status.nelsoncollege.ac.uk
   # baseUrl: /your-repo-name
-  logoUrl: https://portal.nelsoncollege.ac.uk/files/logo-main.svg
+  logoUrl: https://portal-nelsoncollege-files.s3.eu-west-2.amazonaws.com/logo/NCL_logo.svg
   name: Nelson Status
   introTitle: "**Welcome to Nelson Status page.**"
   introMessage: From here you will be able find real-time information about the status of our environments as well as updates about scheduled maintenance and past incidents. To better understand the content of this page, and which areas pertain to you, please contact [**Help Center**](https://nelsoncollege.atlassian.net/servicedesk/customer/portals). Your can also check Turnitin Status from this [**URL**](https://turnitin.statuspage.io).
