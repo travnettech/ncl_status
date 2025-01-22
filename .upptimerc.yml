@@ -25,8 +25,8 @@ status-website:
   cname: status.nelsoncollege.ac.uk
   # baseUrl: /your-repo-name
   logoUrl: https://portal-nelsoncollege-files.s3.eu-west-2.amazonaws.com/logo/NCL_logo.svg
-  name: Nelson Status
-  introTitle: "**Welcome to Nelson Status page.**"
+  name: NCL Status
+  introTitle: "**Welcome to NCL Status page.**"
   introMessage: From here you will be able find real-time information about the status of our environments as well as updates about scheduled maintenance and past incidents. To better understand the content of this page, and which areas pertain to you, please contact [**Help Center**](https://nelsoncollege.atlassian.net/servicedesk/customer/portals). Your can also check Turnitin Status from this [**URL**](https://turnitin.statuspage.io).
   navbar:
     - title: Status
