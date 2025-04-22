@@ -11,9 +11,9 @@
     "uptimeMonth": "100.00%",
     "uptimeYear": "99.99%",
     "time": 1447,
-    "timeDay": 1186,
-    "timeWeek": 1579,
-    "timeMonth": 1404,
+    "timeDay": 1303,
+    "timeWeek": 1612,
+    "timeMonth": 1400,
     "timeYear": 1434,
     "dailyMinutesDown": {
       "2024-07-31": 39
@@ -25,16 +25,16 @@
     "icon": "https://portal-nelsoncollege-files.s3.eu-west-2.amazonaws.com/logo/VLE_NCL.svg",
     "slug": "virtual-learning-environment-vle",
     "status": "up",
-    "uptime": "99.04%",
+    "uptime": "99.05%",
     "uptimeDay": "100.00%",
     "uptimeWeek": "100.00%",
     "uptimeMonth": "100.00%",
     "uptimeYear": "97.55%",
-    "time": 1075,
-    "timeDay": 360,
-    "timeWeek": 421,
-    "timeMonth": 398,
-    "timeYear": 1080,
+    "time": 1074,
+    "timeDay": 418,
+    "timeWeek": 428,
+    "timeMonth": 395,
+    "timeYear": 1076,
     "dailyMinutesDown": {
       "2025-01-31": 17,
       "2024-07-25": 443,
@@ -83,8 +83,7 @@
       "2024-05-16": 61,
       "2024-05-02": 63,
       "2024-04-30": 108,
-      "2024-04-25": 91,
-      "2024-04-22": 35
+      "2024-04-25": 91
     }
   },
   {
@@ -99,10 +98,10 @@
     "uptimeMonth": "100.00%",
     "uptimeYear": "100.00%",
     "time": 802,
-    "timeDay": 561,
-    "timeWeek": 794,
+    "timeDay": 924,
+    "timeWeek": 827,
     "timeMonth": 798,
-    "timeYear": 796,
+    "timeYear": 797,
     "dailyMinutesDown": {}
   },
   {
@@ -117,10 +116,10 @@
     "uptimeMonth": "100.00%",
     "uptimeYear": "99.92%",
     "time": 1167,
-    "timeDay": 926,
-    "timeWeek": 1264,
-    "timeMonth": 1186,
-    "timeYear": 1166,
+    "timeDay": 1125,
+    "timeWeek": 1279,
+    "timeMonth": 1178,
+    "timeYear": 1167,
     "dailyMinutesDown": {
       "2025-02-13": 345,
       "2024-08-15": 75
@@ -138,9 +137,9 @@
     "uptimeMonth": "100.00%",
     "uptimeYear": "100.00%",
     "time": 664,
-    "timeDay": 527,
-    "timeWeek": 632,
-    "timeMonth": 639,
+    "timeDay": 633,
+    "timeWeek": 645,
+    "timeMonth": 636,
     "timeYear": 675,
     "dailyMinutesDown": {}
   }
