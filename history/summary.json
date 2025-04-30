@@ -10,9 +10,9 @@
     "uptimeWeek": "100.00%",
     "uptimeMonth": "100.00%",
     "uptimeYear": "99.99%",
-    "time": 1445,
-    "timeDay": 1996,
-    "timeWeek": 1632,
+    "time": 1444,
+    "timeDay": 1120,
+    "timeWeek": 1629,
     "timeMonth": 1494,
     "timeYear": 1434,
     "dailyMinutesDown": {
@@ -30,11 +30,11 @@
     "uptimeWeek": "100.00%",
     "uptimeMonth": "100.00%",
     "uptimeYear": "97.58%",
-    "time": 1068,
-    "timeDay": 382,
-    "timeWeek": 415,
-    "timeMonth": 415,
-    "timeYear": 1029,
+    "time": 1067,
+    "timeDay": 372,
+    "timeWeek": 405,
+    "timeMonth": 414,
+    "timeYear": 1027,
     "dailyMinutesDown": {
       "2025-01-31": 17,
       "2024-07-25": 443,
@@ -81,8 +81,7 @@
       "2024-05-20": 230,
       "2024-05-17": 36,
       "2024-05-16": 61,
-      "2024-05-02": 63,
-      "2024-04-30": 108
+      "2024-05-02": 63
     }
   },
   {
@@ -97,9 +96,9 @@
     "uptimeMonth": "100.00%",
     "uptimeYear": "100.00%",
     "time": 796,
-    "timeDay": 886,
-    "timeWeek": 871,
-    "timeMonth": 829,
+    "timeDay": 648,
+    "timeWeek": 832,
+    "timeMonth": 823,
     "timeYear": 796,
     "dailyMinutesDown": {}
   },
@@ -109,16 +108,16 @@
     "icon": "https://portal-nelsoncollege-files.s3.eu-west-2.amazonaws.com/logo/NCL_logo.svg",
     "slug": "nelson-portal",
     "status": "up",
-    "uptime": "98.53%",
+    "uptime": "98.54%",
     "uptimeDay": "100.00%",
     "uptimeWeek": "100.00%",
     "uptimeMonth": "100.00%",
     "uptimeYear": "99.92%",
     "time": 1169,
-    "timeDay": 1890,
-    "timeWeek": 1342,
-    "timeMonth": 1233,
-    "timeYear": 1167,
+    "timeDay": 1109,
+    "timeWeek": 1357,
+    "timeMonth": 1235,
+    "timeYear": 1168,
     "dailyMinutesDown": {
       "2025-02-13": 345,
       "2024-08-15": 75
@@ -136,10 +135,10 @@
     "uptimeMonth": "100.00%",
     "uptimeYear": "100.00%",
     "time": 666,
-    "timeDay": 956,
-    "timeWeek": 769,
-    "timeMonth": 680,
-    "timeYear": 675,
+    "timeDay": 554,
+    "timeWeek": 770,
+    "timeMonth": 682,
+    "timeYear": 674,
     "dailyMinutesDown": {}
   }
 ]
