@@ -10,11 +10,11 @@
     "uptimeWeek": "100.00%",
     "uptimeMonth": "100.00%",
     "uptimeYear": "99.99%",
-    "time": 1437,
-    "timeDay": 1472,
-    "timeWeek": 1419,
-    "timeMonth": 1460,
-    "timeYear": 1434,
+    "time": 1438,
+    "timeDay": 1822,
+    "timeWeek": 1495,
+    "timeMonth": 1461,
+    "timeYear": 1436,
     "dailyMinutesDown": {
       "2024-07-31": 39
     }
@@ -29,12 +29,12 @@
     "uptimeDay": "100.00%",
     "uptimeWeek": "100.00%",
     "uptimeMonth": "100.00%",
-    "uptimeYear": "98.51%",
-    "time": 1070,
-    "timeDay": 473,
-    "timeWeek": 575,
-    "timeMonth": 531,
-    "timeYear": 922,
+    "uptimeYear": "98.52%",
+    "time": 941,
+    "timeDay": 803,
+    "timeWeek": 592,
+    "timeMonth": 545,
+    "timeYear": 893,
     "dailyMinutesDown": {
       "2025-01-31": 17,
       "2024-07-25": 443,
@@ -58,8 +58,7 @@
       "2024-06-27": 150,
       "2024-06-26": 74,
       "2024-06-24": 44,
-      "2024-06-20": 44,
-      "2024-06-19": 36
+      "2024-06-20": 44
     }
   },
   {
@@ -73,11 +72,11 @@
     "uptimeWeek": "100.00%",
     "uptimeMonth": "100.00%",
     "uptimeYear": "100.00%",
-    "time": 795,
-    "timeDay": 673,
-    "timeWeek": 728,
-    "timeMonth": 795,
-    "timeYear": 804,
+    "time": 796,
+    "timeDay": 965,
+    "timeWeek": 740,
+    "timeMonth": 796,
+    "timeYear": 805,
     "dailyMinutesDown": {}
   },
   {
@@ -86,16 +85,16 @@
     "icon": "https://portal-nelsoncollege-files.s3.eu-west-2.amazonaws.com/logo/NCL_logo.svg",
     "slug": "nelson-portal",
     "status": "up",
-    "uptime": "98.60%",
+    "uptime": "98.61%",
     "uptimeDay": "100.00%",
     "uptimeWeek": "100.00%",
     "uptimeMonth": "100.00%",
     "uptimeYear": "99.92%",
-    "time": 1165,
-    "timeDay": 965,
-    "timeWeek": 1225,
-    "timeMonth": 1194,
-    "timeYear": 1179,
+    "time": 1166,
+    "timeDay": 1461,
+    "timeWeek": 1259,
+    "timeMonth": 1192,
+    "timeYear": 1180,
     "dailyMinutesDown": {
       "2025-02-13": 345,
       "2024-08-15": 75
@@ -112,10 +111,10 @@
     "uptimeWeek": "100.00%",
     "uptimeMonth": "100.00%",
     "uptimeYear": "100.00%",
-    "time": 670,
-    "timeDay": 518,
-    "timeWeek": 718,
-    "timeMonth": 701,
+    "time": 671,
+    "timeDay": 740,
+    "timeWeek": 714,
+    "timeMonth": 699,
     "timeYear": 680,
     "dailyMinutesDown": {}
   }
