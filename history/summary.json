@@ -10,11 +10,11 @@
     "uptimeWeek": "100.00%",
     "uptimeMonth": "100.00%",
     "uptimeYear": "99.99%",
-    "time": 1443,
-    "timeDay": 1286,
-    "timeWeek": 1447,
-    "timeMonth": 1486,
-    "timeYear": 1441,
+    "time": 1441,
+    "timeDay": 958,
+    "timeWeek": 1228,
+    "timeMonth": 1448,
+    "timeYear": 1439,
     "dailyMinutesDown": {
       "2024-07-31": 39
     }
@@ -25,23 +25,22 @@
     "icon": "https://portal-nelsoncollege-files.s3.eu-west-2.amazonaws.com/logo/VLE_NCL.svg",
     "slug": "virtual-learning-environment-vle",
     "status": "up",
-    "uptime": "99.12%",
+    "uptime": "99.13%",
     "uptimeDay": "100.00%",
     "uptimeWeek": "100.00%",
     "uptimeMonth": "100.00%",
     "uptimeYear": "99.50%",
-    "time": 813,
-    "timeDay": 724,
-    "timeWeek": 651,
-    "timeMonth": 686,
+    "time": 812,
+    "timeDay": 574,
+    "timeWeek": 627,
+    "timeMonth": 677,
     "timeYear": 454,
     "dailyMinutesDown": {
       "2025-01-31": 17,
       "2024-07-25": 443,
       "2024-07-24": 23,
       "2024-07-23": 826,
-      "2024-07-22": 620,
-      "2024-07-21": 710
+      "2024-07-22": 620
     }
   },
   {
@@ -56,10 +55,10 @@
     "uptimeMonth": "100.00%",
     "uptimeYear": "100.00%",
     "time": 798,
-    "timeDay": 834,
-    "timeWeek": 744,
-    "timeMonth": 834,
-    "timeYear": 810,
+    "timeDay": 625,
+    "timeWeek": 693,
+    "timeMonth": 822,
+    "timeYear": 809,
     "dailyMinutesDown": {}
   },
   {
@@ -74,10 +73,10 @@
     "uptimeMonth": "100.00%",
     "uptimeYear": "99.92%",
     "time": 1172,
-    "timeDay": 1110,
-    "timeWeek": 1163,
-    "timeMonth": 1229,
-    "timeYear": 1189,
+    "timeDay": 1007,
+    "timeWeek": 1111,
+    "timeMonth": 1215,
+    "timeYear": 1188,
     "dailyMinutesDown": {
       "2025-02-13": 345,
       "2024-08-15": 75
@@ -95,9 +94,9 @@
     "uptimeMonth": "100.00%",
     "uptimeYear": "100.00%",
     "time": 676,
-    "timeDay": 616,
-    "timeWeek": 619,
-    "timeMonth": 716,
+    "timeDay": 525,
+    "timeWeek": 559,
+    "timeMonth": 704,
     "timeYear": 685,
     "dailyMinutesDown": {}
   }
