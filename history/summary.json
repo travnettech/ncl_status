@@ -11,10 +11,10 @@
     "uptimeMonth": "100.00%",
     "uptimeYear": "100.00%",
     "time": 1426,
-    "timeDay": 1405,
-    "timeWeek": 1376,
-    "timeMonth": 1395,
-    "timeYear": 1420,
+    "timeDay": 1291,
+    "timeWeek": 1402,
+    "timeMonth": 1405,
+    "timeYear": 1421,
     "dailyMinutesDown": {}
   },
   {
@@ -24,17 +24,16 @@
     "slug": "virtual-learning-environment-vle",
     "status": "up",
     "uptime": "99.19%",
-    "uptimeDay": "99.09%",
-    "uptimeWeek": "99.87%",
-    "uptimeMonth": "99.93%",
+    "uptimeDay": "100.00%",
+    "uptimeWeek": "100.00%",
+    "uptimeMonth": "99.96%",
     "uptimeYear": "99.99%",
     "time": 519,
-    "timeDay": 2676,
+    "timeDay": 2656,
     "timeWeek": 1171,
-    "timeMonth": 837,
-    "timeYear": 525,
+    "timeMonth": 835,
+    "timeYear": 526,
     "dailyMinutesDown": {
-      "2025-10-06": 13,
       "2025-09-22": 18,
       "2025-01-31": 17
     }
@@ -51,9 +50,9 @@
     "uptimeMonth": "100.00%",
     "uptimeYear": "100.00%",
     "time": 809,
-    "timeDay": 1077,
-    "timeWeek": 841,
-    "timeMonth": 841,
+    "timeDay": 595,
+    "timeWeek": 828,
+    "timeMonth": 839,
     "timeYear": 819,
     "dailyMinutesDown": {}
   },
@@ -68,11 +67,11 @@
     "uptimeWeek": "100.00%",
     "uptimeMonth": "100.00%",
     "uptimeYear": "99.93%",
-    "time": 1179,
-    "timeDay": 990,
-    "timeWeek": 1204,
-    "timeMonth": 1222,
-    "timeYear": 1187,
+    "time": 1178,
+    "timeDay": 985,
+    "timeWeek": 1198,
+    "timeMonth": 1220,
+    "timeYear": 1186,
     "dailyMinutesDown": {
       "2025-02-13": 345
     }
@@ -89,9 +88,9 @@
     "uptimeMonth": "100.00%",
     "uptimeYear": "100.00%",
     "time": 687,
-    "timeDay": 830,
-    "timeWeek": 886,
-    "timeMonth": 776,
+    "timeDay": 731,
+    "timeWeek": 906,
+    "timeMonth": 780,
     "timeYear": 692,
     "dailyMinutesDown": {}
   }
