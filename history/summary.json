@@ -43,18 +43,20 @@
     "url": "https://one.nelsoncollege.ac.uk",
     "icon": "https://portal-nelsoncollege-files.s3.eu-west-2.amazonaws.com/logo/One_NCL.svg",
     "slug": "nelson-one",
-    "status": "up",
+    "status": "down",
     "uptime": "99.99%",
-    "uptimeDay": "100.00%",
+    "uptimeDay": "99.99%",
     "uptimeWeek": "100.00%",
     "uptimeMonth": "100.00%",
     "uptimeYear": "100.00%",
-    "time": 820,
-    "timeDay": 737,
-    "timeWeek": 886,
-    "timeMonth": 886,
+    "time": 821,
+    "timeDay": 849,
+    "timeWeek": 896,
+    "timeMonth": 889,
     "timeYear": 825,
-    "dailyMinutesDown": {}
+    "dailyMinutesDown": {
+      "2025-11-15": 0
+    }
   },
   {
     "name": "Nelson Portal",
