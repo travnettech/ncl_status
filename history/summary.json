@@ -10,11 +10,11 @@
     "uptimeWeek": "100.00%",
     "uptimeMonth": "100.00%",
     "uptimeYear": "100.00%",
-    "time": 1426,
-    "timeDay": 1053,
-    "timeWeek": 1380,
-    "timeMonth": 1360,
-    "timeYear": 1408,
+    "time": 1424,
+    "timeDay": 1225,
+    "timeWeek": 1376,
+    "timeMonth": 1347,
+    "timeYear": 1407,
     "dailyMinutesDown": {}
   },
   {
@@ -28,10 +28,10 @@
     "uptimeWeek": "100.00%",
     "uptimeMonth": "100.00%",
     "uptimeYear": "99.99%",
-    "time": 514,
-    "timeDay": 764,
-    "timeWeek": 629,
-    "timeMonth": 628,
+    "time": 515,
+    "timeDay": 571,
+    "timeWeek": 632,
+    "timeMonth": 620,
     "timeYear": 553,
     "dailyMinutesDown": {
       "2025-09-22": 18,
@@ -44,18 +44,19 @@
     "icon": "https://portal-nelsoncollege-files.s3.eu-west-2.amazonaws.com/logo/One_NCL.svg",
     "slug": "nelson-one",
     "status": "down",
-    "uptime": "99.99%",
-    "uptimeDay": "99.99%",
-    "uptimeWeek": "100.00%",
-    "uptimeMonth": "100.00%",
-    "uptimeYear": "100.00%",
-    "time": 821,
-    "timeDay": 849,
-    "timeWeek": 896,
-    "timeMonth": 889,
-    "timeYear": 825,
+    "uptime": "99.97%",
+    "uptimeDay": "75.74%",
+    "uptimeWeek": "96.53%",
+    "uptimeMonth": "99.20%",
+    "uptimeYear": "99.93%",
+    "time": 820,
+    "timeDay": 748,
+    "timeWeek": 871,
+    "timeMonth": 858,
+    "timeYear": 824,
     "dailyMinutesDown": {
-      "2025-11-15": 0
+      "2025-11-16": 30,
+      "2025-11-15": 319
     }
   },
   {
@@ -69,11 +70,11 @@
     "uptimeWeek": "100.00%",
     "uptimeMonth": "100.00%",
     "uptimeYear": "99.93%",
-    "time": 1187,
-    "timeDay": 1032,
-    "timeWeek": 1168,
-    "timeMonth": 1178,
-    "timeYear": 1189,
+    "time": 1186,
+    "timeDay": 1034,
+    "timeWeek": 1186,
+    "timeMonth": 1155,
+    "timeYear": 1188,
     "dailyMinutesDown": {
       "2025-02-13": 345
     }
@@ -90,9 +91,9 @@
     "uptimeMonth": "100.00%",
     "uptimeYear": "100.00%",
     "time": 691,
-    "timeDay": 620,
-    "timeWeek": 694,
-    "timeMonth": 690,
+    "timeDay": 532,
+    "timeWeek": 682,
+    "timeMonth": 680,
     "timeYear": 695,
     "dailyMinutesDown": {}
   }
