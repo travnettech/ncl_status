@@ -4,18 +4,20 @@
     "url": "https://nelsoncollege.ac.uk",
     "icon": "https://portal-nelsoncollege-files.s3.eu-west-2.amazonaws.com/logo/NCL_logo.svg",
     "slug": "website",
-    "status": "up",
+    "status": "down",
     "uptime": "99.98%",
-    "uptimeDay": "100.00%",
-    "uptimeWeek": "100.00%",
+    "uptimeDay": "99.96%",
+    "uptimeWeek": "99.99%",
     "uptimeMonth": "100.00%",
     "uptimeYear": "100.00%",
-    "time": 1450,
+    "time": 1449,
     "timeDay": 1838,
     "timeWeek": 4089,
     "timeMonth": 2008,
     "timeYear": 1459,
-    "dailyMinutesDown": {}
+    "dailyMinutesDown": {
+      "2026-02-20": 1
+    }
   },
   {
     "name": "Virtual Learning Environment VLE",
@@ -26,7 +28,7 @@
     "uptime": "99.28%",
     "uptimeDay": "100.00%",
     "uptimeWeek": "100.00%",
-    "uptimeMonth": "99.96%",
+    "uptimeMonth": "100.00%",
     "uptimeYear": "99.97%",
     "time": 572,
     "timeDay": 664,
@@ -46,9 +48,9 @@
     "url": "https://one.nelsoncollege.ac.uk",
     "icon": "https://portal-nelsoncollege-files.s3.eu-west-2.amazonaws.com/logo/One_NCL.svg",
     "slug": "nelson-one",
-    "status": "up",
+    "status": "down",
     "uptime": "99.90%",
-    "uptimeDay": "100.00%",
+    "uptimeDay": "99.99%",
     "uptimeWeek": "100.00%",
     "uptimeMonth": "100.00%",
     "uptimeYear": "99.69%",
@@ -58,6 +60,7 @@
     "timeMonth": 757,
     "timeYear": 832,
     "dailyMinutesDown": {
+      "2026-02-20": 0,
       "2025-11-16": 1307,
       "2025-11-15": 319
     }
