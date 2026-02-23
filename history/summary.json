@@ -70,18 +70,19 @@
     "url": "https://portal.nelsoncollege.ac.uk",
     "icon": "https://portal-nelsoncollege-files.s3.eu-west-2.amazonaws.com/logo/NCL_logo.svg",
     "slug": "nelson-portal",
-    "status": "up",
+    "status": "down",
     "uptime": "98.87%",
-    "uptimeDay": "100.00%",
+    "uptimeDay": "99.99%",
     "uptimeWeek": "100.00%",
     "uptimeMonth": "100.00%",
     "uptimeYear": "99.97%",
-    "time": 1202,
+    "time": 1201,
     "timeDay": 1377,
     "timeWeek": 1405,
     "timeMonth": 1274,
     "timeYear": 1209,
     "dailyMinutesDown": {
+      "2026-02-23": 0,
       "2026-01-09": 135
     }
   },
