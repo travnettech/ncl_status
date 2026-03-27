@@ -1,38 +1,84 @@
-# Change these first
-owner: travnettech # Your GitHub organization or username, where this repository lives
-repo: ncl_status # The name of this repository
+owner: travnettech
+repo: ncl_status
+
+# Assign these GitHub users to incident issues automatically
+assignees:
+  - travnettech # Replace with actual GitHub usernames of your IT/ops team
 
 sites:
   - name: Website
     url: https://nelsoncollege.ac.uk
     icon: https://portal-nelsoncollege-files.s3.eu-west-2.amazonaws.com/logo/NCL_logo.svg
+    maxResponseTime: 5000
+    expectedStatusCodes:
+      - 200
+      - 301
   - name: Virtual Learning Environment VLE
     url: https://nclvle.co.uk
     icon: https://portal-nelsoncollege-files.s3.eu-west-2.amazonaws.com/logo/VLE_NCL.svg
+    maxResponseTime: 5000
+    expectedStatusCodes:
+      - 200
+      - 301
+      - 302
   - name: Nelson One
     url: https://one.nelsoncollege.ac.uk
     icon: https://portal-nelsoncollege-files.s3.eu-west-2.amazonaws.com/logo/One_NCL.svg
+    maxResponseTime: 5000
+    expectedStatusCodes:
+      - 200
+      - 301
+      - 302
   - name: Nelson Portal
     url: https://portal.nelsoncollege.ac.uk
     icon: https://portal-nelsoncollege-files.s3.eu-west-2.amazonaws.com/logo/NCL_logo.svg
+    maxResponseTime: 5000
+    expectedStatusCodes:
+      - 200
+      - 301
+      - 302
   - name: NCL Alumni Association
     url: https://alumni.nelsoncollege.ac.uk
     icon: https://portal-nelsoncollege-files.s3.eu-west-2.amazonaws.com/logo/Alumni_NCL.svg
+    maxResponseTime: 5000
+    expectedStatusCodes:
+      - 200
+      - 301
+  - name: Help Center
+    url: https://nelsoncollege.atlassian.net/servicedesk/customer/portals
+    icon: https://portal-nelsoncollege-files.s3.eu-west-2.amazonaws.com/logo/NCL_logo.svg
+    maxResponseTime: 10000
+    expectedStatusCodes:
+      - 200
+      - 301
+      - 302
+      - 303
 
 status-website:
-  # Add your custom domain name, or remove the `cname` line if you don't have a domain
-  # Uncomment the `baseUrl` line if you don't have a custom domain and add your repo name there
   cname: status.nelsoncollege.ac.uk
-  # baseUrl: /your-repo-name
   logoUrl: https://portal-nelsoncollege-files.s3.eu-west-2.amazonaws.com/logo/NCL_logo.svg
+  faviconSvg: https://portal-nelsoncollege-files.s3.eu-west-2.amazonaws.com/logo/NCL_logo.svg
   name: NCL Status
-  introTitle: "**Welcome to NCL Status page.**"
-  introMessage: From here you will be able find real-time information about the status of our environments as well as updates about scheduled maintenance and past incidents. To better understand the content of this page, and which areas pertain to you, please contact [**Help Center**](https://nelsoncollege.atlassian.net/servicedesk/customer/portals). Your can also check Turnitin Status from this [**URL**](https://turnitin.statuspage.io).
+  introTitle: "**Welcome to the NCL Status page**"
+  introMessage: Real-time status of Nelson College services, including scheduled maintenance and past incidents. If you need help understanding this page, please contact our [**Help Center**](https://nelsoncollege.atlassian.net/servicedesk/customer/portals).
   navbar:
     - title: Status
       href: /
     - title: Website
       href: https://nelsoncollege.ac.uk
+    - title: Help Center
+      href: https://nelsoncollege.atlassian.net/servicedesk/customer/portals
+    - title: Turnitin Status
+      href: https://turnitin.statuspage.io
 
-# Upptime also supports notifications, assigning issues, and more
-# See https://upptime.js.org/docs/configuration
+# Notifications — uncomment and configure as needed:
+#
+# notifications:
+#   - type: slack
+#     channel: "#ops-alerts"
+#     url: $SLACK_WEBHOOK_URL  # Add SLACK_WEBHOOK_URL as a GitHub Actions secret
+#
+#   - type: email
+#     to: it-support@nelsoncollege.ac.uk
+#
+# See all options: https://upptime.js.org/docs/notifications
