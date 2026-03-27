@@ -11,6 +11,8 @@
   <meta property="og:url" content="https://status.nelsoncollege.ac.uk">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary">
+  <link rel="canonical" href="https://status.nelsoncollege.ac.uk">
+  <meta name="theme-color" content="#00458c">
   <link rel="icon" type="image/svg+xml" href="assets/icon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1461,12 +1463,15 @@
         if (allUp) {
           bannerEl.className = 'status-banner operational';
           bannerEl.innerHTML = '<span class="pulse-dot up" role="img" aria-label="All systems operational"></span> All Systems Operational';
+          document.title = '\u2713 All Systems Operational \u2014 NCL Status';
         } else if (allDown) {
           bannerEl.className = 'status-banner down';
           bannerEl.innerHTML = '<span class="pulse-dot down" role="img" aria-label="Major outage"></span> Major Outage';
+          document.title = '\u2716 Major Outage \u2014 NCL Status';
         } else {
           bannerEl.className = 'status-banner degraded';
           bannerEl.innerHTML = '<span class="pulse-dot degraded" role="img" aria-label="Partial issues"></span> Some Systems Experiencing Issues';
+          document.title = '\u26A0 Issues Detected \u2014 NCL Status';
         }
 
         var avgUptime = (services.reduce(function(s, v) { return s + parseFloat(v.uptimeMonth); }, 0) / services.length).toFixed(2);
