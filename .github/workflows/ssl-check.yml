@@ -15,100 +15,70 @@ jobs:
 
       - name: Check SSL certificates and DNS
         run: |
-          DOMAINS=(
-            "nelsoncollege.ac.uk"
-            "nclvle.co.uk"
-            "one.nelsoncollege.ac.uk"
-            "portal.nelsoncollege.ac.uk"
-            "alumni.nelsoncollege.ac.uk"
-            "nelsoncollege.atlassian.net"
-            "status.nelsoncollege.ac.uk"
-          )
+          python3 << 'PYEOF'
+          import ssl, socket, subprocess, json, datetime
 
-          NAMES=(
-            "Website"
-            "Virtual Learning Environment VLE"
-            "Nelson One"
-            "Nelson Portal"
-            "NCL Alumni Association"
-            "Help Centre"
-            "Status Page"
-          )
+          domains = [
+              ("Website", "nelsoncollege.ac.uk"),
+              ("Virtual Learning Environment VLE", "nclvle.co.uk"),
+              ("Nelson One", "one.nelsoncollege.ac.uk"),
+              ("Nelson Portal", "portal.nelsoncollege.ac.uk"),
+              ("NCL Alumni Association", "alumni.nelsoncollege.ac.uk"),
+              ("Help Centre", "nelsoncollege.atlassian.net"),
+              ("Status Page", "status.nelsoncollege.ac.uk"),
+          ]
 
-          echo "[" > /tmp/ssl-status.json
-          FIRST=true
+          results = []
+          for name, domain in domains:
+              entry = {"name": name, "domain": domain, "ssl": {}, "dns": {}}
 
-          for i in "${!DOMAINS[@]}"; do
-            DOMAIN="${DOMAINS[$i]}"
-            NAME="${NAMES[$i]}"
+              try:
+                  ctx = ssl.create_default_context()
+                  with ctx.wrap_socket(socket.socket(), server_hostname=domain) as s:
+                      s.settimeout(10)
+                      s.connect((domain, 443))
+                      cert = s.getpeercert()
+                      expiry_str = cert["notAfter"]
+                      expiry_dt = datetime.datetime.strptime(expiry_str, "%b %d %H:%M:%S %Y %Z")
+                      days_left = (expiry_dt - datetime.datetime.utcnow()).days
+                      issuer_dict = dict(x[0] for x in cert.get("issuer", ()))
+                      issuer_o = issuer_dict.get("organizationName", issuer_dict.get("commonName", ""))
+                      subject_dict = dict(x[0] for x in cert.get("subject", ()))
+                      subject_cn = subject_dict.get("commonName", domain)
+                      if days_left <= 0:
+                          status = "expired"
+                      elif days_left <= 7:
+                          status = "critical"
+                      elif days_left <= 30:
+                          status = "warning"
+                      else:
+                          status = "valid"
+                      entry["ssl"] = {
+                          "status": status,
+                          "expiry": expiry_dt.strftime("%Y-%m-%dT%H:%M:%SZ"),
+                          "daysLeft": days_left,
+                          "issuer": issuer_o,
+                          "subject": subject_cn,
+                      }
+              except Exception as e:
+                  entry["ssl"] = {"status": "error", "expiry": "", "daysLeft": 0, "issuer": "", "subject": str(e)}
 
-            # SSL check
-            CERT_INFO=$(echo | openssl s_client -servername "$DOMAIN" -connect "$DOMAIN":443 2>/dev/null)
-            if [ $? -eq 0 ] && echo "$CERT_INFO" | openssl x509 -noout 2>/dev/null; then
-              EXPIRY_DATE=$(echo "$CERT_INFO" | openssl x509 -noout -enddate 2>/dev/null | cut -d= -f2)
-              ISSUER=$(echo "$CERT_INFO" | openssl x509 -noout -issuer 2>/dev/null | sed 's/issuer=//' | sed 's/.*O = //' | cut -d',' -f1 | xargs)
-              SUBJECT=$(echo "$CERT_INFO" | openssl x509 -noout -subject 2>/dev/null | sed 's/subject=//' | sed 's/.*CN = //' | cut -d',' -f1 | xargs)
+              try:
+                  result = subprocess.run(["dig", "+short", domain], capture_output=True, text=True, timeout=10)
+                  records = result.stdout.strip().replace("\n", ", ")
+                  entry["dns"] = {"status": "ok" if records else "fail", "records": records}
+              except Exception:
+                  entry["dns"] = {"status": "fail", "records": ""}
 
-              EXPIRY_EPOCH=$(date -d "$EXPIRY_DATE" +%s 2>/dev/null)
-              NOW_EPOCH=$(date +%s)
-              DAYS_LEFT=$(( (EXPIRY_EPOCH - NOW_EPOCH) / 86400 ))
-              EXPIRY_ISO=$(date -d "$EXPIRY_DATE" -u +"%Y-%m-%dT%H:%M:%SZ" 2>/dev/null)
+              results.append(entry)
 
-              if [ "$DAYS_LEFT" -le 0 ]; then
-                SSL_STATUS="expired"
-              elif [ "$DAYS_LEFT" -le 7 ]; then
-                SSL_STATUS="critical"
-              elif [ "$DAYS_LEFT" -le 30 ]; then
-                SSL_STATUS="warning"
-              else
-                SSL_STATUS="valid"
-              fi
-            else
-              EXPIRY_ISO=""
-              ISSUER=""
-              SUBJECT=""
-              DAYS_LEFT=0
-              SSL_STATUS="error"
-            fi
+          with open("api/ssl-status.json", "w") as f:
+              json.dump(results, f, indent=2)
 
-            # DNS check
-            DNS_RESULT=$(dig +short "$DOMAIN" 2>/dev/null | head -5 | tr '\n' ', ' | sed 's/,$//')
-            if [ -n "$DNS_RESULT" ]; then
-              DNS_STATUS="ok"
-            else
-              DNS_STATUS="fail"
-              DNS_RESULT=""
-            fi
-
-            if [ "$FIRST" = true ]; then
-              FIRST=false
-            else
-              echo "," >> /tmp/ssl-status.json
-            fi
-
-            cat >> /tmp/ssl-status.json <<ENTRY
-            {
-              "name": "$NAME",
-              "domain": "$DOMAIN",
-              "ssl": {
-                "status": "$SSL_STATUS",
-                "expiry": "$EXPIRY_ISO",
-                "daysLeft": $DAYS_LEFT,
-                "issuer": "$ISSUER",
-                "subject": "$SUBJECT"
-              },
-              "dns": {
-                "status": "$DNS_STATUS",
-                "records": "$DNS_RESULT"
-              }
-            }
-          ENTRY
-          done
-
-          echo "]" >> /tmp/ssl-status.json
-
-          # Pretty-print and validate
-          python3 -m json.tool /tmp/ssl-status.json > api/ssl-status.json
+          print("SSL & DNS check complete")
+          for r in results:
+              print(f"  {r['name']}: SSL={r['ssl']['status']} ({r['ssl'].get('daysLeft',0)}d), DNS={r['dns']['status']}")
+          PYEOF
 
       - name: Commit results
         run: |
