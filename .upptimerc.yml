@@ -55,7 +55,8 @@ sites:
       - 303
 
 status-website:
-  cname: status.nelsoncollege.ac.uk
+  # cname: status.nelsoncollege.ac.uk  # Disabled — custom frontend hosted on Cloudflare Pages
+  baseUrl: /ncl_status
   logoUrl: https://portal-nelsoncollege-files.s3.eu-west-2.amazonaws.com/logo/NCL_logo.svg
   faviconSvg: https://raw.githubusercontent.com/travnettech/ncl_status/HEAD/assets/icon.svg
   name: NCL Status

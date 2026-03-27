@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NCL Status — Nelson College London</title>
+  <meta name="description" content="Live service status and uptime monitoring for Nelson College London. Check real-time availability of the NCL website, VLE, Nelson One, Nelson Portal, Alumni Association, and Help Centre.">
+  <meta property="og:title" content="NCL Status — Nelson College London">
+  <meta property="og:description" content="Live service status and uptime monitoring for Nelson College London.">
+  <meta property="og:image" content="https://portal-nelsoncollege-files.s3.eu-west-2.amazonaws.com/logo/NCL_logo.svg">
+  <meta property="og:url" content="https://status.nelsoncollege.ac.uk">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary">
+  <link rel="icon" type="image/svg+xml" href="assets/icon.svg">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue: #00458c;
+      --blue-dark: #002d5c;
+      --blue-light: #e8f0fa;
+      --green: #22c55e;
+      --green-bg: #f0fdf4;
+      --green-border: #bbf7d0;
+      --red: #ef4444;
+      --red-bg: #fef2f2;
+      --red-border: #fecaca;
+      --yellow: #eab308;
+      --yellow-bg: #fefce8;
+      --yellow-border: #fef08a;
+      --grey-50: #f9fafb;
+      --grey-100: #f3f4f6;
+      --grey-200: #e5e7eb;
+      --grey-400: #9ca3af;
+      --grey-500: #6b7280;
+      --grey-600: #4b5563;
+      --grey-700: #374151;
+      --grey-900: #111827;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: var(--grey-50);
+      color: var(--grey-900);
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 1.25rem;
+      width: 100%;
+    }
+
+    /* Header */
+    header {
+      background: #fff;
+      border-bottom: 1px solid var(--grey-200);
+      padding: 1rem 0;
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo-group {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: var(--grey-900);
+    }
+
+    .logo-group img {
+      height: 36px;
+      width: auto;
+    }
+
+    .logo-group span {
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: var(--blue);
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    nav a {
+      color: var(--grey-600);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      padding: 0.375rem 0.625rem;
+      border-radius: 6px;
+      transition: color 0.15s, background 0.15s;
+    }
+
+    nav a:hover {
+      color: var(--blue);
+      background: var(--blue-light);
+    }
+
+    /* Main */
+    main {
+      flex: 1;
+      padding: 2rem 0;
+    }
+
+    /* Status banner */
+    .status-banner {
+      border-radius: 10px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .status-banner.operational {
+      background: var(--green-bg);
+      border: 1px solid var(--green-border);
+      color: #166534;
+    }
+
+    .status-banner.degraded {
+      background: var(--yellow-bg);
+      border: 1px solid var(--yellow-border);
+      color: #854d0e;
+    }
+
+    .status-banner.down {
+      background: var(--red-bg);
+      border: 1px solid var(--red-border);
+      color: #991b1b;
+    }
+
+    .status-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .status-dot.up { background: var(--green); }
+    .status-dot.degraded { background: var(--yellow); }
+    .status-dot.down { background: var(--red); }
+
+    /* Service list */
+    .services {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .service-card {
+      background: #fff;
+      border: 1px solid var(--grey-200);
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+      transition: border-color 0.15s;
+    }
+
+    .service-card:hover {
+      border-color: var(--grey-400);
+    }
+
+    .service-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.75rem;
+    }
+
+    .service-name {
+      display: flex;
+      align-items: center;
+      gap: 0.625rem;
+    }
+
+    .service-name img {
+      height: 20px;
+      width: 20px;
+      object-fit: contain;
+    }
+
+    .service-name a {
+      font-weight: 600;
+      font-size: 0.9375rem;
+      color: var(--grey-900);
+      text-decoration: none;
+    }
+
+    .service-name a:hover {
+      color: var(--blue);
+    }
+
+    .service-status {
+      display: flex;
+      align-items: center;
+      gap: 0.375rem;
+      font-size: 0.8125rem;
+      font-weight: 500;
+    }
+
+    .service-status.up { color: #166534; }
+    .service-status.down { color: #991b1b; }
+
+    .service-status .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .service-status.up .dot { background: var(--green); }
+    .service-status.down .dot { background: var(--red); }
+
+    .service-metrics {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0.5rem;
+    }
+
+    .metric {
+      text-align: center;
+    }
+
+    .metric-label {
+      font-size: 0.6875rem;
+      color: var(--grey-500);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      margin-bottom: 0.125rem;
+    }
+
+    .metric-value {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--grey-700);
+    }
+
+    .metric-value.good { color: #166534; }
+    .metric-value.warn { color: #854d0e; }
+
+    /* Last updated */
+    .last-updated {
+      text-align: centre;
+      margin-top: 1.5rem;
+      font-size: 0.75rem;
+      color: var(--grey-500);
+      text-align: center;
+    }
+
+    /* Loading / Error */
+    .loading, .error-msg {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--grey-500);
+      font-size: 0.9375rem;
+    }
+
+    .error-msg { color: var(--red); }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--grey-200);
+      padding: 1.25rem 0;
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--grey-500);
+    }
+
+    footer a {
+      color: var(--blue);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      color: var(--blue-dark);
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .header-inner {
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      .service-metrics {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .status-banner {
+        font-size: 0.9375rem;
+        padding: 1rem 1.25rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="header-inner">
+        <a href="/" class="logo-group">
+          <img src="https://portal-nelsoncollege-files.s3.eu-west-2.amazonaws.com/logo/NCL_logo.svg" alt="Nelson College London">
+          <span>NCL Status</span>
+        </a>
+        <nav>
+          <a href="https://nelsoncollege.ac.uk" target="_blank" rel="noopener">Website</a>
+          <a href="https://nelsoncollege.atlassian.net/servicedesk/customer/portals" target="_blank" rel="noopener">Help Centre</a>
+          <a href="https://turnitin.statuspage.io" target="_blank" rel="noopener">Turnitin Status</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <div id="status-banner" class="status-banner operational" style="display:none;"></div>
+      <div id="services" class="services">
+        <div class="loading">Loading service status&hellip;</div>
+      </div>
+      <div id="last-updated" class="last-updated"></div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      &copy; 2026 Nelson College London. All Rights Reserved. Made with &hearts; by <a href="https://sitenet.tech/" target="_blank" rel="noopener">Sitenet Tech</a>.
+    </div>
+  </footer>
+
+  <script>
+    const DATA_URL = 'https://raw.githubusercontent.com/travnettech/ncl_status/HEAD/history/summary.json';
+
+    async function loadStatus() {
+      const servicesEl = document.getElementById('services');
+      const bannerEl = document.getElementById('status-banner');
+      const updatedEl = document.getElementById('last-updated');
+
+      try {
+        const res = await fetch(DATA_URL, { cache: 'no-cache' });
+        if (!res.ok) throw new Error('Failed to fetch status data');
+        const services = await res.json();
+
+        const allUp = services.every(s => s.status === 'up');
+        const allDown = services.every(s => s.status === 'down');
+
+        bannerEl.style.display = 'flex';
+        if (allUp) {
+          bannerEl.className = 'status-banner operational';
+          bannerEl.innerHTML = '<span class="status-dot up"></span> All Systems Operational';
+        } else if (allDown) {
+          bannerEl.className = 'status-banner down';
+          bannerEl.innerHTML = '<span class="status-dot down"></span> Major Outage';
+        } else {
+          bannerEl.className = 'status-banner degraded';
+          bannerEl.innerHTML = '<span class="status-dot degraded"></span> Some Systems Experiencing Issues';
+        }
+
+        servicesEl.innerHTML = services.map(s => {
+          const isUp = s.status === 'up';
+          const statusClass = isUp ? 'up' : 'down';
+          const statusText = isUp ? 'Operational' : 'Down';
+          const uptimeClass = v => {
+            const n = parseFloat(v);
+            if (n >= 99.9) return 'good';
+            if (n >= 99.0) return '';
+            return 'warn';
+          };
+
+          return `
+            <div class="service-card">
+              <div class="service-header">
+                <div class="service-name">
+                  <img src="${s.icon}" alt="">
+                  <a href="${s.url}" target="_blank" rel="noopener">${s.name}</a>
+                </div>
+                <div class="service-status ${statusClass}">
+                  <span class="dot"></span>
+                  ${statusText}
+                </div>
+              </div>
+              <div class="service-metrics">
+                <div class="metric">
+                  <div class="metric-label">24h</div>
+                  <div class="metric-value ${uptimeClass(s.uptimeDay)}">${s.uptimeDay}</div>
+                </div>
+                <div class="metric">
+                  <div class="metric-label">7 days</div>
+                  <div class="metric-value ${uptimeClass(s.uptimeWeek)}">${s.uptimeWeek}</div>
+                </div>
+                <div class="metric">
+                  <div class="metric-label">30 days</div>
+                  <div class="metric-value ${uptimeClass(s.uptimeMonth)}">${s.uptimeMonth}</div>
+                </div>
+                <div class="metric">
+                  <div class="metric-label">1 year</div>
+                  <div class="metric-value ${uptimeClass(s.uptimeYear)}">${s.uptimeYear}</div>
+                </div>
+                <div class="metric">
+                  <div class="metric-label">Response</div>
+                  <div class="metric-value">${s.timeDay}ms</div>
+                </div>
+              </div>
+            </div>`;
+        }).join('');
+
+        updatedEl.textContent = 'Last checked: ' + new Date().toLocaleString('en-GB', {
+          dateStyle: 'medium',
+          timeStyle: 'short'
+        });
+      } catch (err) {
+        servicesEl.innerHTML = '<div class="error-msg">Unable to load status data. Please try again shortly.</div>';
+        console.error(err);
+      }
+    }
+
+    loadStatus();
+    setInterval(loadStatus, 300000);
+  </script>
+</body>
+</html>
