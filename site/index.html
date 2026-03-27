@@ -12,6 +12,21 @@
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary">
   <link rel="icon" type="image/svg+xml" href="assets/icon.svg">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "NCL Status",
+    "alternateName": "Nelson College London Service Status",
+    "url": "https://status.nelsoncollege.ac.uk",
+    "description": "Live service status and uptime monitoring for Nelson College London.",
+    "publisher": {
+      "@type": "EducationalOrganization",
+      "name": "Nelson College London",
+      "url": "https://nelsoncollege.ac.uk"
+    }
+  }
+  </script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -44,6 +59,8 @@
       --grey-900: #111827;
       --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
       --shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 6px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.06);
+      --radius: 10px;
     }
 
     body {
@@ -54,15 +71,30 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      -webkit-font-smoothing: antialiased;
     }
 
     .container { max-width: 820px; margin: 0 auto; padding: 0 1.25rem; width: 100%; }
+
+    /* External link icon */
+    .ext-icon {
+      display: inline-block;
+      width: 0.7em;
+      height: 0.7em;
+      margin-left: 0.2em;
+      vertical-align: middle;
+      opacity: 0.6;
+      flex-shrink: 0;
+    }
 
     /* Header */
     header {
       background: var(--blue);
       padding: 0.875rem 0;
       box-shadow: var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
 
     .header-inner {
@@ -76,10 +108,11 @@
       align-items: center;
       gap: 0.75rem;
       text-decoration: none;
+      min-height: 44px;
     }
 
     .logo-group img {
-      height: 34px;
+      height: 32px;
       width: auto;
       filter: brightness(0) invert(1);
     }
@@ -91,26 +124,39 @@
       letter-spacing: -0.01em;
     }
 
-    nav { display: flex; align-items: center; gap: 0.125rem; }
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 0.125rem;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
 
     nav a {
       color: rgba(255,255,255,0.8);
       text-decoration: none;
       font-size: 0.8125rem;
       font-weight: 500;
-      padding: 0.3rem 0.625rem;
+      padding: 0.5rem 0.625rem;
       border-radius: 5px;
       transition: color 0.15s, background 0.15s;
+      white-space: nowrap;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
     }
 
+    nav a .ext-icon { opacity: 0.5; }
+
     nav a:hover { color: #fff; background: rgba(255,255,255,0.15); }
+    nav a:hover .ext-icon { opacity: 0.8; }
 
     /* Main */
     main { flex: 1; padding: 1.75rem 0 2.5rem; }
 
     /* Status banner */
     .status-banner {
-      border-radius: 10px;
+      border-radius: var(--radius);
       padding: 1.125rem 1.375rem;
       margin-bottom: 0.75rem;
       display: flex;
@@ -145,6 +191,27 @@
       50% { opacity: 0.4; transform: scale(1.2); }
     }
 
+    /* Refresh indicator */
+    .refresh-badge {
+      margin-left: auto;
+      font-size: 0.6875rem;
+      font-weight: 500;
+      opacity: 0.7;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .refresh-spinner {
+      width: 12px; height: 12px;
+      border: 2px solid currentColor;
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
     /* Summary stats */
     .summary-stats {
       display: grid;
@@ -156,34 +223,34 @@
     .stat-card {
       background: #fff;
       border: 1px solid var(--grey-200);
-      border-radius: 10px;
-      padding: 1rem 1.125rem;
+      border-radius: var(--radius);
+      padding: 0.875rem 1rem;
       text-align: center;
       box-shadow: var(--shadow-sm);
     }
 
     .stat-value {
-      font-size: 1.5rem;
+      font-size: 1.375rem;
       font-weight: 700;
       color: var(--blue);
       line-height: 1.2;
     }
 
     .stat-label {
-      font-size: 0.75rem;
+      font-size: 0.6875rem;
       color: var(--grey-500);
-      margin-top: 0.25rem;
+      margin-top: 0.2rem;
       text-transform: uppercase;
       letter-spacing: 0.04em;
     }
 
     /* Section headers */
     .section-header {
-      font-size: 0.8125rem;
+      font-size: 0.75rem;
       font-weight: 600;
       color: var(--grey-500);
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.06em;
       margin-bottom: 0.625rem;
       padding-left: 0.125rem;
     }
@@ -194,40 +261,54 @@
     .service-card {
       background: #fff;
       border: 1px solid var(--grey-200);
-      border-radius: 10px;
-      padding: 1rem 1.25rem;
+      border-radius: var(--radius);
       box-shadow: var(--shadow-sm);
       transition: border-color 0.15s, box-shadow 0.15s;
+      overflow: hidden;
     }
 
     .service-card:hover { border-color: var(--grey-300); box-shadow: var(--shadow); }
+    .service-card.expanded { box-shadow: var(--shadow-md); border-color: var(--blue-light); }
+
+    .service-card-main {
+      padding: 1rem 1.25rem;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
 
     .service-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
       margin-bottom: 0.625rem;
+      gap: 0.5rem;
     }
 
     .service-name {
       display: flex;
       align-items: center;
       gap: 0.5rem;
+      min-width: 0;
+      flex: 1;
     }
 
-    .service-icon {
-      width: 22px; height: 22px; object-fit: contain; flex-shrink: 0;
-    }
+    .service-icon { width: 22px; height: 22px; object-fit: contain; flex-shrink: 0; }
 
-    .service-name a {
+    .service-title {
       font-weight: 600; font-size: 0.9375rem; color: var(--grey-800);
-      text-decoration: none;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
-    .service-name a:hover { color: var(--blue); }
+
+    .service-header-right {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-shrink: 0;
+    }
 
     .service-badge {
       display: inline-flex; align-items: center; gap: 0.3rem;
-      font-size: 0.75rem; font-weight: 600; padding: 0.2rem 0.625rem;
+      font-size: 0.6875rem; font-weight: 600; padding: 0.2rem 0.625rem;
       border-radius: 100px;
     }
     .service-badge.up { background: var(--green-bg); color: var(--green-dark); }
@@ -236,6 +317,14 @@
     .service-badge .dot { width: 6px; height: 6px; border-radius: 50%; }
     .service-badge.up .dot { background: var(--green); }
     .service-badge.down .dot { background: var(--red); }
+
+    .chevron {
+      width: 18px; height: 18px; color: var(--grey-400);
+      transition: transform 0.25s ease, color 0.15s;
+      flex-shrink: 0;
+    }
+
+    .service-card.expanded .chevron { transform: rotate(180deg); color: var(--blue); }
 
     /* Uptime bar */
     .uptime-bar-row {
@@ -249,7 +338,7 @@
       flex: 1;
       display: flex;
       gap: 1px;
-      height: 28px;
+      height: 26px;
       border-radius: 3px;
       overflow: hidden;
     }
@@ -259,19 +348,20 @@
       border-radius: 2px;
       position: relative;
       cursor: default;
+      min-width: 0;
     }
 
     .uptime-bar.up { background: var(--green); }
     .uptime-bar.partial { background: var(--yellow); }
     .uptime-bar.down { background: var(--red); }
     .uptime-bar.no-data { background: var(--grey-200); }
-
-    .uptime-bar:hover { opacity: 0.8; }
+    .uptime-bar:hover { opacity: 0.75; }
 
     .uptime-bar-label {
-      font-size: 0.6875rem;
+      font-size: 0.625rem;
       color: var(--grey-400);
       white-space: nowrap;
+      flex-shrink: 0;
     }
 
     .uptime-bar-tooltip {
@@ -283,13 +373,12 @@
       background: var(--grey-800);
       color: #fff;
       font-size: 0.6875rem;
-      padding: 0.3rem 0.5rem;
+      padding: 0.25rem 0.5rem;
       border-radius: 4px;
       white-space: nowrap;
       z-index: 10;
       pointer-events: none;
     }
-
     .uptime-bar:hover .uptime-bar-tooltip { display: block; }
 
     /* Metrics row */
@@ -299,16 +388,148 @@
       gap: 0.375rem;
     }
 
-    .metric { text-align: center; padding: 0.375rem 0; background: var(--grey-50); border-radius: 6px; }
-    .metric-label { font-size: 0.625rem; color: var(--grey-400); text-transform: uppercase; letter-spacing: 0.04em; }
+    .metric {
+      text-align: center;
+      padding: 0.375rem 0.25rem;
+      background: var(--grey-50);
+      border-radius: 6px;
+    }
+    .metric-label { font-size: 0.5625rem; color: var(--grey-400); text-transform: uppercase; letter-spacing: 0.04em; }
     .metric-value { font-size: 0.8125rem; font-weight: 600; color: var(--grey-700); }
     .metric-value.good { color: var(--green-dark); }
     .metric-value.warn { color: var(--yellow-dark); }
     .metric-value.bad { color: var(--red-dark); }
 
+    /* Detail panel */
+    .service-detail {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease;
+    }
+
+    .service-card.expanded .service-detail { max-height: 500px; }
+
+    .service-detail-inner {
+      padding: 0 1.25rem 1.125rem;
+      border-top: 1px solid var(--grey-100);
+      margin-top: 0;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      margin-top: 0.875rem;
+    }
+
+    .detail-block-label {
+      font-size: 0.625rem;
+      color: var(--grey-400);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.25rem;
+    }
+
+    .detail-block-value {
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: var(--grey-800);
+    }
+
+    .detail-response-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.375rem;
+      margin-top: 0.875rem;
+    }
+
+    .detail-resp-item {
+      text-align: center;
+      background: var(--grey-50);
+      border-radius: 6px;
+      padding: 0.5rem 0.25rem;
+    }
+
+    .detail-resp-label {
+      font-size: 0.5625rem;
+      color: var(--grey-400);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .detail-resp-value {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--grey-700);
+    }
+
+    .detail-incidents {
+      margin-top: 0.875rem;
+    }
+
+    .detail-incidents-header {
+      font-size: 0.625rem;
+      color: var(--grey-400);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.375rem;
+    }
+
+    .detail-incident-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.375rem 0;
+      border-bottom: 1px solid var(--grey-100);
+      font-size: 0.8125rem;
+    }
+
+    .detail-incident-row:last-child { border-bottom: none; }
+
+    .detail-incident-date { color: var(--grey-500); }
+    .detail-incident-mins { color: var(--red-dark); font-weight: 600; }
+
+    .detail-no-incidents {
+      font-size: 0.8125rem;
+      color: var(--grey-400);
+      padding: 0.25rem 0;
+    }
+
+    .detail-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      margin-top: 0.875rem;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--blue);
+      text-decoration: none;
+      padding: 0.4rem 0.75rem;
+      border-radius: 6px;
+      border: 1px solid var(--blue-light);
+      background: var(--blue-50);
+      transition: background 0.15s, border-color 0.15s;
+      min-height: 44px;
+    }
+    .detail-link:hover { background: var(--blue-light); border-color: var(--blue); }
+
+    /* Skeleton loading */
+    .skeleton {
+      background: linear-gradient(90deg, var(--grey-100) 25%, var(--grey-200) 50%, var(--grey-100) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius: var(--radius);
+    }
+
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+    .skeleton-banner { height: 56px; margin-bottom: 0.75rem; }
+    .skeleton-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 0.75rem; margin-bottom: 1.5rem; }
+    .skeleton-stat { height: 72px; }
+    .skeleton-card { height: 140px; margin-bottom: 0.5rem; }
+
     /* Recent incidents */
     .incidents-section { margin-bottom: 2rem; }
-
     .incident-list { display: flex; flex-direction: column; gap: 0.375rem; }
 
     .incident-item {
@@ -319,14 +540,16 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      font-size: 0.875rem;
+      font-size: 0.8125rem;
       box-shadow: var(--shadow-sm);
+      min-height: 44px;
+      gap: 0.5rem;
     }
 
-    .incident-left { display: flex; align-items: center; gap: 0.5rem; }
+    .incident-left { display: flex; align-items: center; gap: 0.5rem; min-width: 0; }
     .incident-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--red); flex-shrink: 0; }
-    .incident-service { font-weight: 600; color: var(--grey-800); }
-    .incident-detail { color: var(--grey-500); font-size: 0.8125rem; }
+    .incident-service { font-weight: 600; color: var(--grey-800); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .incident-detail { color: var(--grey-500); font-size: 0.75rem; white-space: nowrap; flex-shrink: 0; }
 
     .no-incidents {
       background: #fff;
@@ -343,7 +566,7 @@
     .help-cta {
       background: var(--blue-50);
       border: 1px solid var(--blue-light);
-      border-radius: 10px;
+      border-radius: var(--radius);
       padding: 1.25rem 1.5rem;
       display: flex;
       align-items: center;
@@ -355,25 +578,20 @@
     .help-cta-text { font-size: 0.875rem; color: var(--grey-700); line-height: 1.5; }
     .help-cta-text strong { color: var(--grey-900); }
 
-    .help-cta a {
+    .help-cta-btn {
       display: inline-flex; align-items: center; gap: 0.375rem;
       background: var(--blue); color: #fff; text-decoration: none;
       font-size: 0.8125rem; font-weight: 600;
       padding: 0.5rem 1rem; border-radius: 7px;
       white-space: nowrap;
       transition: background 0.15s;
+      min-height: 44px;
     }
-    .help-cta a:hover { background: var(--blue-dark); }
+    .help-cta-btn:hover { background: var(--blue-dark); }
+    .help-cta-btn .ext-icon { opacity: 0.8; }
 
     /* Last updated */
-    .last-updated { text-align: center; font-size: 0.75rem; color: var(--grey-400); }
-
-    /* Loading / Error */
-    .loading, .error-msg {
-      text-align: center; padding: 3rem 1rem;
-      color: var(--grey-400); font-size: 0.9375rem;
-    }
-    .error-msg { color: var(--red); }
+    .last-updated { text-align: center; font-size: 0.6875rem; color: var(--grey-400); }
 
     /* Footer */
     footer {
@@ -388,12 +606,41 @@
 
     /* Responsive */
     @media (max-width: 640px) {
-      .header-inner { flex-direction: column; gap: 0.625rem; }
-      .summary-stats { grid-template-columns: 1fr; }
+      .container { padding: 0 1rem; }
+      .header-inner { flex-direction: column; gap: 0.5rem; }
+      nav { width: 100%; justify-content: center; }
+      .summary-stats { grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
+      .stat-card { padding: 0.625rem 0.5rem; }
+      .stat-value { font-size: 1.125rem; }
+      .stat-label { font-size: 0.5625rem; }
+      .service-card-main { padding: 0.875rem 1rem; }
       .service-metrics { grid-template-columns: repeat(3, 1fr); }
-      .status-banner { font-size: 0.9375rem; }
-      .help-cta { flex-direction: column; text-align: center; }
-      .uptime-bars { height: 22px; }
+      .service-title { font-size: 0.875rem; }
+      .status-banner { font-size: 0.9375rem; padding: 1rem; }
+      .help-cta { flex-direction: column; text-align: center; padding: 1rem; }
+      .uptime-bars { height: 20px; }
+      .incident-item { flex-direction: column; align-items: flex-start; gap: 0.25rem; }
+      .detail-grid { grid-template-columns: 1fr 1fr; }
+      .detail-response-grid { grid-template-columns: repeat(2, 1fr); }
+      main { padding: 1.25rem 0 2rem; }
+    }
+
+    @media (max-width: 380px) {
+      .summary-stats { grid-template-columns: 1fr; gap: 0.375rem; }
+      .stat-card { display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0.75rem; }
+      .stat-value { font-size: 1rem; }
+      .stat-label { margin-top: 0; }
+      .service-metrics { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* Print */
+    @media print {
+      header, nav, .help-cta, .last-updated, footer { display: none !important; }
+      .service-card { break-inside: avoid; box-shadow: none !important; border: 1px solid #ccc !important; }
+      .service-detail { max-height: none !important; }
+      .pulse-dot::after { display: none; }
+      body { background: #fff; }
+      main { padding: 0; }
     }
   </style>
 </head>
@@ -401,14 +648,14 @@
   <header>
     <div class="container">
       <div class="header-inner">
-        <a href="/" class="logo-group">
+        <a href="/" class="logo-group" aria-label="NCL Status home">
           <img src="https://portal-nelsoncollege-files.s3.eu-west-2.amazonaws.com/logo/NCL_logo.svg" alt="Nelson College London">
           <span>NCL Status</span>
         </a>
-        <nav>
-          <a href="https://nelsoncollege.ac.uk" target="_blank" rel="noopener">Website</a>
-          <a href="https://nelsoncollege.atlassian.net/servicedesk/customer/portals" target="_blank" rel="noopener">Help Centre</a>
-          <a href="https://turnitin.statuspage.io" target="_blank" rel="noopener">Turnitin Status</a>
+        <nav aria-label="External links">
+          <a href="https://nelsoncollege.ac.uk" target="_blank" rel="noopener">Website<svg class="ext-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h8v8"/><path d="M14 2L6 10"/></svg></a>
+          <a href="https://nelsoncollege.atlassian.net/servicedesk/customer/portals" target="_blank" rel="noopener">Help Centre<svg class="ext-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h8v8"/><path d="M14 2L6 10"/></svg></a>
+          <a href="https://turnitin.statuspage.io" target="_blank" rel="noopener">Turnitin<svg class="ext-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h8v8"/><path d="M14 2L6 10"/></svg></a>
         </nav>
       </div>
     </div>
@@ -416,14 +663,19 @@
 
   <main>
     <div class="container">
-      <div id="status-banner" class="status-banner operational" style="display:none;"></div>
-
-      <div id="summary-stats" class="summary-stats" style="display:none;"></div>
-
-      <div class="section-header" id="services-header" style="display:none;">Current Status</div>
-      <div id="services" class="services">
-        <div class="loading">Loading service status&hellip;</div>
+      <!-- Skeleton loading state -->
+      <div id="skeleton">
+        <div class="skeleton skeleton-banner"></div>
+        <div class="skeleton-stats"><div class="skeleton skeleton-stat"></div><div class="skeleton skeleton-stat"></div><div class="skeleton skeleton-stat"></div></div>
+        <div class="skeleton skeleton-card"></div>
+        <div class="skeleton skeleton-card"></div>
+        <div class="skeleton skeleton-card"></div>
       </div>
+
+      <div id="status-banner" class="status-banner operational" style="display:none;"></div>
+      <div id="summary-stats" class="summary-stats" style="display:none;"></div>
+      <div class="section-header" id="services-header" style="display:none;">Current Status</div>
+      <div id="services" class="services"></div>
 
       <div id="incidents-section" class="incidents-section" style="display:none;">
         <div class="section-header">Recent Incidents (Last 90 Days)</div>
@@ -434,8 +686,8 @@
         <div class="help-cta-text">
           <strong>Need assistance?</strong> If you are experiencing issues with any of our services, please contact our support team.
         </div>
-        <a href="https://nelsoncollege.atlassian.net/servicedesk/customer/portals" target="_blank" rel="noopener">
-          Contact Help Centre &rarr;
+        <a class="help-cta-btn" href="https://nelsoncollege.atlassian.net/servicedesk/customer/portals" target="_blank" rel="noopener">
+          Help Centre<svg class="ext-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h8v8"/><path d="M14 2L6 10"/></svg>
         </a>
       </div>
 
@@ -445,29 +697,37 @@
 
   <footer>
     <div class="container">
-      &copy; 2026 Nelson College London. All Rights Reserved. Made with &hearts; by <a href="https://sitenet.tech/" target="_blank" rel="noopener">Sitenet Tech</a>.
+      &copy; 2026 Nelson College London. All Rights Reserved. Made with &hearts; by <a href="https://sitenet.tech/" target="_blank" rel="noopener">Sitenet Tech<svg class="ext-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h8v8"/><path d="M14 2L6 10"/></svg></a>
     </div>
   </footer>
 
   <script>
     const DATA_URL = 'https://raw.githubusercontent.com/travnettech/ncl_status/HEAD/history/summary.json';
+    const EXT_SVG = '<svg class="ext-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h8v8"/><path d="M14 2L6 10"/></svg>';
+    const CHEVRON_SVG = '<svg class="chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/></svg>';
 
-    function generateUptimeBars(dailyMinutesDown) {
+    let expandedSlug = null;
+
+    function generateUptimeBars(dailyMinutesDown, isMobile) {
       const bars = [];
       const today = new Date();
-      for (let i = 89; i >= 0; i--) {
+      const days = isMobile ? 45 : 90;
+      const step = isMobile ? 2 : 1;
+      for (let i = days - 1; i >= 0; i--) {
         const d = new Date(today);
-        d.setDate(d.getDate() - i);
+        d.setDate(d.getDate() - (i * step));
         const key = d.toISOString().split('T')[0];
-        const mins = dailyMinutesDown[key] || 0;
+        let mins = dailyMinutesDown[key] || 0;
+        if (isMobile && step === 2) {
+          const d2 = new Date(today);
+          d2.setDate(d2.getDate() - (i * step + 1));
+          mins += dailyMinutesDown[d2.toISOString().split('T')[0]] || 0;
+        }
         const dateStr = d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
-
-        let cls = 'up';
-        let label = 'No downtime';
+        let cls = 'up', label = 'No downtime';
         if (mins > 60) { cls = 'down'; label = mins + ' min down'; }
         else if (mins > 0) { cls = 'partial'; label = mins + ' min down'; }
-
-        bars.push(`<div class="uptime-bar ${cls}" title="${dateStr}: ${label}"><span class="uptime-bar-tooltip">${dateStr}: ${label}</span></div>`);
+        bars.push('<div class="uptime-bar ' + cls + '"><span class="uptime-bar-tooltip">' + dateStr + ': ' + label + '</span></div>');
       }
       return bars.join('');
     }
@@ -476,163 +736,197 @@
       const incidents = [];
       const cutoff = new Date();
       cutoff.setDate(cutoff.getDate() - 90);
-
-      services.forEach(s => {
+      services.forEach(function(s) {
         if (!s.dailyMinutesDown) return;
-        Object.entries(s.dailyMinutesDown).forEach(([date, mins]) => {
-          const d = new Date(date);
-          if (d >= cutoff) {
-            incidents.push({ service: s.name, date, mins, dateObj: d });
-          }
+        Object.entries(s.dailyMinutesDown).forEach(function(e) {
+          var d = new Date(e[0]);
+          if (d >= cutoff) incidents.push({ service: s.name, date: e[0], mins: e[1], dateObj: d });
         });
       });
-
-      incidents.sort((a, b) => b.dateObj - a.dateObj);
+      incidents.sort(function(a, b) { return b.dateObj - a.dateObj; });
       return incidents;
     }
 
+    function getServiceIncidents(dailyMinutesDown) {
+      const entries = Object.entries(dailyMinutesDown || {})
+        .map(function(e) { return { date: e[0], mins: e[1], dateObj: new Date(e[0]) }; })
+        .sort(function(a, b) { return b.dateObj - a.dateObj; })
+        .slice(0, 5);
+      return entries;
+    }
+
     function formatDuration(mins) {
-      if (mins < 60) return mins + ' minutes';
-      const h = Math.floor(mins / 60);
-      const m = mins % 60;
+      if (mins < 60) return mins + ' min';
+      var h = Math.floor(mins / 60), m = mins % 60;
       if (m === 0) return h + (h === 1 ? ' hour' : ' hours');
       return h + 'h ' + m + 'm';
     }
 
-    async function loadStatus() {
-      const servicesEl = document.getElementById('services');
-      const bannerEl = document.getElementById('status-banner');
-      const updatedEl = document.getElementById('last-updated');
-      const statsEl = document.getElementById('summary-stats');
-      const headerEl = document.getElementById('services-header');
-      const incidentsSection = document.getElementById('incidents-section');
-      const incidentsList = document.getElementById('incidents-list');
+    function uptimeClass(v) {
+      var n = parseFloat(v);
+      if (n >= 99.9) return 'good';
+      if (n >= 99.0) return '';
+      if (n >= 95.0) return 'warn';
+      return 'bad';
+    }
+
+    function toggleCard(slug) {
+      var prev = expandedSlug;
+      expandedSlug = (prev === slug) ? null : slug;
+      document.querySelectorAll('.service-card').forEach(function(card) {
+        if (card.dataset.slug === expandedSlug) {
+          card.classList.add('expanded');
+          card.querySelector('[role="region"]').setAttribute('aria-hidden', 'false');
+        } else {
+          card.classList.remove('expanded');
+          card.querySelector('[role="region"]').setAttribute('aria-hidden', 'true');
+        }
+      });
+    }
+
+    async function loadStatus(isRefresh) {
+      var skeletonEl = document.getElementById('skeleton');
+      var servicesEl = document.getElementById('services');
+      var bannerEl = document.getElementById('status-banner');
+      var updatedEl = document.getElementById('last-updated');
+      var statsEl = document.getElementById('summary-stats');
+      var headerEl = document.getElementById('services-header');
+      var incidentsSection = document.getElementById('incidents-section');
+      var incidentsList = document.getElementById('incidents-list');
+
+      if (isRefresh) {
+        bannerEl.querySelector('.refresh-badge')?.remove();
+        var rb = document.createElement('span');
+        rb.className = 'refresh-badge';
+        rb.innerHTML = '<span class="refresh-spinner"></span> Refreshing';
+        bannerEl.appendChild(rb);
+      }
 
       try {
-        const res = await fetch(DATA_URL, { cache: 'no-cache' });
+        var res = await fetch(DATA_URL, { cache: 'no-cache' });
         if (!res.ok) throw new Error('Failed to fetch status data');
-        const services = await res.json();
+        var services = await res.json();
+        var isMobile = window.innerWidth <= 640;
 
-        const upCount = services.filter(s => s.status === 'up').length;
-        const allUp = upCount === services.length;
-        const allDown = upCount === 0;
+        if (skeletonEl) { skeletonEl.remove(); }
+
+        var upCount = services.filter(function(s) { return s.status === 'up'; }).length;
+        var allUp = upCount === services.length;
+        var allDown = upCount === 0;
 
         bannerEl.style.display = 'flex';
         if (allUp) {
           bannerEl.className = 'status-banner operational';
-          bannerEl.innerHTML = '<span class="pulse-dot up"></span> All Systems Operational';
+          bannerEl.innerHTML = '<span class="pulse-dot up" role="img" aria-label="All systems operational"></span> All Systems Operational';
         } else if (allDown) {
           bannerEl.className = 'status-banner down';
-          bannerEl.innerHTML = '<span class="pulse-dot down"></span> Major Outage';
+          bannerEl.innerHTML = '<span class="pulse-dot down" role="img" aria-label="Major outage"></span> Major Outage';
         } else {
           bannerEl.className = 'status-banner degraded';
-          bannerEl.innerHTML = '<span class="pulse-dot degraded"></span> Some Systems Experiencing Issues';
+          bannerEl.innerHTML = '<span class="pulse-dot degraded" role="img" aria-label="Partial issues"></span> Some Systems Experiencing Issues';
         }
 
-        const avgUptime = (services.reduce((sum, s) => sum + parseFloat(s.uptimeMonth), 0) / services.length).toFixed(2);
-        const avgResponse = Math.round(services.reduce((sum, s) => sum + (s.timeDay || s.time), 0) / services.length);
+        var avgUptime = (services.reduce(function(s, v) { return s + parseFloat(v.uptimeMonth); }, 0) / services.length).toFixed(2);
+        var avgResponse = Math.round(services.reduce(function(s, v) { return s + (v.timeDay || v.time); }, 0) / services.length);
 
         statsEl.style.display = 'grid';
-        statsEl.innerHTML = `
-          <div class="stat-card">
-            <div class="stat-value">${upCount}/${services.length}</div>
-            <div class="stat-label">Services Up</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-value">${avgUptime}%</div>
-            <div class="stat-label">Avg. Uptime (30d)</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-value">${avgResponse}ms</div>
-            <div class="stat-label">Avg. Response Time</div>
-          </div>`;
+        statsEl.innerHTML =
+          '<div class="stat-card"><div class="stat-value">' + upCount + '/' + services.length + '</div><div class="stat-label">Services Up</div></div>' +
+          '<div class="stat-card"><div class="stat-value">' + avgUptime + '%</div><div class="stat-label">Avg. Uptime (30d)</div></div>' +
+          '<div class="stat-card"><div class="stat-value">' + avgResponse + 'ms</div><div class="stat-label">Avg. Response</div></div>';
 
         headerEl.style.display = 'block';
 
-        const uptimeClass = v => {
-          const n = parseFloat(v);
-          if (n >= 99.9) return 'good';
-          if (n >= 99.0) return '';
-          if (n >= 95.0) return 'warn';
-          return 'bad';
-        };
+        servicesEl.innerHTML = services.map(function(s) {
+          var isUp = s.status === 'up';
+          var sc = isUp ? 'up' : 'down';
+          var st = isUp ? 'Operational' : 'Outage';
+          var isExpanded = expandedSlug === s.slug;
+          var svcIncidents = getServiceIncidents(s.dailyMinutesDown);
 
-        servicesEl.innerHTML = services.map(s => {
-          const isUp = s.status === 'up';
-          const statusClass = isUp ? 'up' : 'down';
-          const statusText = isUp ? 'Operational' : 'Outage';
+          var incidentsHTML = '';
+          if (svcIncidents.length === 0) {
+            incidentsHTML = '<div class="detail-no-incidents">No recorded incidents.</div>';
+          } else {
+            incidentsHTML = svcIncidents.map(function(inc) {
+              var ds = inc.dateObj.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+              return '<div class="detail-incident-row"><span class="detail-incident-date">' + ds + '</span><span class="detail-incident-mins">' + formatDuration(inc.mins) + '</span></div>';
+            }).join('');
+          }
 
-          return `
-            <div class="service-card">
-              <div class="service-header">
-                <div class="service-name">
-                  <img class="service-icon" src="${s.icon}" alt="">
-                  <a href="${s.url}" target="_blank" rel="noopener">${s.name}</a>
-                </div>
-                <span class="service-badge ${statusClass}">
-                  <span class="dot"></span>
-                  ${statusText}
-                </span>
-              </div>
-              <div class="uptime-bar-row">
-                <span class="uptime-bar-label">90d</span>
-                <div class="uptime-bars">${generateUptimeBars(s.dailyMinutesDown || {})}</div>
-                <span class="uptime-bar-label">${s.uptimeMonth}</span>
-              </div>
-              <div class="service-metrics">
-                <div class="metric">
-                  <div class="metric-label">24h</div>
-                  <div class="metric-value ${uptimeClass(s.uptimeDay)}">${s.uptimeDay}</div>
-                </div>
-                <div class="metric">
-                  <div class="metric-label">7 days</div>
-                  <div class="metric-value ${uptimeClass(s.uptimeWeek)}">${s.uptimeWeek}</div>
-                </div>
-                <div class="metric">
-                  <div class="metric-label">30 days</div>
-                  <div class="metric-value ${uptimeClass(s.uptimeMonth)}">${s.uptimeMonth}</div>
-                </div>
-                <div class="metric">
-                  <div class="metric-label">1 year</div>
-                  <div class="metric-value ${uptimeClass(s.uptimeYear)}">${s.uptimeYear}</div>
-                </div>
-                <div class="metric">
-                  <div class="metric-label">Response</div>
-                  <div class="metric-value">${s.timeDay || s.time}ms</div>
-                </div>
-              </div>
-            </div>`;
+          return '<div class="service-card' + (isExpanded ? ' expanded' : '') + '" data-slug="' + s.slug + '">' +
+            '<div class="service-card-main" role="button" tabindex="0" aria-expanded="' + isExpanded + '" aria-controls="detail-' + s.slug + '" onclick="toggleCard(\'' + s.slug + '\')" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();toggleCard(\'' + s.slug + '\')}">' +
+              '<div class="service-header">' +
+                '<div class="service-name">' +
+                  '<img class="service-icon" src="' + s.icon + '" alt="">' +
+                  '<span class="service-title">' + s.name + '</span>' +
+                '</div>' +
+                '<div class="service-header-right">' +
+                  '<span class="service-badge ' + sc + '" role="status" aria-label="' + s.name + ' is ' + st.toLowerCase() + '">' +
+                    '<span class="dot"></span>' + st +
+                  '</span>' +
+                  CHEVRON_SVG +
+                '</div>' +
+              '</div>' +
+              '<div class="uptime-bar-row">' +
+                '<span class="uptime-bar-label">90d</span>' +
+                '<div class="uptime-bars" aria-label="90-day uptime history">' + generateUptimeBars(s.dailyMinutesDown || {}, isMobile) + '</div>' +
+                '<span class="uptime-bar-label">' + s.uptimeMonth + '</span>' +
+              '</div>' +
+              '<div class="service-metrics">' +
+                '<div class="metric"><div class="metric-label">24h</div><div class="metric-value ' + uptimeClass(s.uptimeDay) + '">' + s.uptimeDay + '</div></div>' +
+                '<div class="metric"><div class="metric-label">7 days</div><div class="metric-value ' + uptimeClass(s.uptimeWeek) + '">' + s.uptimeWeek + '</div></div>' +
+                '<div class="metric"><div class="metric-label">30 days</div><div class="metric-value ' + uptimeClass(s.uptimeMonth) + '">' + s.uptimeMonth + '</div></div>' +
+                '<div class="metric"><div class="metric-label">1 year</div><div class="metric-value ' + uptimeClass(s.uptimeYear) + '">' + s.uptimeYear + '</div></div>' +
+                '<div class="metric"><div class="metric-label">Response</div><div class="metric-value">' + (s.timeDay || s.time) + 'ms</div></div>' +
+              '</div>' +
+            '</div>' +
+            '<div class="service-detail" id="detail-' + s.slug + '" role="region" aria-hidden="' + !isExpanded + '">' +
+              '<div class="service-detail-inner">' +
+                '<div class="detail-grid">' +
+                  '<div><div class="detail-block-label">All-Time Uptime</div><div class="detail-block-value">' + s.uptime + '</div></div>' +
+                  '<div><div class="detail-block-label">All-Time Avg. Response</div><div class="detail-block-value">' + s.time + 'ms</div></div>' +
+                '</div>' +
+                '<div class="detail-response-grid">' +
+                  '<div class="detail-resp-item"><div class="detail-resp-label">24h Resp.</div><div class="detail-resp-value">' + (s.timeDay || s.time) + 'ms</div></div>' +
+                  '<div class="detail-resp-item"><div class="detail-resp-label">7d Resp.</div><div class="detail-resp-value">' + (s.timeWeek || s.time) + 'ms</div></div>' +
+                  '<div class="detail-resp-item"><div class="detail-resp-label">30d Resp.</div><div class="detail-resp-value">' + (s.timeMonth || s.time) + 'ms</div></div>' +
+                  '<div class="detail-resp-item"><div class="detail-resp-label">1y Resp.</div><div class="detail-resp-value">' + (s.timeYear || s.time) + 'ms</div></div>' +
+                '</div>' +
+                '<div class="detail-incidents">' +
+                  '<div class="detail-incidents-header">Recent Incidents</div>' +
+                  incidentsHTML +
+                '</div>' +
+                '<a class="detail-link" href="' + s.url + '" target="_blank" rel="noopener">Visit ' + s.name + ' ' + EXT_SVG + '</a>' +
+              '</div>' +
+            '</div>' +
+          '</div>';
         }).join('');
 
-        const incidents = getRecentIncidents(services);
+        var incidents = getRecentIncidents(services);
         incidentsSection.style.display = 'block';
         if (incidents.length === 0) {
           incidentsList.innerHTML = '<div class="no-incidents">No incidents in the last 90 days.</div>';
         } else {
-          incidentsList.innerHTML = '<div class="incident-list">' + incidents.map(inc => {
-            const dateStr = inc.dateObj.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
-            return `
-              <div class="incident-item">
-                <div class="incident-left">
-                  <span class="incident-dot"></span>
-                  <span class="incident-service">${inc.service}</span>
-                </div>
-                <span class="incident-detail">${formatDuration(inc.mins)} downtime &mdash; ${dateStr}</span>
-              </div>`;
+          incidentsList.innerHTML = '<div class="incident-list">' + incidents.map(function(inc) {
+            var dateStr = inc.dateObj.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+            return '<div class="incident-item">' +
+              '<div class="incident-left"><span class="incident-dot" aria-hidden="true"></span><span class="incident-service">' + inc.service + '</span></div>' +
+              '<span class="incident-detail">' + formatDuration(inc.mins) + ' &mdash; ' + dateStr + '</span>' +
+            '</div>';
           }).join('') + '</div>';
         }
 
-        updatedEl.textContent = 'Last checked: ' + new Date().toLocaleString('en-GB', {
-          dateStyle: 'medium', timeStyle: 'short'
-        });
+        updatedEl.textContent = 'Last checked: ' + new Date().toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' });
       } catch (err) {
+        if (skeletonEl) skeletonEl.remove();
         servicesEl.innerHTML = '<div class="error-msg">Unable to load status data. Please try again shortly.</div>';
         console.error(err);
       }
     }
 
-    loadStatus();
-    setInterval(loadStatus, 300000);
+    loadStatus(false);
+    setInterval(function() { loadStatus(true); }, 300000);
   </script>
 </body>
 </html>
