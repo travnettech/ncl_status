@@ -71,6 +71,9 @@ status-website:
     - title: Turnitin Status
       href: https://turnitin.statuspage.io
 
+i18n:
+  footer: "© 2026 Nelson College London. All Rights Reserved. Made with ❤️ by [Sitenet Tech](https://sitenet.tech/)."
+
 # Notifications — uncomment and configure as needed:
 #
 # notifications:
