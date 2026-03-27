@@ -64,17 +64,18 @@ status-website:
       color: #00458c !important;
       font-weight: 600;
       text-decoration: none !important;
-      padding: 0.4rem 0.9rem;
+      padding: 0.3rem 0.55rem;
+      margin: 0 0.1rem;
       border-radius: 6px;
       transition: background 0.2s, color 0.2s;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       letter-spacing: 0.01em;
     }
     nav a:hover {
       background: #00458c;
       color: #ffffff !important;
     }
-    footer { color: #1e3a5f; font-size: 0.875rem; }
+    footer { color: #1e3a5f; font-size: 0.75rem; }
     footer a { color: #00458c; font-weight: 600; text-decoration: underline; }
     footer a:hover { color: #002d5c; }
   metaDescription: "Live service status and uptime monitoring for Nelson College London. Check real-time availability of the NCL website, VLE, Nelson One, Nelson Portal, Alumni Association, and Help Centre."
