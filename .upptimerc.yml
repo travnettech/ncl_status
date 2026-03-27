@@ -59,6 +59,10 @@ status-website:
   logoUrl: https://portal-nelsoncollege-files.s3.eu-west-2.amazonaws.com/logo/NCL_logo.svg
   faviconSvg: https://raw.githubusercontent.com/travnettech/ncl_status/HEAD/assets/icon.svg
   name: NCL Status
+  css: |
+    footer { color: #1e3a5f; font-size: 0.875rem; }
+    footer a { color: #00458c; font-weight: 600; text-decoration: underline; }
+    footer a:hover { color: #002d5c; }
   metaDescription: "Live service status and uptime monitoring for Nelson College London. Check real-time availability of the NCL website, VLE, Nelson One, Nelson Portal, Alumni Association, and Help Centre."
   metaImage: https://portal-nelsoncollege-files.s3.eu-west-2.amazonaws.com/logo/NCL_logo.svg
   introTitle: "**Welcome to the NCL Status Page**"
