@@ -60,21 +60,7 @@ status-website:
   faviconSvg: https://raw.githubusercontent.com/travnettech/ncl_status/HEAD/assets/icon.svg
   name: NCL Status
   css: |
-    nav a {
-      color: #00458c !important;
-      font-weight: 600;
-      text-decoration: none !important;
-      padding: 0.3rem 0.55rem;
-      margin: 0 0.1rem;
-      border-radius: 6px;
-      transition: background 0.2s, color 0.2s;
-      font-size: 0.85rem;
-      letter-spacing: 0.01em;
-    }
-    nav a:hover {
-      background: #00458c;
-      color: #ffffff !important;
-    }
+    nav a { margin: 0 0.15rem; }
     footer { color: #1e3a5f; font-size: 0.75rem; }
     footer a { color: #00458c; font-weight: 600; text-decoration: underline; }
     footer a:hover { color: #002d5c; }
