@@ -27,10 +27,20 @@
     }
   }
   </script>
+  <script>
+    (function() {
+      var t = localStorage.getItem('ncl-theme');
+      if (t === 'dark' || (!t && matchMedia('(prefers-color-scheme:dark)').matches)) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
+      --bg: #f9fafb;
+      --bg-card: #fff;
       --blue: #00458c;
       --blue-dark: #002d5c;
       --blue-light: #e8f0fa;
@@ -57,16 +67,53 @@
       --grey-700: #374151;
       --grey-800: #1f2937;
       --grey-900: #111827;
+      --text: #111827;
+      --text-secondary: #6b7280;
+      --border: #e5e7eb;
       --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
       --shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
       --shadow-md: 0 4px 6px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.06);
       --radius: 10px;
+      --modal-bg: rgba(0,0,0,0.5);
+    }
+
+    [data-theme="dark"] {
+      --bg: #0f172a;
+      --bg-card: #1e293b;
+      --blue-light: #1e3a5f;
+      --blue-50: #172136;
+      --green-bg: #14271a;
+      --green-border: #166534;
+      --green-dark: #4ade80;
+      --red-bg: #2d1515;
+      --red-border: #7f1d1d;
+      --red-dark: #fca5a5;
+      --yellow-bg: #2d2505;
+      --yellow-border: #854d0e;
+      --yellow-dark: #fde047;
+      --grey-50: #1e293b;
+      --grey-100: #1e293b;
+      --grey-200: #334155;
+      --grey-300: #475569;
+      --grey-400: #94a3b8;
+      --grey-500: #94a3b8;
+      --grey-600: #cbd5e1;
+      --grey-700: #e2e8f0;
+      --grey-800: #f1f5f9;
+      --grey-900: #f8fafc;
+      --text: #f8fafc;
+      --text-secondary: #94a3b8;
+      --border: #334155;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.3);
+      --shadow: 0 1px 3px rgba(0,0,0,0.4);
+      --shadow-md: 0 4px 6px rgba(0,0,0,0.4);
+      --modal-bg: rgba(0,0,0,0.7);
     }
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      background: var(--grey-50);
-      color: var(--grey-900);
+      background: var(--bg);
+      color: var(--text);
       line-height: 1.6;
       min-height: 100vh;
       display: flex;
@@ -76,7 +123,6 @@
 
     .container { max-width: 820px; margin: 0 auto; padding: 0 1.25rem; width: 100%; }
 
-    /* External link icon */
     .ext-icon {
       display: inline-block;
       width: 0.7em;
@@ -111,18 +157,10 @@
       min-height: 44px;
     }
 
-    .logo-group img {
-      height: 32px;
-      width: auto;
-      filter: brightness(0) invert(1);
-    }
+    .logo-group img { height: 32px; width: auto; filter: brightness(0) invert(1); }
+    .logo-group span { font-size: 1.0625rem; font-weight: 700; color: #fff; letter-spacing: -0.01em; }
 
-    .logo-group span {
-      font-size: 1.0625rem;
-      font-weight: 700;
-      color: #fff;
-      letter-spacing: -0.01em;
-    }
+    .header-right { display: flex; align-items: center; gap: 0.125rem; }
 
     nav {
       display: flex;
@@ -145,11 +183,102 @@
       display: inline-flex;
       align-items: center;
     }
-
     nav a .ext-icon { opacity: 0.5; }
-
     nav a:hover { color: #fff; background: rgba(255,255,255,0.15); }
     nav a:hover .ext-icon { opacity: 0.8; }
+
+    .header-btn {
+      background: none;
+      border: 1px solid rgba(255,255,255,0.25);
+      color: rgba(255,255,255,0.85);
+      padding: 0.4rem 0.625rem;
+      border-radius: 6px;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      min-height: 44px;
+      white-space: nowrap;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+    }
+    .header-btn:hover { background: rgba(255,255,255,0.15); color: #fff; border-color: rgba(255,255,255,0.4); }
+    .header-btn svg { width: 16px; height: 16px; }
+
+    /* Subscribe modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: var(--modal-bg);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .modal-overlay.open { display: flex; }
+
+    .modal {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: var(--shadow-md);
+      max-width: 440px;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .modal-header {
+      padding: 1.25rem 1.5rem 0;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+
+    .modal-title { font-size: 1.125rem; font-weight: 700; color: var(--text); }
+    .modal-subtitle { font-size: 0.8125rem; color: var(--text-secondary); margin-top: 0.25rem; }
+
+    .modal-close {
+      background: none; border: none; cursor: pointer; color: var(--grey-400);
+      padding: 0.25rem; border-radius: 4px; display: flex;
+      transition: color 0.15s;
+    }
+    .modal-close:hover { color: var(--text); }
+    .modal-close svg { width: 20px; height: 20px; }
+
+    .modal-body { padding: 1.25rem 1.5rem 1.5rem; }
+
+    .subscribe-option {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.875rem;
+      padding: 1rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      text-decoration: none;
+      color: var(--text);
+      margin-bottom: 0.75rem;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .subscribe-option:last-child { margin-bottom: 0; }
+    .subscribe-option:hover { border-color: var(--blue); background: var(--blue-50); }
+
+    .subscribe-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      background: var(--grey-100);
+    }
+    .subscribe-icon svg { width: 20px; height: 20px; }
+
+    .subscribe-info { flex: 1; }
+    .subscribe-label { font-size: 0.875rem; font-weight: 600; }
+    .subscribe-desc { font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.125rem; line-height: 1.4; }
 
     /* Main */
     main { flex: 1; padding: 1.75rem 0 2.5rem; }
@@ -166,7 +295,6 @@
       font-size: 1rem;
       box-shadow: var(--shadow-sm);
     }
-
     .status-banner.operational { background: var(--green-bg); border: 1px solid var(--green-border); color: var(--green-dark); }
     .status-banner.degraded { background: var(--yellow-bg); border: 1px solid var(--yellow-border); color: var(--yellow-dark); }
     .status-banner.down { background: var(--red-bg); border: 1px solid var(--red-border); color: var(--red-dark); }
@@ -191,7 +319,6 @@
       50% { opacity: 0.4; transform: scale(1.2); }
     }
 
-    /* Refresh indicator */
     .refresh-badge {
       margin-left: auto;
       font-size: 0.6875rem;
@@ -209,64 +336,82 @@
       border-radius: 50%;
       animation: spin 0.8s linear infinite;
     }
-
     @keyframes spin { to { transform: rotate(360deg); } }
 
     /* Summary stats */
     .summary-stats {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 0.75rem;
       margin-bottom: 1.5rem;
     }
 
     .stat-card {
-      background: #fff;
-      border: 1px solid var(--grey-200);
+      background: var(--bg-card);
+      border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 0.875rem 1rem;
       text-align: center;
       box-shadow: var(--shadow-sm);
     }
 
-    .stat-value {
-      font-size: 1.375rem;
-      font-weight: 700;
-      color: var(--blue);
-      line-height: 1.2;
-    }
+    .stat-value { font-size: 1.375rem; font-weight: 700; color: var(--blue); line-height: 1.2; }
+    .stat-label { font-size: 0.6875rem; color: var(--text-secondary); margin-top: 0.2rem; text-transform: uppercase; letter-spacing: 0.04em; }
 
-    .stat-label {
-      font-size: 0.6875rem;
-      color: var(--grey-500);
-      margin-top: 0.2rem;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
+    [data-theme="dark"] .stat-value { color: #93c5fd; }
+
+    /* Maintenance banner */
+    .maintenance-banner {
+      background: var(--blue-50);
+      border: 1px solid var(--blue-light);
+      border-radius: var(--radius);
+      padding: 1rem 1.25rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
     }
+    .maintenance-icon { flex-shrink: 0; color: var(--blue); }
+    .maintenance-icon svg { width: 20px; height: 20px; }
+    .maintenance-title { font-size: 0.875rem; font-weight: 600; color: var(--text); }
+    .maintenance-desc { font-size: 0.8125rem; color: var(--text-secondary); margin-top: 0.125rem; }
+    .maintenance-time { font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.375rem; font-style: italic; }
 
     /* Section headers */
     .section-header {
       font-size: 0.75rem;
       font-weight: 600;
-      color: var(--grey-500);
+      color: var(--text-secondary);
       text-transform: uppercase;
       letter-spacing: 0.06em;
       margin-bottom: 0.625rem;
       padding-left: 0.125rem;
     }
 
+    /* Service group headers */
+    .group-header {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0.5rem 0.125rem 0.375rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 0.375rem;
+    }
+    .group-header:not(:first-child) { margin-top: 0.875rem; }
+
     /* Services */
     .services { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 2rem; }
 
     .service-card {
-      background: #fff;
-      border: 1px solid var(--grey-200);
+      background: var(--bg-card);
+      border: 1px solid var(--border);
       border-radius: var(--radius);
       box-shadow: var(--shadow-sm);
       transition: border-color 0.15s, box-shadow 0.15s;
       overflow: hidden;
     }
-
     .service-card:hover { border-color: var(--grey-300); box-shadow: var(--shadow); }
     .service-card.expanded { box-shadow: var(--shadow-md); border-color: var(--blue-light); }
 
@@ -284,27 +429,11 @@
       gap: 0.5rem;
     }
 
-    .service-name {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      min-width: 0;
-      flex: 1;
-    }
-
+    .service-name { display: flex; align-items: center; gap: 0.5rem; min-width: 0; flex: 1; }
     .service-icon { width: 22px; height: 22px; object-fit: contain; flex-shrink: 0; }
+    .service-title { font-weight: 600; font-size: 0.9375rem; color: var(--grey-800); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-    .service-title {
-      font-weight: 600; font-size: 0.9375rem; color: var(--grey-800);
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    }
-
-    .service-header-right {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      flex-shrink: 0;
-    }
+    .service-header-right { display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0; }
 
     .service-badge {
       display: inline-flex; align-items: center; gap: 0.3rem;
@@ -313,7 +442,6 @@
     }
     .service-badge.up { background: var(--green-bg); color: var(--green-dark); }
     .service-badge.down { background: var(--red-bg); color: var(--red-dark); }
-
     .service-badge .dot { width: 6px; height: 6px; border-radius: 50%; }
     .service-badge.up .dot { background: var(--green); }
     .service-badge.down .dot { background: var(--red); }
@@ -323,77 +451,36 @@
       transition: transform 0.25s ease, color 0.15s;
       flex-shrink: 0;
     }
-
     .service-card.expanded .chevron { transform: rotate(180deg); color: var(--blue); }
 
     /* Uptime bar */
-    .uptime-bar-row {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      margin-bottom: 0.5rem;
-    }
+    .uptime-bar-row { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; }
 
-    .uptime-bars {
-      flex: 1;
-      display: flex;
-      gap: 1px;
-      height: 26px;
-      border-radius: 3px;
-      overflow: hidden;
-    }
+    .uptime-bars { flex: 1; display: flex; gap: 1px; height: 26px; border-radius: 3px; overflow: hidden; }
 
     .uptime-bar {
-      flex: 1;
-      border-radius: 2px;
-      position: relative;
-      cursor: default;
-      min-width: 0;
+      flex: 1; border-radius: 2px; position: relative; cursor: default; min-width: 0;
     }
-
     .uptime-bar.up { background: var(--green); }
     .uptime-bar.partial { background: var(--yellow); }
     .uptime-bar.down { background: var(--red); }
     .uptime-bar.no-data { background: var(--grey-200); }
     .uptime-bar:hover { opacity: 0.75; }
 
-    .uptime-bar-label {
-      font-size: 0.625rem;
-      color: var(--grey-400);
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
+    .uptime-bar-label { font-size: 0.625rem; color: var(--grey-400); white-space: nowrap; flex-shrink: 0; }
 
     .uptime-bar-tooltip {
-      display: none;
-      position: absolute;
-      bottom: calc(100% + 6px);
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--grey-800);
-      color: #fff;
-      font-size: 0.6875rem;
-      padding: 0.25rem 0.5rem;
-      border-radius: 4px;
-      white-space: nowrap;
-      z-index: 10;
-      pointer-events: none;
+      display: none; position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%);
+      background: var(--grey-800); color: #fff; font-size: 0.6875rem;
+      padding: 0.25rem 0.5rem; border-radius: 4px; white-space: nowrap; z-index: 10; pointer-events: none;
     }
+    [data-theme="dark"] .uptime-bar-tooltip { background: #0f172a; border: 1px solid var(--grey-300); }
     .uptime-bar:hover .uptime-bar-tooltip { display: block; }
 
     /* Metrics row */
-    .service-metrics {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 0.375rem;
-    }
+    .service-metrics { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.375rem; }
 
-    .metric {
-      text-align: center;
-      padding: 0.375rem 0.25rem;
-      background: var(--grey-50);
-      border-radius: 6px;
-    }
+    .metric { text-align: center; padding: 0.375rem 0.25rem; background: var(--grey-50); border-radius: 6px; }
     .metric-label { font-size: 0.5625rem; color: var(--grey-400); text-transform: uppercase; letter-spacing: 0.04em; }
     .metric-value { font-size: 0.8125rem; font-weight: 600; color: var(--grey-700); }
     .metric-value.good { color: var(--green-dark); }
@@ -401,117 +488,83 @@
     .metric-value.bad { color: var(--red-dark); }
 
     /* Detail panel */
-    .service-detail {
-      max-height: 0;
+    .service-detail { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+    .service-card.expanded .service-detail { max-height: 600px; }
+
+    .service-detail-inner { padding: 0 1.25rem 1.125rem; border-top: 1px solid var(--grey-100); }
+
+    .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 0.875rem; }
+    .detail-block-label { font-size: 0.625rem; color: var(--grey-400); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem; }
+    .detail-block-value { font-size: 0.9375rem; font-weight: 600; color: var(--grey-800); }
+
+    .detail-response-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.375rem; margin-top: 0.875rem; }
+    .detail-resp-item { text-align: center; background: var(--grey-50); border-radius: 6px; padding: 0.5rem 0.25rem; }
+    .detail-resp-label { font-size: 0.5625rem; color: var(--grey-400); text-transform: uppercase; letter-spacing: 0.04em; }
+    .detail-resp-value { font-size: 0.8125rem; font-weight: 600; color: var(--grey-700); }
+
+    /* SLA progress bar */
+    .sla-section { margin-top: 0.875rem; }
+    .sla-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.375rem; }
+    .sla-header-label { font-size: 0.625rem; color: var(--grey-400); text-transform: uppercase; letter-spacing: 0.05em; }
+    .sla-header-value { font-size: 0.75rem; font-weight: 600; }
+    .sla-header-value.met { color: var(--green-dark); }
+    .sla-header-value.unmet { color: var(--red-dark); }
+
+    .sla-bar-track {
+      height: 8px;
+      background: var(--grey-200);
+      border-radius: 4px;
       overflow: hidden;
-      transition: max-height 0.35s ease;
+      position: relative;
+    }
+    .sla-bar-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.5s ease;
+    }
+    .sla-bar-fill.met { background: var(--green); }
+    .sla-bar-fill.unmet { background: var(--red); }
+
+    .sla-target-line {
+      position: absolute;
+      top: -2px;
+      bottom: -2px;
+      width: 2px;
+      background: var(--grey-700);
+      border-radius: 1px;
     }
 
-    .service-card.expanded .service-detail { max-height: 500px; }
-
-    .service-detail-inner {
-      padding: 0 1.25rem 1.125rem;
-      border-top: 1px solid var(--grey-100);
-      margin-top: 0;
-    }
-
-    .detail-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.75rem;
-      margin-top: 0.875rem;
-    }
-
-    .detail-block-label {
-      font-size: 0.625rem;
-      color: var(--grey-400);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 0.25rem;
-    }
-
-    .detail-block-value {
-      font-size: 0.9375rem;
-      font-weight: 600;
-      color: var(--grey-800);
-    }
-
-    .detail-response-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0.375rem;
-      margin-top: 0.875rem;
-    }
-
-    .detail-resp-item {
-      text-align: center;
-      background: var(--grey-50);
-      border-radius: 6px;
-      padding: 0.5rem 0.25rem;
-    }
-
-    .detail-resp-label {
+    .sla-legend {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 0.25rem;
       font-size: 0.5625rem;
       color: var(--grey-400);
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
     }
 
-    .detail-resp-value {
-      font-size: 0.8125rem;
-      font-weight: 600;
-      color: var(--grey-700);
-    }
-
-    .detail-incidents {
-      margin-top: 0.875rem;
-    }
-
-    .detail-incidents-header {
-      font-size: 0.625rem;
-      color: var(--grey-400);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 0.375rem;
-    }
+    .detail-incidents { margin-top: 0.875rem; }
+    .detail-incidents-header { font-size: 0.625rem; color: var(--grey-400); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.375rem; }
 
     .detail-incident-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.375rem 0;
-      border-bottom: 1px solid var(--grey-100);
-      font-size: 0.8125rem;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.375rem 0; border-bottom: 1px solid var(--grey-100); font-size: 0.8125rem;
     }
-
     .detail-incident-row:last-child { border-bottom: none; }
-
-    .detail-incident-date { color: var(--grey-500); }
+    .detail-incident-date { color: var(--text-secondary); }
     .detail-incident-mins { color: var(--red-dark); font-weight: 600; }
-
-    .detail-no-incidents {
-      font-size: 0.8125rem;
-      color: var(--grey-400);
-      padding: 0.25rem 0;
-    }
+    .detail-no-incidents { font-size: 0.8125rem; color: var(--grey-400); padding: 0.25rem 0; }
 
     .detail-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.25rem;
-      margin-top: 0.875rem;
-      font-size: 0.8125rem;
-      font-weight: 600;
-      color: var(--blue);
-      text-decoration: none;
-      padding: 0.4rem 0.75rem;
-      border-radius: 6px;
-      border: 1px solid var(--blue-light);
-      background: var(--blue-50);
+      display: inline-flex; align-items: center; gap: 0.25rem;
+      margin-top: 0.875rem; font-size: 0.8125rem; font-weight: 600;
+      color: var(--blue); text-decoration: none;
+      padding: 0.4rem 0.75rem; border-radius: 6px;
+      border: 1px solid var(--blue-light); background: var(--blue-50);
       transition: background 0.15s, border-color 0.15s;
       min-height: 44px;
     }
     .detail-link:hover { background: var(--blue-light); border-color: var(--blue); }
+    [data-theme="dark"] .detail-link { color: #93c5fd; }
 
     /* Skeleton loading */
     .skeleton {
@@ -520,21 +573,26 @@
       animation: shimmer 1.5s infinite;
       border-radius: var(--radius);
     }
-
     @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-
     .skeleton-banner { height: 56px; margin-bottom: 0.75rem; }
-    .skeleton-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 0.75rem; margin-bottom: 1.5rem; }
+    .skeleton-stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 0.75rem; margin-bottom: 1.5rem; }
     .skeleton-stat { height: 72px; }
     .skeleton-card { height: 140px; margin-bottom: 0.5rem; }
 
-    /* Recent incidents */
+    /* Enhanced incidents */
     .incidents-section { margin-bottom: 2rem; }
-    .incident-list { display: flex; flex-direction: column; gap: 0.375rem; }
 
-    .incident-item {
-      background: #fff;
-      border: 1px solid var(--grey-200);
+    .incident-date-group { margin-bottom: 0.875rem; }
+    .incident-date-header {
+      font-size: 0.8125rem; font-weight: 600; color: var(--text);
+      padding-bottom: 0.375rem; margin-bottom: 0.375rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .incident-group-list { display: flex; flex-direction: column; gap: 0.375rem; }
+
+    .incident-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
       border-radius: 8px;
       padding: 0.75rem 1rem;
       display: flex;
@@ -544,23 +602,38 @@
       box-shadow: var(--shadow-sm);
       min-height: 44px;
       gap: 0.5rem;
+      border-left: 3px solid var(--red);
+      text-decoration: none;
+      color: var(--text);
+      transition: border-color 0.15s, background 0.15s;
     }
+    .incident-card:hover { background: var(--grey-50); }
+    .incident-card.minor { border-left-color: var(--yellow); }
+    .incident-card.major { border-left-color: var(--red); }
 
-    .incident-left { display: flex; align-items: center; gap: 0.5rem; min-width: 0; }
-    .incident-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--red); flex-shrink: 0; }
-    .incident-service { font-weight: 600; color: var(--grey-800); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .incident-detail { color: var(--grey-500); font-size: 0.75rem; white-space: nowrap; flex-shrink: 0; }
+    .incident-card-left { display: flex; align-items: center; gap: 0.5rem; min-width: 0; flex: 1; }
+    .incident-card-svc { font-weight: 600; color: var(--grey-800); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .incident-card-right { display: flex; align-items: center; gap: 0.625rem; flex-shrink: 0; }
+    .incident-card-dur { color: var(--red-dark); font-weight: 600; font-size: 0.75rem; }
+    .incident-card.minor .incident-card-dur { color: var(--yellow-dark); }
+    .incident-card-arrow { color: var(--grey-400); width: 14px; height: 14px; flex-shrink: 0; }
 
     .no-incidents {
-      background: #fff;
-      border: 1px solid var(--grey-200);
+      background: var(--bg-card);
+      border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 1.25rem;
+      padding: 1.5rem;
       text-align: center;
-      color: var(--grey-400);
+      color: var(--text-secondary);
       font-size: 0.875rem;
       box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
     }
+    .no-incidents-icon { color: var(--green); }
+    .no-incidents-icon svg { width: 28px; height: 28px; }
 
     /* Help CTA */
     .help-cta {
@@ -574,42 +647,39 @@
       gap: 1rem;
       margin-bottom: 1.5rem;
     }
-
     .help-cta-text { font-size: 0.875rem; color: var(--grey-700); line-height: 1.5; }
-    .help-cta-text strong { color: var(--grey-900); }
-
+    .help-cta-text strong { color: var(--text); }
     .help-cta-btn {
       display: inline-flex; align-items: center; gap: 0.375rem;
       background: var(--blue); color: #fff; text-decoration: none;
       font-size: 0.8125rem; font-weight: 600;
       padding: 0.5rem 1rem; border-radius: 7px;
-      white-space: nowrap;
-      transition: background 0.15s;
-      min-height: 44px;
+      white-space: nowrap; transition: background 0.15s; min-height: 44px;
     }
     .help-cta-btn:hover { background: var(--blue-dark); }
     .help-cta-btn .ext-icon { opacity: 0.8; }
 
-    /* Last updated */
-    .last-updated { text-align: center; font-size: 0.6875rem; color: var(--grey-400); }
+    .last-updated { text-align: center; font-size: 0.6875rem; color: var(--text-secondary); }
 
     /* Footer */
     footer {
-      border-top: 1px solid var(--grey-200);
+      border-top: 1px solid var(--border);
       padding: 1.25rem 0;
       text-align: center;
       font-size: 0.75rem;
-      color: var(--grey-500);
+      color: var(--text-secondary);
     }
     footer a { color: var(--blue); text-decoration: none; }
     footer a:hover { color: var(--blue-dark); }
+    [data-theme="dark"] footer a { color: #93c5fd; }
 
     /* Responsive */
     @media (max-width: 640px) {
       .container { padding: 0 1rem; }
       .header-inner { flex-direction: column; gap: 0.5rem; }
-      nav { width: 100%; justify-content: center; }
-      .summary-stats { grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
+      .header-right { width: 100%; justify-content: center; }
+      nav { width: auto; }
+      .summary-stats { grid-template-columns: repeat(2, 1fr); gap: 0.5rem; }
       .stat-card { padding: 0.625rem 0.5rem; }
       .stat-value { font-size: 1.125rem; }
       .stat-label { font-size: 0.5625rem; }
@@ -619,27 +689,26 @@
       .status-banner { font-size: 0.9375rem; padding: 1rem; }
       .help-cta { flex-direction: column; text-align: center; padding: 1rem; }
       .uptime-bars { height: 20px; }
-      .incident-item { flex-direction: column; align-items: flex-start; gap: 0.25rem; }
-      .detail-grid { grid-template-columns: 1fr 1fr; }
+      .incident-card { flex-direction: column; align-items: flex-start; gap: 0.25rem; }
+      .incident-card-right { width: 100%; justify-content: space-between; }
       .detail-response-grid { grid-template-columns: repeat(2, 1fr); }
       main { padding: 1.25rem 0 2rem; }
+      .modal { margin: 0.5rem; max-width: none; }
     }
 
     @media (max-width: 380px) {
-      .summary-stats { grid-template-columns: 1fr; gap: 0.375rem; }
-      .stat-card { display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0.75rem; }
+      .summary-stats { grid-template-columns: 1fr 1fr; gap: 0.375rem; }
       .stat-value { font-size: 1rem; }
-      .stat-label { margin-top: 0; }
       .service-metrics { grid-template-columns: repeat(2, 1fr); }
     }
 
     /* Print */
     @media print {
-      header, nav, .help-cta, .last-updated, footer { display: none !important; }
+      header, nav, .help-cta, .last-updated, footer, .modal-overlay, .maintenance-banner { display: none !important; }
       .service-card { break-inside: avoid; box-shadow: none !important; border: 1px solid #ccc !important; }
       .service-detail { max-height: none !important; }
       .pulse-dot::after { display: none; }
-      body { background: #fff; }
+      body { background: #fff; color: #000; }
       main { padding: 0; }
     }
   </style>
@@ -652,21 +721,66 @@
           <img src="https://portal-nelsoncollege-files.s3.eu-west-2.amazonaws.com/logo/NCL_logo.svg" alt="Nelson College London">
           <span>NCL Status</span>
         </a>
-        <nav aria-label="External links">
-          <a href="https://nelsoncollege.ac.uk" target="_blank" rel="noopener">Website<svg class="ext-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h8v8"/><path d="M14 2L6 10"/></svg></a>
-          <a href="https://nelsoncollege.atlassian.net/servicedesk/customer/portals" target="_blank" rel="noopener">Help Centre<svg class="ext-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h8v8"/><path d="M14 2L6 10"/></svg></a>
-          <a href="https://turnitin.statuspage.io" target="_blank" rel="noopener">Turnitin<svg class="ext-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h8v8"/><path d="M14 2L6 10"/></svg></a>
-        </nav>
+        <div class="header-right">
+          <nav aria-label="External links">
+            <a href="https://nelsoncollege.ac.uk" target="_blank" rel="noopener">Website<svg class="ext-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h8v8"/><path d="M14 2L6 10"/></svg></a>
+            <a href="https://nelsoncollege.atlassian.net/servicedesk/customer/portals" target="_blank" rel="noopener">Help Centre<svg class="ext-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h8v8"/><path d="M14 2L6 10"/></svg></a>
+            <a href="https://turnitin.statuspage.io" target="_blank" rel="noopener">Turnitin<svg class="ext-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h8v8"/><path d="M14 2L6 10"/></svg></a>
+          </nav>
+          <button class="header-btn" onclick="openSubscribe()" aria-label="Subscribe to notifications">
+            <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a2 2 0 01-2-2h4a2 2 0 01-2 2z"/></svg>
+            Subscribe
+          </button>
+          <button class="header-btn" onclick="toggleTheme()" aria-label="Toggle dark mode" id="theme-toggle">
+            <svg id="theme-icon-light" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"/></svg>
+            <svg id="theme-icon-dark" viewBox="0 0 20 20" fill="currentColor" style="display:none"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/></svg>
+          </button>
+        </div>
       </div>
     </div>
   </header>
+
+  <!-- Subscribe modal -->
+  <div class="modal-overlay" id="subscribe-modal" role="dialog" aria-modal="true" aria-labelledby="subscribe-title">
+    <div class="modal">
+      <div class="modal-header">
+        <div>
+          <div class="modal-title" id="subscribe-title">Subscribe to Updates</div>
+          <div class="modal-subtitle">Get notified when services experience issues or recover.</div>
+        </div>
+        <button class="modal-close" onclick="closeSubscribe()" aria-label="Close">
+          <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <a class="subscribe-option" href="https://github.com/travnettech/ncl_status/subscription" target="_blank" rel="noopener">
+          <div class="subscribe-icon">
+            <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a2 2 0 01-2-2h4a2 2 0 01-2 2z" clip-rule="evenodd"/></svg>
+          </div>
+          <div class="subscribe-info">
+            <div class="subscribe-label">GitHub Notifications<svg class="ext-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h8v8"/><path d="M14 2L6 10"/></svg></div>
+            <div class="subscribe-desc">Watch this repository on GitHub to receive email or mobile notifications whenever an incident is created or resolved.</div>
+          </div>
+        </a>
+        <a class="subscribe-option" href="https://github.com/travnettech/ncl_status/issues.atom" target="_blank" rel="noopener">
+          <div class="subscribe-icon">
+            <svg viewBox="0 0 20 20" fill="currentColor"><path d="M5 3a1 1 0 000 2c5.523 0 10 4.477 10 10a1 1 0 102 0C17 8.373 11.627 3 5 3z"/><path d="M4 9a1 1 0 011-1 8 8 0 018 8 1 1 0 11-2 0 6 6 0 00-6-6 1 1 0 01-1-1z"/><path d="M3 15a2 2 0 114 0 2 2 0 01-4 0z"/></svg>
+          </div>
+          <div class="subscribe-info">
+            <div class="subscribe-label">RSS / Atom Feed<svg class="ext-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h8v8"/><path d="M14 2L6 10"/></svg></div>
+            <div class="subscribe-desc">Subscribe to the incident feed in your preferred RSS reader for real-time updates without needing a GitHub account.</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
 
   <main>
     <div class="container">
       <!-- Skeleton loading state -->
       <div id="skeleton">
         <div class="skeleton skeleton-banner"></div>
-        <div class="skeleton-stats"><div class="skeleton skeleton-stat"></div><div class="skeleton skeleton-stat"></div><div class="skeleton skeleton-stat"></div></div>
+        <div class="skeleton-stats"><div class="skeleton skeleton-stat"></div><div class="skeleton skeleton-stat"></div><div class="skeleton skeleton-stat"></div><div class="skeleton skeleton-stat"></div></div>
         <div class="skeleton skeleton-card"></div>
         <div class="skeleton skeleton-card"></div>
         <div class="skeleton skeleton-card"></div>
@@ -674,8 +788,19 @@
 
       <div id="status-banner" class="status-banner operational" style="display:none;"></div>
       <div id="summary-stats" class="summary-stats" style="display:none;"></div>
-      <div class="section-header" id="services-header" style="display:none;">Current Status</div>
-      <div id="services" class="services"></div>
+
+      <!-- Scheduled maintenance — uncomment and edit when maintenance is planned
+      <div class="maintenance-banner" id="maintenance-banner">
+        <div class="maintenance-icon"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/></svg></div>
+        <div>
+          <div class="maintenance-title">Scheduled Maintenance</div>
+          <div class="maintenance-desc">VLE will undergo planned maintenance for system upgrades.</div>
+          <div class="maintenance-time">Saturday 5 April 2026, 02:00–06:00 BST</div>
+        </div>
+      </div>
+      -->
+
+      <div id="services-container"></div>
 
       <div id="incidents-section" class="incidents-section" style="display:none;">
         <div class="section-header">Recent Incidents (Last 90 Days)</div>
@@ -702,29 +827,81 @@
   </footer>
 
   <script>
-    const DATA_URL = 'https://raw.githubusercontent.com/travnettech/ncl_status/HEAD/history/summary.json';
-    const EXT_SVG = '<svg class="ext-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h8v8"/><path d="M14 2L6 10"/></svg>';
-    const CHEVRON_SVG = '<svg class="chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/></svg>';
+    var DATA_URL = 'https://raw.githubusercontent.com/travnettech/ncl_status/HEAD/history/summary.json';
+    var REPO_URL = 'https://github.com/travnettech/ncl_status';
+    var EXT_SVG = '<svg class="ext-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h8v8"/><path d="M14 2L6 10"/></svg>';
+    var CHEVRON_SVG = '<svg class="chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/></svg>';
+    var ARROW_SVG = '<svg class="incident-card-arrow" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd"/></svg>';
+    var SLA_TARGET = 99.9;
 
-    let expandedSlug = null;
+    var SERVICE_GROUPS = [
+      { label: 'Core Services', slugs: ['website', 'nelson-one', 'nelson-portal'] },
+      { label: 'Learning', slugs: ['virtual-learning-environment-vle'] },
+      { label: 'Support', slugs: ['help-centre', 'ncl-alumni-association'] }
+    ];
 
+    var expandedSlug = null;
+
+    /* Theme toggle */
+    function isDark() { return document.documentElement.getAttribute('data-theme') === 'dark'; }
+
+    function applyThemeIcon() {
+      var d = isDark();
+      document.getElementById('theme-icon-light').style.display = d ? 'none' : 'block';
+      document.getElementById('theme-icon-dark').style.display = d ? 'block' : 'none';
+    }
+
+    function toggleTheme() {
+      var d = isDark();
+      if (d) {
+        document.documentElement.removeAttribute('data-theme');
+        localStorage.setItem('ncl-theme', 'light');
+      } else {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        localStorage.setItem('ncl-theme', 'dark');
+      }
+      applyThemeIcon();
+    }
+
+    applyThemeIcon();
+
+    /* Subscribe modal */
+    function openSubscribe() {
+      document.getElementById('subscribe-modal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeSubscribe() {
+      document.getElementById('subscribe-modal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    document.getElementById('subscribe-modal').addEventListener('click', function(e) {
+      if (e.target === this) closeSubscribe();
+    });
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeSubscribe();
+    });
+
+    /* Utility functions */
     function generateUptimeBars(dailyMinutesDown, isMobile) {
-      const bars = [];
-      const today = new Date();
-      const days = isMobile ? 45 : 90;
-      const step = isMobile ? 2 : 1;
-      for (let i = days - 1; i >= 0; i--) {
-        const d = new Date(today);
+      var bars = [];
+      var today = new Date();
+      var days = isMobile ? 45 : 90;
+      var step = isMobile ? 2 : 1;
+      for (var i = days - 1; i >= 0; i--) {
+        var d = new Date(today);
         d.setDate(d.getDate() - (i * step));
-        const key = d.toISOString().split('T')[0];
-        let mins = dailyMinutesDown[key] || 0;
+        var key = d.toISOString().split('T')[0];
+        var mins = dailyMinutesDown[key] || 0;
         if (isMobile && step === 2) {
-          const d2 = new Date(today);
+          var d2 = new Date(today);
           d2.setDate(d2.getDate() - (i * step + 1));
           mins += dailyMinutesDown[d2.toISOString().split('T')[0]] || 0;
         }
-        const dateStr = d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
-        let cls = 'up', label = 'No downtime';
+        var dateStr = d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+        var cls = 'up', label = 'No downtime';
         if (mins > 60) { cls = 'down'; label = mins + ' min down'; }
         else if (mins > 0) { cls = 'partial'; label = mins + ' min down'; }
         bars.push('<div class="uptime-bar ' + cls + '"><span class="uptime-bar-tooltip">' + dateStr + ': ' + label + '</span></div>');
@@ -733,14 +910,14 @@
     }
 
     function getRecentIncidents(services) {
-      const incidents = [];
-      const cutoff = new Date();
+      var incidents = [];
+      var cutoff = new Date();
       cutoff.setDate(cutoff.getDate() - 90);
       services.forEach(function(s) {
         if (!s.dailyMinutesDown) return;
         Object.entries(s.dailyMinutesDown).forEach(function(e) {
           var d = new Date(e[0]);
-          if (d >= cutoff) incidents.push({ service: s.name, date: e[0], mins: e[1], dateObj: d });
+          if (d >= cutoff) incidents.push({ service: s.name, slug: s.slug, date: e[0], mins: e[1], dateObj: d });
         });
       });
       incidents.sort(function(a, b) { return b.dateObj - a.dateObj; });
@@ -748,11 +925,10 @@
     }
 
     function getServiceIncidents(dailyMinutesDown) {
-      const entries = Object.entries(dailyMinutesDown || {})
+      return Object.entries(dailyMinutesDown || {})
         .map(function(e) { return { date: e[0], mins: e[1], dateObj: new Date(e[0]) }; })
         .sort(function(a, b) { return b.dateObj - a.dateObj; })
         .slice(0, 5);
-      return entries;
     }
 
     function formatDuration(mins) {
@@ -760,6 +936,14 @@
       var h = Math.floor(mins / 60), m = mins % 60;
       if (m === 0) return h + (h === 1 ? ' hour' : ' hours');
       return h + 'h ' + m + 'm';
+    }
+
+    function formatDurationLong(mins) {
+      if (mins < 60) return mins + (mins === 1 ? ' minute' : ' minutes') + ' of downtime';
+      var h = Math.floor(mins / 60), m = mins % 60;
+      var s = h + (h === 1 ? ' hour' : ' hours');
+      if (m > 0) s += ' ' + m + (m === 1 ? ' minute' : ' minutes');
+      return s + ' of downtime';
     }
 
     function uptimeClass(v) {
@@ -771,31 +955,123 @@
     }
 
     function toggleCard(slug) {
-      var prev = expandedSlug;
-      expandedSlug = (prev === slug) ? null : slug;
+      expandedSlug = (expandedSlug === slug) ? null : slug;
       document.querySelectorAll('.service-card').forEach(function(card) {
-        if (card.dataset.slug === expandedSlug) {
-          card.classList.add('expanded');
-          card.querySelector('[role="region"]').setAttribute('aria-hidden', 'false');
-        } else {
-          card.classList.remove('expanded');
-          card.querySelector('[role="region"]').setAttribute('aria-hidden', 'true');
-        }
+        var isTarget = card.dataset.slug === expandedSlug;
+        card.classList.toggle('expanded', isTarget);
+        var region = card.querySelector('[role="region"]');
+        if (region) region.setAttribute('aria-hidden', String(!isTarget));
+        var btn = card.querySelector('[role="button"]');
+        if (btn) btn.setAttribute('aria-expanded', String(isTarget));
       });
+    }
+
+    function buildSlaBar(uptimeStr) {
+      var val = parseFloat(uptimeStr);
+      var met = val >= SLA_TARGET;
+      var pct = Math.min(val, 100);
+      var targetLeft = SLA_TARGET + '%';
+      return '<div class="sla-section">' +
+        '<div class="sla-header">' +
+          '<span class="sla-header-label">SLA Compliance (99.9% target)</span>' +
+          '<span class="sla-header-value ' + (met ? 'met' : 'unmet') + '">' + (met ? 'Met' : 'Not Met') + '</span>' +
+        '</div>' +
+        '<div class="sla-bar-track">' +
+          '<div class="sla-bar-fill ' + (met ? 'met' : 'unmet') + '" style="width:' + pct + '%"></div>' +
+          '<div class="sla-target-line" style="left:' + targetLeft + '" title="99.9% SLA target"></div>' +
+        '</div>' +
+        '<div class="sla-legend"><span>0%</span><span>99.9% target</span><span>100%</span></div>' +
+      '</div>';
+    }
+
+    function groupIncidentsByDate(incidents) {
+      var groups = {};
+      incidents.forEach(function(inc) {
+        if (!groups[inc.date]) groups[inc.date] = { date: inc.date, dateObj: inc.dateObj, items: [] };
+        groups[inc.date].items.push(inc);
+      });
+      return Object.values(groups).sort(function(a, b) { return b.dateObj - a.dateObj; });
+    }
+
+    function buildServiceCard(s, isMobile) {
+      var isUp = s.status === 'up';
+      var sc = isUp ? 'up' : 'down';
+      var st = isUp ? 'Operational' : 'Outage';
+      var isExpanded = expandedSlug === s.slug;
+      var svcIncidents = getServiceIncidents(s.dailyMinutesDown);
+
+      var incidentsHTML = '';
+      if (svcIncidents.length === 0) {
+        incidentsHTML = '<div class="detail-no-incidents">No recorded incidents.</div>';
+      } else {
+        incidentsHTML = svcIncidents.map(function(inc) {
+          var ds = inc.dateObj.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+          return '<div class="detail-incident-row"><span class="detail-incident-date">' + ds + '</span><span class="detail-incident-mins">' + formatDuration(inc.mins) + '</span></div>';
+        }).join('');
+      }
+
+      return '<div class="service-card' + (isExpanded ? ' expanded' : '') + '" data-slug="' + s.slug + '">' +
+        '<div class="service-card-main" role="button" tabindex="0" aria-expanded="' + isExpanded + '" aria-controls="detail-' + s.slug + '" onclick="toggleCard(\'' + s.slug + '\')" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();toggleCard(\'' + s.slug + '\')}">' +
+          '<div class="service-header">' +
+            '<div class="service-name">' +
+              '<img class="service-icon" src="' + s.icon + '" alt="">' +
+              '<span class="service-title">' + s.name + '</span>' +
+            '</div>' +
+            '<div class="service-header-right">' +
+              '<span class="service-badge ' + sc + '" role="status" aria-label="' + s.name + ' is ' + st.toLowerCase() + '">' +
+                '<span class="dot"></span>' + st +
+              '</span>' +
+              CHEVRON_SVG +
+            '</div>' +
+          '</div>' +
+          '<div class="uptime-bar-row">' +
+            '<span class="uptime-bar-label">90d</span>' +
+            '<div class="uptime-bars" aria-label="90-day uptime history">' + generateUptimeBars(s.dailyMinutesDown || {}, isMobile) + '</div>' +
+            '<span class="uptime-bar-label">' + s.uptimeMonth + '</span>' +
+          '</div>' +
+          '<div class="service-metrics">' +
+            '<div class="metric"><div class="metric-label">24h</div><div class="metric-value ' + uptimeClass(s.uptimeDay) + '">' + s.uptimeDay + '</div></div>' +
+            '<div class="metric"><div class="metric-label">7 days</div><div class="metric-value ' + uptimeClass(s.uptimeWeek) + '">' + s.uptimeWeek + '</div></div>' +
+            '<div class="metric"><div class="metric-label">30 days</div><div class="metric-value ' + uptimeClass(s.uptimeMonth) + '">' + s.uptimeMonth + '</div></div>' +
+            '<div class="metric"><div class="metric-label">1 year</div><div class="metric-value ' + uptimeClass(s.uptimeYear) + '">' + s.uptimeYear + '</div></div>' +
+            '<div class="metric"><div class="metric-label">Response</div><div class="metric-value">' + (s.timeDay || s.time) + 'ms</div></div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="service-detail" id="detail-' + s.slug + '" role="region" aria-hidden="' + !isExpanded + '">' +
+          '<div class="service-detail-inner">' +
+            '<div class="detail-grid">' +
+              '<div><div class="detail-block-label">All-Time Uptime</div><div class="detail-block-value">' + s.uptime + '</div></div>' +
+              '<div><div class="detail-block-label">All-Time Avg. Response</div><div class="detail-block-value">' + s.time + 'ms</div></div>' +
+            '</div>' +
+            '<div class="detail-response-grid">' +
+              '<div class="detail-resp-item"><div class="detail-resp-label">24h Resp.</div><div class="detail-resp-value">' + (s.timeDay || s.time) + 'ms</div></div>' +
+              '<div class="detail-resp-item"><div class="detail-resp-label">7d Resp.</div><div class="detail-resp-value">' + (s.timeWeek || s.time) + 'ms</div></div>' +
+              '<div class="detail-resp-item"><div class="detail-resp-label">30d Resp.</div><div class="detail-resp-value">' + (s.timeMonth || s.time) + 'ms</div></div>' +
+              '<div class="detail-resp-item"><div class="detail-resp-label">1y Resp.</div><div class="detail-resp-value">' + (s.timeYear || s.time) + 'ms</div></div>' +
+            '</div>' +
+            buildSlaBar(s.uptime) +
+            '<div class="detail-incidents">' +
+              '<div class="detail-incidents-header">Recent Incidents</div>' +
+              incidentsHTML +
+            '</div>' +
+            '<a class="detail-link" href="' + s.url + '" target="_blank" rel="noopener">Visit ' + s.name + ' ' + EXT_SVG + '</a>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
     }
 
     async function loadStatus(isRefresh) {
       var skeletonEl = document.getElementById('skeleton');
-      var servicesEl = document.getElementById('services');
       var bannerEl = document.getElementById('status-banner');
       var updatedEl = document.getElementById('last-updated');
       var statsEl = document.getElementById('summary-stats');
-      var headerEl = document.getElementById('services-header');
+      var servicesContainer = document.getElementById('services-container');
       var incidentsSection = document.getElementById('incidents-section');
       var incidentsList = document.getElementById('incidents-list');
 
       if (isRefresh) {
-        bannerEl.querySelector('.refresh-badge')?.remove();
+        var old = bannerEl.querySelector('.refresh-badge');
+        if (old) old.remove();
         var rb = document.createElement('span');
         rb.className = 'refresh-badge';
         rb.innerHTML = '<span class="refresh-spinner"></span> Refreshing';
@@ -808,7 +1084,7 @@
         var services = await res.json();
         var isMobile = window.innerWidth <= 640;
 
-        if (skeletonEl) { skeletonEl.remove(); }
+        if (skeletonEl) skeletonEl.remove();
 
         var upCount = services.filter(function(s) { return s.status === 'up'; }).length;
         var allUp = upCount === services.length;
@@ -828,99 +1104,71 @@
 
         var avgUptime = (services.reduce(function(s, v) { return s + parseFloat(v.uptimeMonth); }, 0) / services.length).toFixed(2);
         var avgResponse = Math.round(services.reduce(function(s, v) { return s + (v.timeDay || v.time); }, 0) / services.length);
+        var overallSla = Math.min.apply(null, services.map(function(s) { return parseFloat(s.uptimeMonth); })).toFixed(2);
+        var slaClass = parseFloat(overallSla) >= SLA_TARGET ? 'good' : (parseFloat(overallSla) >= 99.0 ? 'warn' : 'bad');
 
         statsEl.style.display = 'grid';
         statsEl.innerHTML =
           '<div class="stat-card"><div class="stat-value">' + upCount + '/' + services.length + '</div><div class="stat-label">Services Up</div></div>' +
           '<div class="stat-card"><div class="stat-value">' + avgUptime + '%</div><div class="stat-label">Avg. Uptime (30d)</div></div>' +
-          '<div class="stat-card"><div class="stat-value">' + avgResponse + 'ms</div><div class="stat-label">Avg. Response</div></div>';
+          '<div class="stat-card"><div class="stat-value">' + avgResponse + 'ms</div><div class="stat-label">Avg. Response</div></div>' +
+          '<div class="stat-card"><div class="stat-value ' + slaClass + '">' + overallSla + '%</div><div class="stat-label">Overall SLA (30d)</div></div>';
 
-        headerEl.style.display = 'block';
+        var serviceMap = {};
+        services.forEach(function(s) { serviceMap[s.slug] = s; });
 
-        servicesEl.innerHTML = services.map(function(s) {
-          var isUp = s.status === 'up';
-          var sc = isUp ? 'up' : 'down';
-          var st = isUp ? 'Operational' : 'Outage';
-          var isExpanded = expandedSlug === s.slug;
-          var svcIncidents = getServiceIncidents(s.dailyMinutesDown);
+        var html = '<div class="section-header">Current Status</div>';
+        SERVICE_GROUPS.forEach(function(g) {
+          html += '<div class="group-header">' + g.label + '</div>';
+          html += '<div class="services">';
+          g.slugs.forEach(function(slug) {
+            if (serviceMap[slug]) html += buildServiceCard(serviceMap[slug], isMobile);
+          });
+          html += '</div>';
+        });
+        servicesContainer.innerHTML = html;
 
-          var incidentsHTML = '';
-          if (svcIncidents.length === 0) {
-            incidentsHTML = '<div class="detail-no-incidents">No recorded incidents.</div>';
-          } else {
-            incidentsHTML = svcIncidents.map(function(inc) {
-              var ds = inc.dateObj.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
-              return '<div class="detail-incident-row"><span class="detail-incident-date">' + ds + '</span><span class="detail-incident-mins">' + formatDuration(inc.mins) + '</span></div>';
-            }).join('');
-          }
-
-          return '<div class="service-card' + (isExpanded ? ' expanded' : '') + '" data-slug="' + s.slug + '">' +
-            '<div class="service-card-main" role="button" tabindex="0" aria-expanded="' + isExpanded + '" aria-controls="detail-' + s.slug + '" onclick="toggleCard(\'' + s.slug + '\')" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();toggleCard(\'' + s.slug + '\')}">' +
-              '<div class="service-header">' +
-                '<div class="service-name">' +
-                  '<img class="service-icon" src="' + s.icon + '" alt="">' +
-                  '<span class="service-title">' + s.name + '</span>' +
-                '</div>' +
-                '<div class="service-header-right">' +
-                  '<span class="service-badge ' + sc + '" role="status" aria-label="' + s.name + ' is ' + st.toLowerCase() + '">' +
-                    '<span class="dot"></span>' + st +
-                  '</span>' +
-                  CHEVRON_SVG +
-                '</div>' +
-              '</div>' +
-              '<div class="uptime-bar-row">' +
-                '<span class="uptime-bar-label">90d</span>' +
-                '<div class="uptime-bars" aria-label="90-day uptime history">' + generateUptimeBars(s.dailyMinutesDown || {}, isMobile) + '</div>' +
-                '<span class="uptime-bar-label">' + s.uptimeMonth + '</span>' +
-              '</div>' +
-              '<div class="service-metrics">' +
-                '<div class="metric"><div class="metric-label">24h</div><div class="metric-value ' + uptimeClass(s.uptimeDay) + '">' + s.uptimeDay + '</div></div>' +
-                '<div class="metric"><div class="metric-label">7 days</div><div class="metric-value ' + uptimeClass(s.uptimeWeek) + '">' + s.uptimeWeek + '</div></div>' +
-                '<div class="metric"><div class="metric-label">30 days</div><div class="metric-value ' + uptimeClass(s.uptimeMonth) + '">' + s.uptimeMonth + '</div></div>' +
-                '<div class="metric"><div class="metric-label">1 year</div><div class="metric-value ' + uptimeClass(s.uptimeYear) + '">' + s.uptimeYear + '</div></div>' +
-                '<div class="metric"><div class="metric-label">Response</div><div class="metric-value">' + (s.timeDay || s.time) + 'ms</div></div>' +
-              '</div>' +
-            '</div>' +
-            '<div class="service-detail" id="detail-' + s.slug + '" role="region" aria-hidden="' + !isExpanded + '">' +
-              '<div class="service-detail-inner">' +
-                '<div class="detail-grid">' +
-                  '<div><div class="detail-block-label">All-Time Uptime</div><div class="detail-block-value">' + s.uptime + '</div></div>' +
-                  '<div><div class="detail-block-label">All-Time Avg. Response</div><div class="detail-block-value">' + s.time + 'ms</div></div>' +
-                '</div>' +
-                '<div class="detail-response-grid">' +
-                  '<div class="detail-resp-item"><div class="detail-resp-label">24h Resp.</div><div class="detail-resp-value">' + (s.timeDay || s.time) + 'ms</div></div>' +
-                  '<div class="detail-resp-item"><div class="detail-resp-label">7d Resp.</div><div class="detail-resp-value">' + (s.timeWeek || s.time) + 'ms</div></div>' +
-                  '<div class="detail-resp-item"><div class="detail-resp-label">30d Resp.</div><div class="detail-resp-value">' + (s.timeMonth || s.time) + 'ms</div></div>' +
-                  '<div class="detail-resp-item"><div class="detail-resp-label">1y Resp.</div><div class="detail-resp-value">' + (s.timeYear || s.time) + 'ms</div></div>' +
-                '</div>' +
-                '<div class="detail-incidents">' +
-                  '<div class="detail-incidents-header">Recent Incidents</div>' +
-                  incidentsHTML +
-                '</div>' +
-                '<a class="detail-link" href="' + s.url + '" target="_blank" rel="noopener">Visit ' + s.name + ' ' + EXT_SVG + '</a>' +
-              '</div>' +
-            '</div>' +
-          '</div>';
-        }).join('');
-
+        /* Enhanced incidents section */
         var incidents = getRecentIncidents(services);
         incidentsSection.style.display = 'block';
+
         if (incidents.length === 0) {
-          incidentsList.innerHTML = '<div class="no-incidents">No incidents in the last 90 days.</div>';
-        } else {
-          incidentsList.innerHTML = '<div class="incident-list">' + incidents.map(function(inc) {
-            var dateStr = inc.dateObj.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
-            return '<div class="incident-item">' +
-              '<div class="incident-left"><span class="incident-dot" aria-hidden="true"></span><span class="incident-service">' + inc.service + '</span></div>' +
-              '<span class="incident-detail">' + formatDuration(inc.mins) + ' &mdash; ' + dateStr + '</span>' +
+          incidentsList.innerHTML =
+            '<div class="no-incidents">' +
+              '<div class="no-incidents-icon"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg></div>' +
+              'No incidents in the last 90 days.' +
             '</div>';
-          }).join('') + '</div>';
+        } else {
+          var dateGroups = groupIncidentsByDate(incidents);
+          incidentsList.innerHTML = dateGroups.map(function(group) {
+            var dateStr = group.dateObj.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+            var cards = group.items.map(function(inc) {
+              var severity = inc.mins >= 60 ? 'major' : 'minor';
+              var issueUrl = REPO_URL + '/issues?q=is%3Aissue+' + encodeURIComponent(inc.service);
+              return '<a class="incident-card ' + severity + '" href="' + issueUrl + '" target="_blank" rel="noopener">' +
+                '<div class="incident-card-left">' +
+                  '<span class="incident-card-svc">' + inc.service + '</span>' +
+                '</div>' +
+                '<div class="incident-card-right">' +
+                  '<span class="incident-card-dur">' + formatDurationLong(inc.mins) + '</span>' +
+                  ARROW_SVG +
+                '</div>' +
+              '</a>';
+            }).join('');
+            return '<div class="incident-date-group">' +
+              '<div class="incident-date-header">' + dateStr + '</div>' +
+              '<div class="incident-group-list">' + cards + '</div>' +
+            '</div>';
+          }).join('');
         }
 
-        updatedEl.textContent = 'Last checked: ' + new Date().toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' });
+        var tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+        var now = new Date();
+        var timeStr = now.toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' });
+        updatedEl.textContent = 'Last checked: ' + timeStr + (tz ? ' (' + tz + ')' : '');
       } catch (err) {
         if (skeletonEl) skeletonEl.remove();
-        servicesEl.innerHTML = '<div class="error-msg">Unable to load status data. Please try again shortly.</div>';
+        servicesContainer.innerHTML = '<div class="section-header">Current Status</div><div style="text-align:center;color:var(--text-secondary);padding:2rem 0;">Unable to load status data. Please try again shortly.</div>';
         console.error(err);
       }
     }
