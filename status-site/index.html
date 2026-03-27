@@ -863,7 +863,6 @@
     .infra-badge.ok { background: var(--green-bg); color: var(--green-dark); }
     .infra-badge.fail { background: var(--red-bg); color: var(--red-dark); }
     .infra-days { font-size: 0.6875rem; color: var(--text-secondary); }
-    .infra-issuer { font-size: 0.6875rem; color: var(--text-secondary); }
 
     /* Footer */
     footer {
@@ -1611,7 +1610,7 @@
         var sslBadgeLabel = { valid: 'Valid', warning: 'Expiring Soon', critical: 'Critical', expired: 'Expired', error: 'Error' };
         var dnsBadgeLabel = { ok: 'Resolving', fail: 'Failed' };
 
-        var header = '<thead><tr><th>Service</th><th>SSL Status</th><th>Expiry</th><th>Issuer</th><th>DNS</th></tr></thead>';
+        var header = '<thead><tr><th>Service</th><th>SSL Status</th><th>Expiry</th><th>DNS</th></tr></thead>';
         var rows = data.map(function(d) {
           var sslCls = d.ssl.status;
           var sslLabel = sslBadgeLabel[d.ssl.status] || d.ssl.status;
@@ -1629,7 +1628,6 @@
             '<td>' + d.name + '</td>' +
             '<td><span class="infra-badge ' + sslCls + '"><span class="dot" style="width:6px;height:6px;border-radius:50%;background:currentColor"></span>' + sslLabel + '</span></td>' +
             '<td>' + expiryStr + '</td>' +
-            '<td><span class="infra-issuer">' + (d.ssl.issuer || '-') + '</span></td>' +
             '<td><span class="infra-badge ' + dnsCls + '"><span class="dot" style="width:6px;height:6px;border-radius:50%;background:currentColor"></span>' + dnsLabel + '</span></td>' +
           '</tr>';
         }).join('');
