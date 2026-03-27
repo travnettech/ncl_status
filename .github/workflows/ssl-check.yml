@@ -1,0 +1,123 @@
+name: SSL & DNS Health Check
+on:
+  schedule:
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  ssl-dns-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check SSL certificates and DNS
+        run: |
+          DOMAINS=(
+            "nelsoncollege.ac.uk"
+            "nclvle.co.uk"
+            "one.nelsoncollege.ac.uk"
+            "portal.nelsoncollege.ac.uk"
+            "alumni.nelsoncollege.ac.uk"
+            "nelsoncollege.atlassian.net"
+            "status.nelsoncollege.ac.uk"
+          )
+
+          NAMES=(
+            "Website"
+            "Virtual Learning Environment VLE"
+            "Nelson One"
+            "Nelson Portal"
+            "NCL Alumni Association"
+            "Help Centre"
+            "Status Page"
+          )
+
+          echo "[" > /tmp/ssl-status.json
+          FIRST=true
+
+          for i in "${!DOMAINS[@]}"; do
+            DOMAIN="${DOMAINS[$i]}"
+            NAME="${NAMES[$i]}"
+
+            # SSL check
+            CERT_INFO=$(echo | openssl s_client -servername "$DOMAIN" -connect "$DOMAIN":443 2>/dev/null)
+            if [ $? -eq 0 ] && echo "$CERT_INFO" | openssl x509 -noout 2>/dev/null; then
+              EXPIRY_DATE=$(echo "$CERT_INFO" | openssl x509 -noout -enddate 2>/dev/null | cut -d= -f2)
+              ISSUER=$(echo "$CERT_INFO" | openssl x509 -noout -issuer 2>/dev/null | sed 's/issuer=//' | sed 's/.*O = //' | cut -d',' -f1 | xargs)
+              SUBJECT=$(echo "$CERT_INFO" | openssl x509 -noout -subject 2>/dev/null | sed 's/subject=//' | sed 's/.*CN = //' | cut -d',' -f1 | xargs)
+
+              EXPIRY_EPOCH=$(date -d "$EXPIRY_DATE" +%s 2>/dev/null)
+              NOW_EPOCH=$(date +%s)
+              DAYS_LEFT=$(( (EXPIRY_EPOCH - NOW_EPOCH) / 86400 ))
+              EXPIRY_ISO=$(date -d "$EXPIRY_DATE" -u +"%Y-%m-%dT%H:%M:%SZ" 2>/dev/null)
+
+              if [ "$DAYS_LEFT" -le 0 ]; then
+                SSL_STATUS="expired"
+              elif [ "$DAYS_LEFT" -le 7 ]; then
+                SSL_STATUS="critical"
+              elif [ "$DAYS_LEFT" -le 30 ]; then
+                SSL_STATUS="warning"
+              else
+                SSL_STATUS="valid"
+              fi
+            else
+              EXPIRY_ISO=""
+              ISSUER=""
+              SUBJECT=""
+              DAYS_LEFT=0
+              SSL_STATUS="error"
+            fi
+
+            # DNS check
+            DNS_RESULT=$(dig +short "$DOMAIN" 2>/dev/null | head -5 | tr '\n' ', ' | sed 's/,$//')
+            if [ -n "$DNS_RESULT" ]; then
+              DNS_STATUS="ok"
+            else
+              DNS_STATUS="fail"
+              DNS_RESULT=""
+            fi
+
+            if [ "$FIRST" = true ]; then
+              FIRST=false
+            else
+              echo "," >> /tmp/ssl-status.json
+            fi
+
+            cat >> /tmp/ssl-status.json <<ENTRY
+            {
+              "name": "$NAME",
+              "domain": "$DOMAIN",
+              "ssl": {
+                "status": "$SSL_STATUS",
+                "expiry": "$EXPIRY_ISO",
+                "daysLeft": $DAYS_LEFT,
+                "issuer": "$ISSUER",
+                "subject": "$SUBJECT"
+              },
+              "dns": {
+                "status": "$DNS_STATUS",
+                "records": "$DNS_RESULT"
+              }
+            }
+          ENTRY
+          done
+
+          echo "]" >> /tmp/ssl-status.json
+
+          # Pretty-print and validate
+          python3 -m json.tool /tmp/ssl-status.json > api/ssl-status.json
+
+      - name: Commit results
+        run: |
+          git config user.name "Upptime Bot"
+          git config user.email "upptime@koj.co"
+          git add api/ssl-status.json
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m ":lock: Update SSL & DNS health check [skip ci]"
+            git push
+          fi

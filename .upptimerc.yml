@@ -9,10 +9,11 @@ sites:
   - name: Website
     url: https://nelsoncollege.ac.uk
     icon: https://portal-nelsoncollege-files.s3.eu-west-2.amazonaws.com/logo/NCL_logo.svg
-    maxResponseTime: 5000
+    maxResponseTime: 3000
     expectedStatusCodes:
       - 200
       - 301
+    __dangerous__body_down_if_text_missing: "Nelson College"
   - name: Virtual Learning Environment VLE
     url: https://nclvle.co.uk
     icon: https://portal-nelsoncollege-files.s3.eu-west-2.amazonaws.com/logo/VLE_NCL.svg
@@ -21,29 +22,33 @@ sites:
       - 200
       - 301
       - 302
+    __dangerous__body_down_if_text_missing: "Nelson"
   - name: Nelson One
     url: https://one.nelsoncollege.ac.uk
     icon: https://portal-nelsoncollege-files.s3.eu-west-2.amazonaws.com/logo/One_NCL.svg
-    maxResponseTime: 5000
+    maxResponseTime: 3000
     expectedStatusCodes:
       - 200
       - 301
       - 302
+    __dangerous__body_down_if_text_missing: "Nelson"
   - name: Nelson Portal
     url: https://portal.nelsoncollege.ac.uk
     icon: https://portal-nelsoncollege-files.s3.eu-west-2.amazonaws.com/logo/NCL_logo.svg
-    maxResponseTime: 5000
+    maxResponseTime: 3000
     expectedStatusCodes:
       - 200
       - 301
       - 302
+    __dangerous__body_down_if_text_missing: "Nelson"
   - name: NCL Alumni Association
     url: https://alumni.nelsoncollege.ac.uk
     icon: https://portal-nelsoncollege-files.s3.eu-west-2.amazonaws.com/logo/Alumni_NCL.svg
-    maxResponseTime: 5000
+    maxResponseTime: 3000
     expectedStatusCodes:
       - 200
       - 301
+    __dangerous__body_down_if_text_missing: "Nelson"
   - name: Help Centre
     url: https://nelsoncollege.atlassian.net/servicedesk/customer/portals
     icon: https://portal-nelsoncollege-files.s3.eu-west-2.amazonaws.com/logo/NCL_logo.svg
@@ -53,6 +58,12 @@ sites:
       - 301
       - 302
       - 303
+  - name: Status Page
+    url: https://status.nelsoncollege.ac.uk
+    icon: https://raw.githubusercontent.com/travnettech/ncl_status/HEAD/status-site/assets/icon.svg
+    maxResponseTime: 3000
+    expectedStatusCodes:
+      - 200
 
 status-website:
   # cname: status.nelsoncollege.ac.uk  # Disabled — custom frontend hosted on Cloudflare Pages

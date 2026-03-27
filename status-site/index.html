@@ -835,6 +835,36 @@
     .detail-url a:hover { text-decoration: underline; }
     [data-theme="dark"] .detail-url a { color: #93c5fd; }
 
+    /* Infrastructure Health */
+    .infra-section { margin-bottom: 2rem; }
+    .infra-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .infra-table {
+      width: 100%; border-collapse: collapse; font-size: 0.75rem;
+    }
+    .infra-table th {
+      text-align: left; font-weight: 600; color: var(--text-secondary);
+      font-size: 0.625rem; text-transform: uppercase; letter-spacing: 0.04em;
+      padding: 0.375rem 0.5rem; border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    .infra-table td {
+      padding: 0.375rem 0.5rem; border-bottom: 1px solid var(--grey-100);
+      white-space: nowrap;
+    }
+    .infra-table td:first-child { font-weight: 600; color: var(--grey-800); }
+    .infra-badge {
+      display: inline-flex; align-items: center; gap: 0.25rem;
+      font-size: 0.6875rem; font-weight: 600; padding: 0.15rem 0.5rem;
+      border-radius: 100px;
+    }
+    .infra-badge.valid { background: var(--green-bg); color: var(--green-dark); }
+    .infra-badge.warning { background: var(--yellow-bg); color: var(--yellow-dark); }
+    .infra-badge.critical, .infra-badge.expired, .infra-badge.error { background: var(--red-bg); color: var(--red-dark); }
+    .infra-badge.ok { background: var(--green-bg); color: var(--green-dark); }
+    .infra-badge.fail { background: var(--red-bg); color: var(--red-dark); }
+    .infra-days { font-size: 0.6875rem; color: var(--text-secondary); }
+    .infra-issuer { font-size: 0.6875rem; color: var(--text-secondary); }
+
     /* Footer */
     footer {
       border-top: 1px solid var(--border);
@@ -879,6 +909,7 @@
       .modal-body { padding: 1rem; }
       .subscribe-option { padding: 0.75rem; gap: 0.625rem; }
       .monthly-table { font-size: 0.6875rem; }
+      .infra-table { font-size: 0.6875rem; }
       main { padding: 1.25rem 0 2rem; }
     }
 
@@ -1011,6 +1042,11 @@
         <div class="monthly-table-wrap"><table class="monthly-table" id="monthly-table"></table></div>
       </div>
 
+      <div id="infra-section" class="infra-section" style="display:none;">
+        <div class="section-header">Infrastructure Health</div>
+        <div class="infra-table-wrap"><table class="infra-table" id="infra-table"></table></div>
+      </div>
+
       <div id="incidents-section" class="incidents-section" style="display:none;">
         <div class="section-header">Recent Incidents (Last 90 Days)</div>
         <div id="incidents-list"></div>
@@ -1046,7 +1082,8 @@
     var SERVICE_GROUPS = [
       { label: 'Core Services', slugs: ['website', 'nelson-one', 'nelson-portal'] },
       { label: 'Learning', slugs: ['virtual-learning-environment-vle'] },
-      { label: 'Support', slugs: ['help-centre', 'ncl-alumni-association'] }
+      { label: 'Support', slugs: ['help-centre', 'ncl-alumni-association'] },
+      { label: 'Infrastructure', slugs: ['status-page'] }
     ];
 
     var SERVICE_DESCRIPTIONS = {
@@ -1055,8 +1092,11 @@
       'nelson-portal': 'Applicant and student self-service portal',
       'virtual-learning-environment-vle': 'Student learning management platform',
       'help-centre': 'IT and academic support desk',
-      'ncl-alumni-association': 'Graduate community and networking'
+      'ncl-alumni-association': 'Graduate community and networking',
+      'status-page': 'This status monitoring page'
     };
+
+    var SSL_DATA_URL = 'https://raw.githubusercontent.com/travnettech/ncl_status/HEAD/api/ssl-status.json';
 
     var expandedSlug = null;
     var allExpanded = false;
@@ -1559,7 +1599,50 @@
       }
     }
 
+    async function loadInfraHealth() {
+      try {
+        var res = await fetch(SSL_DATA_URL, { cache: 'no-cache' });
+        if (!res.ok) return;
+        var data = await res.json();
+
+        var infraSection = document.getElementById('infra-section');
+        var infraTable = document.getElementById('infra-table');
+
+        var sslBadgeLabel = { valid: 'Valid', warning: 'Expiring Soon', critical: 'Critical', expired: 'Expired', error: 'Error' };
+        var dnsBadgeLabel = { ok: 'Resolving', fail: 'Failed' };
+
+        var header = '<thead><tr><th>Service</th><th>SSL Status</th><th>Expiry</th><th>Issuer</th><th>DNS</th></tr></thead>';
+        var rows = data.map(function(d) {
+          var sslCls = d.ssl.status;
+          var sslLabel = sslBadgeLabel[d.ssl.status] || d.ssl.status;
+          var dnsCls = d.dns.status;
+          var dnsLabel = dnsBadgeLabel[d.dns.status] || d.dns.status;
+
+          var expiryStr = '-';
+          if (d.ssl.expiry) {
+            var expDate = new Date(d.ssl.expiry);
+            expiryStr = expDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+            expiryStr += ' <span class="infra-days">(' + d.ssl.daysLeft + 'd)</span>';
+          }
+
+          return '<tr>' +
+            '<td>' + d.name + '</td>' +
+            '<td><span class="infra-badge ' + sslCls + '"><span class="dot" style="width:6px;height:6px;border-radius:50%;background:currentColor"></span>' + sslLabel + '</span></td>' +
+            '<td>' + expiryStr + '</td>' +
+            '<td><span class="infra-issuer">' + (d.ssl.issuer || '-') + '</span></td>' +
+            '<td><span class="infra-badge ' + dnsCls + '"><span class="dot" style="width:6px;height:6px;border-radius:50%;background:currentColor"></span>' + dnsLabel + '</span></td>' +
+          '</tr>';
+        }).join('');
+
+        infraTable.innerHTML = header + '<tbody>' + rows + '</tbody>';
+        infraSection.style.display = 'block';
+      } catch (err) {
+        console.error('Failed to load infrastructure health:', err);
+      }
+    }
+
     loadStatus(false);
+    loadInfraHealth();
     setInterval(function() { loadStatus(true); }, 300000);
   </script>
 </body>
