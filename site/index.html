@@ -603,9 +603,10 @@
       min-height: 44px;
       gap: 0.5rem;
       border-left: 3px solid var(--red);
-      text-decoration: none;
       color: var(--text);
       transition: border-color 0.15s, background 0.15s;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
     }
     .incident-card:hover { background: var(--grey-50); }
     .incident-card.minor { border-left-color: var(--yellow); }
@@ -617,6 +618,99 @@
     .incident-card-dur { color: var(--red-dark); font-weight: 600; font-size: 0.75rem; }
     .incident-card.minor .incident-card-dur { color: var(--yellow-dark); }
     .incident-card-arrow { color: var(--grey-400); width: 14px; height: 14px; flex-shrink: 0; }
+
+    /* Incident detail modal */
+    .incident-modal { max-width: 520px; }
+    .incident-modal .modal-body { padding: 0 1.5rem 1.5rem; }
+
+    .inc-detail-banner {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.875rem 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+    .inc-detail-banner.major { background: var(--red-bg); border: 1px solid var(--red-border); }
+    .inc-detail-banner.minor { background: var(--yellow-bg); border: 1px solid var(--yellow-border); }
+    .inc-detail-severity {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+    .inc-detail-severity.major { background: var(--red); color: #fff; }
+    .inc-detail-severity.minor { background: var(--yellow); color: #000; }
+    .inc-detail-dur { font-size: 0.875rem; font-weight: 600; color: var(--text); }
+
+    .inc-detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+    .inc-detail-item-label { font-size: 0.625rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.125rem; }
+    .inc-detail-item-value { font-size: 0.875rem; font-weight: 600; color: var(--text); }
+
+    .inc-detail-section-title {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.375rem;
+      margin-top: 0.25rem;
+    }
+
+    .inc-detail-history-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.375rem 0;
+      border-bottom: 1px solid var(--grey-100);
+      font-size: 0.8125rem;
+    }
+    .inc-detail-history-row:last-child { border-bottom: none; }
+    .inc-detail-history-date { color: var(--text-secondary); }
+    .inc-detail-history-dur { font-weight: 600; color: var(--red-dark); }
+
+    .inc-detail-metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.375rem;
+      margin-bottom: 1rem;
+    }
+    .inc-detail-metric { text-align: center; background: var(--grey-50); border-radius: 6px; padding: 0.5rem 0.25rem; }
+    .inc-detail-metric-label { font-size: 0.5625rem; color: var(--grey-400); text-transform: uppercase; letter-spacing: 0.04em; }
+    .inc-detail-metric-value { font-size: 0.8125rem; font-weight: 600; color: var(--grey-700); }
+
+    .inc-detail-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--blue);
+      text-decoration: none;
+      padding: 0.4rem 0.75rem;
+      border-radius: 6px;
+      border: 1px solid var(--blue-light);
+      background: var(--blue-50);
+      transition: background 0.15s, border-color 0.15s;
+      min-height: 44px;
+      margin-top: 0.5rem;
+    }
+    .inc-detail-link:hover { background: var(--blue-light); border-color: var(--blue); }
+    [data-theme="dark"] .inc-detail-link { color: #93c5fd; }
+
+    @media (max-width: 640px) {
+      .inc-detail-grid { grid-template-columns: 1fr 1fr; }
+      .inc-detail-metrics { grid-template-columns: repeat(2, 1fr); }
+      .incident-modal { margin: 0.5rem; max-width: none; }
+    }
 
     .no-incidents {
       background: var(--bg-card);
@@ -775,6 +869,22 @@
     </div>
   </div>
 
+  <!-- Incident detail modal -->
+  <div class="modal-overlay" id="incident-modal" role="dialog" aria-modal="true" aria-labelledby="incident-modal-title">
+    <div class="modal incident-modal">
+      <div class="modal-header">
+        <div>
+          <div class="modal-title" id="incident-modal-title"></div>
+          <div class="modal-subtitle" id="incident-modal-date"></div>
+        </div>
+        <button class="modal-close" onclick="closeIncidentModal()" aria-label="Close">
+          <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+        </button>
+      </div>
+      <div class="modal-body" id="incident-modal-body"></div>
+    </div>
+  </div>
+
   <main>
     <div class="container">
       <!-- Skeleton loading state -->
@@ -841,6 +951,7 @@
     ];
 
     var expandedSlug = null;
+    var loadedServices = [];
 
     /* Theme toggle */
     function isDark() { return document.documentElement.getAttribute('data-theme') === 'dark'; }
@@ -881,8 +992,75 @@
     });
 
     document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape') closeSubscribe();
+      if (e.key === 'Escape') { closeSubscribe(); closeIncidentModal(); }
     });
+
+    /* Incident detail modal */
+    function openIncidentModal() {
+      document.getElementById('incident-modal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeIncidentModal() {
+      document.getElementById('incident-modal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    document.getElementById('incident-modal').addEventListener('click', function(e) {
+      if (e.target === this) closeIncidentModal();
+    });
+
+    function showIncidentDetail(serviceName, date, mins) {
+      var svc = loadedServices.find(function(s) { return s.name === serviceName; });
+      if (!svc) return;
+
+      var severity = mins >= 60 ? 'major' : 'minor';
+      var severityLabel = mins >= 60 ? 'Major' : 'Minor';
+      var dateObj = new Date(date);
+      var dateStr = dateObj.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+
+      document.getElementById('incident-modal-title').textContent = svc.name;
+      document.getElementById('incident-modal-date').textContent = 'Incident on ' + dateStr;
+
+      var allIncidents = Object.entries(svc.dailyMinutesDown || {})
+        .map(function(e) { return { date: e[0], mins: e[1], dateObj: new Date(e[0]) }; })
+        .sort(function(a, b) { return b.dateObj - a.dateObj; })
+        .slice(0, 10);
+
+      var historyHTML = allIncidents.length > 0 ? allIncidents.map(function(inc) {
+        var ds = inc.dateObj.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+        var isCurrentDate = inc.date === date;
+        return '<div class="inc-detail-history-row' + (isCurrentDate ? '" style="background:var(--grey-50);margin:0 -0.25rem;padding:0.375rem 0.25rem;border-radius:4px' : '') + '">' +
+          '<span class="inc-detail-history-date">' + ds + (isCurrentDate ? ' (this incident)' : '') + '</span>' +
+          '<span class="inc-detail-history-dur">' + formatDuration(inc.mins) + '</span>' +
+        '</div>';
+      }).join('') : '<div style="font-size:0.8125rem;color:var(--text-secondary);">No other incidents recorded.</div>';
+
+      var body =
+        '<div class="inc-detail-banner ' + severity + '">' +
+          '<span class="inc-detail-severity ' + severity + '">' + severityLabel + '</span>' +
+          '<span class="inc-detail-dur">' + formatDurationLong(mins) + '</span>' +
+        '</div>' +
+        '<div class="inc-detail-grid">' +
+          '<div><div class="inc-detail-item-label">Service</div><div class="inc-detail-item-value">' + svc.name + '</div></div>' +
+          '<div><div class="inc-detail-item-label">Current Status</div><div class="inc-detail-item-value">' + (svc.status === 'up' ? 'Operational' : 'Outage') + '</div></div>' +
+          '<div><div class="inc-detail-item-label">All-Time Uptime</div><div class="inc-detail-item-value">' + svc.uptime + '</div></div>' +
+          '<div><div class="inc-detail-item-label">30-Day Uptime</div><div class="inc-detail-item-value">' + svc.uptimeMonth + '</div></div>' +
+        '</div>' +
+        '<div class="inc-detail-section-title">Response Times</div>' +
+        '<div class="inc-detail-metrics">' +
+          '<div class="inc-detail-metric"><div class="inc-detail-metric-label">24h</div><div class="inc-detail-metric-value">' + (svc.timeDay || svc.time) + 'ms</div></div>' +
+          '<div class="inc-detail-metric"><div class="inc-detail-metric-label">7 days</div><div class="inc-detail-metric-value">' + (svc.timeWeek || svc.time) + 'ms</div></div>' +
+          '<div class="inc-detail-metric"><div class="inc-detail-metric-label">30 days</div><div class="inc-detail-metric-value">' + (svc.timeMonth || svc.time) + 'ms</div></div>' +
+          '<div class="inc-detail-metric"><div class="inc-detail-metric-label">1 year</div><div class="inc-detail-metric-value">' + (svc.timeYear || svc.time) + 'ms</div></div>' +
+        '</div>' +
+        '<div class="inc-detail-section-title">Incident History for ' + svc.name + '</div>' +
+        historyHTML +
+        '<a class="inc-detail-link" href="' + svc.url + '" target="_blank" rel="noopener">Visit ' + svc.name + ' ' + EXT_SVG + '</a>';
+
+      document.getElementById('incident-modal-body').innerHTML = body;
+      openIncidentModal();
+    }
 
     /* Utility functions */
     function generateUptimeBars(dailyMinutesDown, isMobile) {
@@ -1082,6 +1260,7 @@
         var res = await fetch(DATA_URL, { cache: 'no-cache' });
         if (!res.ok) throw new Error('Failed to fetch status data');
         var services = await res.json();
+        loadedServices = services;
         var isMobile = window.innerWidth <= 640;
 
         if (skeletonEl) skeletonEl.remove();
@@ -1144,8 +1323,8 @@
             var dateStr = group.dateObj.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
             var cards = group.items.map(function(inc) {
               var severity = inc.mins >= 60 ? 'major' : 'minor';
-              var issueUrl = REPO_URL + '/issues?q=is%3Aissue+' + encodeURIComponent(inc.service);
-              return '<a class="incident-card ' + severity + '" href="' + issueUrl + '" target="_blank" rel="noopener">' +
+              var escapedName = inc.service.replace(/'/g, "\\'");
+              return '<div class="incident-card ' + severity + '" role="button" tabindex="0" onclick="showIncidentDetail(\'' + escapedName + '\',\'' + inc.date + '\',' + inc.mins + ')" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();showIncidentDetail(\'' + escapedName + '\',\'' + inc.date + '\',' + inc.mins + ')}">' +
                 '<div class="incident-card-left">' +
                   '<span class="incident-card-svc">' + inc.service + '</span>' +
                 '</div>' +
@@ -1153,7 +1332,7 @@
                   '<span class="incident-card-dur">' + formatDurationLong(inc.mins) + '</span>' +
                   ARROW_SVG +
                 '</div>' +
-              '</a>';
+              '</div>';
             }).join('');
             return '<div class="incident-date-group">' +
               '<div class="incident-date-header">' + dateStr + '</div>' +
