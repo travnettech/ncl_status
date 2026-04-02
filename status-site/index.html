@@ -447,9 +447,11 @@
       border-radius: 100px;
     }
     .service-badge.up { background: var(--green-bg); color: var(--green-dark); }
+    .service-badge.degraded { background: var(--yellow-bg); color: var(--yellow-dark); }
     .service-badge.down { background: var(--red-bg); color: var(--red-dark); }
     .service-badge .dot { width: 6px; height: 6px; border-radius: 50%; }
     .service-badge.up .dot { background: var(--green); }
+    .service-badge.degraded .dot { background: var(--yellow); }
     .service-badge.down .dot { background: var(--red); }
 
     .chevron {
@@ -780,7 +782,10 @@
       gap: 0.5rem;
     }
 
-    .hosting-card-name { display: flex; flex-direction: column; min-width: 0; }
+    .hosting-card-name { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+    .hosting-card-name-row { display: flex; align-items: center; gap: 0.5rem; }
+    .hosting-card-role-icon { color: var(--grey-400); display: flex; align-items: center; flex-shrink: 0; }
+    .hosting-card-role-icon svg { width: 18px; height: 18px; }
     .hosting-card-label { font-weight: 600; font-size: 0.9375rem; color: var(--grey-800); }
     .hosting-card-host { font-size: 0.6875rem; color: var(--text-secondary); font-weight: 400; }
 
@@ -825,15 +830,31 @@
     }
     .hosting-svc-badge .dot { width: 6px; height: 6px; border-radius: 50%; }
     .hosting-svc-badge.up .dot { background: var(--green); }
+    .hosting-svc-badge.degraded .dot { background: var(--yellow); }
     .hosting-svc-badge.down .dot { background: var(--red); }
     .hosting-svc-badge.up { color: var(--green-dark); background: var(--green-bg); border-color: var(--green-border); }
+    .hosting-svc-badge.degraded { color: var(--yellow-dark); background: var(--yellow-bg); border-color: var(--yellow-border); }
     .hosting-svc-badge.down { color: var(--red-dark); background: var(--red-bg); border-color: var(--red-border); }
 
     .hosting-summary-stats {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 0.75rem;
       margin-bottom: 0.75rem;
+    }
+
+    .hosting-categories {
+      display: flex;
+      gap: 0.375rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.75rem;
+    }
+
+    .hosting-loading {
+      text-align: center;
+      padding: 2rem 1rem;
+      color: var(--text-secondary);
+      font-size: 0.875rem;
     }
 
     @media (max-width: 640px) {
@@ -1153,11 +1174,15 @@
         <div class="infra-table-wrap"><table class="infra-table" id="infra-table"></table></div>
       </div>
 
-      <div id="hosting-section" class="hosting-section" style="display:none;">
+      <div id="hosting-section" class="hosting-section">
         <div class="section-header">Hosting Infrastructure</div>
-        <div id="hosting-banner"></div>
-        <div id="hosting-summary"></div>
-        <div id="hosting-grid" class="hosting-grid"></div>
+        <div id="hosting-loading" class="hosting-loading">Loading hosting status...</div>
+        <div id="hosting-content" style="display:none;">
+          <div id="hosting-banner"></div>
+          <div id="hosting-summary"></div>
+          <div id="hosting-categories" class="hosting-categories"></div>
+          <div id="hosting-grid" class="hosting-grid"></div>
+        </div>
       </div>
 
       <div id="incidents-section" class="incidents-section" style="display:none;">
@@ -1755,37 +1780,60 @@
     }
 
     async function loadHostingStatus() {
+      var loadingEl = document.getElementById('hosting-loading');
+      var contentEl = document.getElementById('hosting-content');
+
       try {
         var res = await fetch(HOSTING_STATUS_URL, { cache: 'no-cache' });
-        if (!res.ok) return;
+        if (!res.ok) throw new Error('HTTP ' + res.status);
         var data = await res.json();
 
-        var section = document.getElementById('hosting-section');
         var bannerEl = document.getElementById('hosting-banner');
         var summaryEl = document.getElementById('hosting-summary');
+        var categoriesEl = document.getElementById('hosting-categories');
         var gridEl = document.getElementById('hosting-grid');
 
-        var overall = data.status;
-        var bannerClass = overall === 'operational' ? 'operational' : (overall === 'degraded' ? 'degraded' : 'down');
-        var bannerLabel = overall === 'operational' ? 'All Components Operational' : (overall === 'degraded' ? 'Some Components Degraded' : 'Major Outage');
-        var dotClass = overall === 'operational' ? 'up' : (overall === 'degraded' ? 'degraded' : 'down');
+        var statusMap = {
+          operational:    { cls: 'operational', label: 'All Components Operational', dot: 'up' },
+          degraded:       { cls: 'degraded',    label: 'Some Components Degraded',  dot: 'degraded' },
+          partial_outage: { cls: 'degraded',    label: 'Partial Outage',            dot: 'degraded' },
+          major_outage:   { cls: 'down',        label: 'Major Outage',              dot: 'down' }
+        };
+        var s = statusMap[data.status] || statusMap.major_outage;
 
         var updatedDate = new Date(data.updated_at);
         var updatedStr = updatedDate.toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' });
 
         bannerEl.innerHTML =
-          '<div class="hosting-banner ' + bannerClass + '">' +
-            '<span class="pulse-dot ' + dotClass + '"></span>' +
-            bannerLabel +
+          '<div class="hosting-banner ' + s.cls + '">' +
+            '<span class="pulse-dot ' + s.dot + '"></span>' +
+            s.label +
             '<span class="hosting-banner-right">' + updatedStr + '</span>' +
           '</div>';
 
         summaryEl.innerHTML =
           '<div class="hosting-summary-stats">' +
+            '<div class="stat-card"><div class="stat-value">' + data.summary.total + '</div><div class="stat-label">Total</div></div>' +
             '<div class="stat-card"><div class="stat-value" style="color:var(--green-dark)">' + data.summary.operational + '</div><div class="stat-label">Operational</div></div>' +
             '<div class="stat-card"><div class="stat-value' + (data.summary.degraded > 0 ? ' warn' : '') + '">' + data.summary.degraded + '</div><div class="stat-label">Degraded</div></div>' +
             '<div class="stat-card"><div class="stat-value' + (data.summary.down > 0 ? ' bad' : '') + '">' + data.summary.down + '</div><div class="stat-label">Down</div></div>' +
           '</div>';
+
+        var categoryLabels = {
+          press_platform: 'Press Platform', site_hosting: 'Site Hosting',
+          database: 'Database', proxy_cdn: 'Proxy / CDN',
+          monitoring: 'Monitoring', logging: 'Logging'
+        };
+
+        if (data.services) {
+          var catBadges = Object.keys(data.services).map(function(key) {
+            var st = data.services[key];
+            var cls = st === 'operational' ? 'up' : (st === 'degraded' ? 'degraded' : 'down');
+            var label = categoryLabels[key] || key;
+            return '<span class="hosting-svc-badge ' + cls + '"><span class="dot"></span>' + label + '</span>';
+          }).join('');
+          categoriesEl.innerHTML = catBadges;
+        }
 
         var roleIcons = {
           press: '<svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path fill-rule="evenodd" d="M3 5a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2h-2.22l.123.489.804.804A1 1 0 0113 18H7a1 1 0 01-.707-1.707l.804-.804L7.22 15H5a2 2 0 01-2-2V5zm5.771 7H5V5h10v7H8.771z" clip-rule="evenodd"/></svg>',
@@ -1797,32 +1845,40 @@
         };
 
         var cards = data.components.map(function(c) {
-          var isUp = c.status === 'operational';
-          var badgeClass = isUp ? 'up' : 'down';
-          var badgeLabel = isUp ? 'Operational' : (c.status === 'degraded' ? 'Degraded' : 'Down');
+          var badgeClass = c.status === 'operational' ? 'up' : (c.status === 'degraded' ? 'degraded' : 'down');
+          var badgeLabel = c.status === 'operational' ? 'Operational' : (c.status === 'degraded' ? 'Degraded' : 'Down');
 
-          var uptimeHours = Math.floor(c.uptime_seconds / 3600);
-          var uptimeDays = Math.floor(uptimeHours / 24);
-          var uptimeRemHours = uptimeHours % 24;
-          var uptimeStr = uptimeDays > 0 ? uptimeDays + 'd ' + uptimeRemHours + 'h' : uptimeHours + 'h';
+          var uptimeStr = '\u2014';
+          if (c.uptime_seconds != null) {
+            var uptimeHours = Math.floor(c.uptime_seconds / 3600);
+            var uptimeDays = Math.floor(uptimeHours / 24);
+            var uptimeRemHours = uptimeHours % 24;
+            uptimeStr = uptimeDays > 0 ? uptimeDays + 'd ' + uptimeRemHours + 'h' : uptimeHours + 'h';
+          }
 
-          var responseClass = c.response_ms < 500 ? 'good' : (c.response_ms < 1000 ? '' : 'warn');
+          var responseVal = c.response_ms != null ? c.response_ms + 'ms' : '\u2014';
+          var responseClass = c.response_ms != null ? (c.response_ms < 500 ? 'good' : (c.response_ms < 1000 ? '' : 'warn')) : '';
+
+          var icon = roleIcons[c.role] || '';
 
           var svcBadges = c.services.map(function(svc) {
-            var svcUp = svc.status === 'operational';
-            return '<span class="hosting-svc-badge ' + (svcUp ? 'up' : 'down') + '"><span class="dot"></span>' + svc.name + '</span>';
+            var svcCls = svc.status === 'operational' ? 'up' : (svc.status === 'degraded' ? 'degraded' : 'down');
+            return '<span class="hosting-svc-badge ' + svcCls + '"><span class="dot"></span>' + svc.name + '</span>';
           }).join('');
 
           return '<div class="hosting-card">' +
             '<div class="hosting-card-header">' +
-              '<div class="hosting-card-name">' +
-                '<span class="hosting-card-label">' + c.label + '</span>' +
-                '<span class="hosting-card-host">' + c.name + '</span>' +
+              '<div class="hosting-card-name-row">' +
+                (icon ? '<span class="hosting-card-role-icon">' + icon + '</span>' : '') +
+                '<div class="hosting-card-name">' +
+                  '<span class="hosting-card-label">' + c.label + '</span>' +
+                  '<span class="hosting-card-host">' + c.name + '</span>' +
+                '</div>' +
               '</div>' +
               '<span class="service-badge ' + badgeClass + '"><span class="dot"></span>' + badgeLabel + '</span>' +
             '</div>' +
             '<div class="hosting-card-metrics">' +
-              '<div class="hosting-metric"><div class="hosting-metric-label">Response</div><div class="hosting-metric-value ' + responseClass + '">' + c.response_ms + 'ms</div></div>' +
+              '<div class="hosting-metric"><div class="hosting-metric-label">Response</div><div class="hosting-metric-value ' + responseClass + '">' + responseVal + '</div></div>' +
               '<div class="hosting-metric"><div class="hosting-metric-label">Uptime</div><div class="hosting-metric-value">' + uptimeStr + '</div></div>' +
               '<div class="hosting-metric"><div class="hosting-metric-label">Services</div><div class="hosting-metric-value">' + c.services.length + '</div></div>' +
             '</div>' +
@@ -1831,9 +1887,11 @@
         }).join('');
 
         gridEl.innerHTML = cards;
-        section.style.display = 'block';
+        loadingEl.style.display = 'none';
+        contentEl.style.display = 'block';
       } catch (err) {
         console.error('Failed to load hosting status:', err);
+        loadingEl.innerHTML = '<div class="hosting-banner down">Unable to load hosting status. Will retry automatically.</div>';
       }
     }
 
@@ -1841,6 +1899,7 @@
     loadInfraHealth();
     loadHostingStatus();
     setInterval(function() { loadStatus(true); }, 300000);
+    setInterval(function() { loadInfraHealth(); }, 300000);
     setInterval(function() { loadHostingStatus(); }, 300000);
   </script>
 </body>
