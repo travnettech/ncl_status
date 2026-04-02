@@ -741,13 +741,44 @@
     /* Hosting infrastructure */
     .hosting-section { margin-bottom: 2rem; }
 
+    .hosting-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      user-select: none;
+      gap: 0.5rem;
+    }
+
+    .hosting-toggle-chevron {
+      transition: transform 0.2s;
+      color: var(--grey-400);
+      display: flex;
+      align-items: center;
+    }
+
+    .hosting-section.expanded .hosting-toggle-chevron { transform: rotate(180deg); }
+
+    .hosting-collapsible {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+
+    .hosting-section.expanded .hosting-collapsible {
+      max-height: 2000px;
+    }
+
+    #hosting-banner-wrap { flex: 1; min-width: 0; }
+
+    .hosting-collapsible > div { padding-top: 0.75rem; }
+
     .hosting-banner {
       display: flex;
       align-items: center;
       gap: 0.75rem;
       border-radius: var(--radius);
       padding: 0.75rem 1rem;
-      margin-bottom: 0.75rem;
       font-weight: 600;
       font-size: 0.875rem;
       box-shadow: var(--shadow-sm);
@@ -788,7 +819,6 @@
     .hosting-card-role-icon { color: var(--grey-400); display: flex; align-items: center; flex-shrink: 0; }
     .hosting-card-role-icon .material-symbols-outlined { font-size: 20px; }
     .hosting-card-label { font-weight: 600; font-size: 0.9375rem; color: var(--grey-800); }
-    .hosting-card-host { font-size: 0.6875rem; color: var(--text-secondary); font-weight: 400; }
 
     .hosting-card-metrics {
       display: flex;
@@ -866,29 +896,6 @@
       align-items: center;
       padding: 0 1rem;
       gap: 0.75rem;
-      margin-bottom: 0.25rem;
-    }
-
-    .hosting-skeleton-stats {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0.75rem;
-      margin-bottom: 0.25rem;
-    }
-
-    .hosting-skeleton-stat {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1rem;
-      text-align: center;
-    }
-
-    .hosting-skeleton-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1rem 1.25rem;
     }
 
     .skeleton-line {
@@ -905,10 +912,6 @@
 @keyframes skeleton-pulse {
       0%, 100% { opacity: 0.4; }
       50% { opacity: 1; }
-    }
-
-    @media (max-width: 640px) {
-      .hosting-skeleton-stats { grid-template-columns: 1fr 1fr; }
     }
 
     @media (max-width: 640px) {
@@ -1229,27 +1232,24 @@
       </div>
 
       <div id="hosting-section" class="hosting-section">
-        <div class="section-header">Hosting Infrastructure</div>
-        <div id="hosting-loading" class="hosting-loading">
-          <div class="hosting-skeleton-banner">
-            <div class="skeleton-line" style="width:10px;height:10px;border-radius:50%"></div>
-            <div class="skeleton-line" style="width:180px;height:14px"></div>
+        <div class="hosting-toggle" onclick="toggleHosting()">
+          <div id="hosting-banner-wrap">
+            <div id="hosting-loading" class="hosting-loading">
+              <div class="hosting-skeleton-banner">
+                <div class="skeleton-line" style="width:10px;height:10px;border-radius:50%"></div>
+                <div class="skeleton-line" style="width:180px;height:14px"></div>
+              </div>
+            </div>
+            <div id="hosting-banner" style="display:none;"></div>
           </div>
-          <div class="hosting-skeleton-stats">
-            <div class="hosting-skeleton-stat"><div class="skeleton-line" style="width:28px;height:22px;margin:0 auto 6px"></div><div class="skeleton-line" style="width:50px;height:10px;margin:0 auto"></div></div>
-            <div class="hosting-skeleton-stat"><div class="skeleton-line" style="width:28px;height:22px;margin:0 auto 6px"></div><div class="skeleton-line" style="width:60px;height:10px;margin:0 auto"></div></div>
-            <div class="hosting-skeleton-stat"><div class="skeleton-line" style="width:28px;height:22px;margin:0 auto 6px"></div><div class="skeleton-line" style="width:55px;height:10px;margin:0 auto"></div></div>
-            <div class="hosting-skeleton-stat"><div class="skeleton-line" style="width:28px;height:22px;margin:0 auto 6px"></div><div class="skeleton-line" style="width:36px;height:10px;margin:0 auto"></div></div>
-          </div>
-          <div class="hosting-skeleton-card"><div class="skeleton-line" style="width:140px;height:14px;margin-bottom:8px"></div><div class="skeleton-line" style="width:100%;height:32px"></div></div>
-          <div class="hosting-skeleton-card"><div class="skeleton-line" style="width:120px;height:14px;margin-bottom:8px"></div><div class="skeleton-line" style="width:100%;height:32px"></div></div>
-          <div class="hosting-skeleton-card"><div class="skeleton-line" style="width:160px;height:14px;margin-bottom:8px"></div><div class="skeleton-line" style="width:100%;height:32px"></div></div>
+          <span class="hosting-toggle-chevron"><svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg></span>
         </div>
-        <div id="hosting-content" style="display:none;">
-          <div id="hosting-banner"></div>
-          <div id="hosting-summary"></div>
-          <div id="hosting-categories" class="hosting-categories"></div>
-          <div id="hosting-grid" class="hosting-grid"></div>
+        <div class="hosting-collapsible">
+          <div id="hosting-content" style="display:none;">
+            <div id="hosting-summary"></div>
+            <div id="hosting-categories" class="hosting-categories"></div>
+            <div id="hosting-grid" class="hosting-grid"></div>
+          </div>
         </div>
       </div>
 
@@ -1513,6 +1513,10 @@
         if (btn) btn.setAttribute('aria-expanded', String(allExpanded));
       });
       updateExpandToggleText();
+    }
+
+    function toggleHosting() {
+      document.getElementById('hosting-section').classList.toggle('expanded');
     }
 
     function updateExpandToggleText() {
@@ -1946,7 +1950,6 @@
                 (icon ? '<span class="hosting-card-role-icon">' + icon + '</span>' : '') +
                 '<div class="hosting-card-name">' +
                   '<span class="hosting-card-label">' + c.label + '</span>' +
-                  '<span class="hosting-card-host">' + c.name + '</span>' +
                 '</div>' +
               '</div>' +
               '<span class="service-badge ' + badgeClass + '"><span class="dot"></span>' + badgeLabel + '</span>' +
@@ -1962,6 +1965,7 @@
 
         gridEl.innerHTML = cards;
         loadingEl.style.display = 'none';
+        bannerEl.style.display = '';
         contentEl.style.display = 'block';
       } catch (err) {
         console.error('Failed to load hosting status:', err);
