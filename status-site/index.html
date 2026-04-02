@@ -741,143 +741,153 @@
     /* Hosting infrastructure */
     .hosting-section { margin-bottom: 2rem; }
 
+    /* Hosting toggle header */
     .hosting-toggle {
       display: flex;
       align-items: center;
-      justify-content: space-between;
       cursor: pointer;
       user-select: none;
-      gap: 0.5rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.75rem 1rem;
+      box-shadow: var(--shadow-sm);
+      transition: border-color 0.15s, box-shadow 0.15s;
     }
+    .hosting-toggle:hover { border-color: var(--grey-300); box-shadow: var(--shadow); }
+
+    .hosting-toggle-left {
+      display: flex;
+      align-items: center;
+      gap: 0.625rem;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .hosting-toggle-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .hosting-toggle-dot.up { background: var(--green); }
+    .hosting-toggle-dot.degraded { background: var(--yellow); }
+    .hosting-toggle-dot.down { background: var(--red); }
+
+    .hosting-toggle-title {
+      font-weight: 600;
+      font-size: 0.875rem;
+      color: var(--text);
+      white-space: nowrap;
+    }
+
+    .hosting-toggle-summary {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-left: auto;
+      padding-right: 0.75rem;
+    }
+
+    .hosting-toggle-chip {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      padding: 0.15rem 0.5rem;
+      border-radius: 100px;
+      white-space: nowrap;
+    }
+    .hosting-toggle-chip.ok { background: var(--green-bg); color: var(--green-dark); }
+    .hosting-toggle-chip.warn { background: var(--yellow-bg); color: var(--yellow-dark); }
+    .hosting-toggle-chip.bad { background: var(--red-bg); color: var(--red-dark); }
 
     .hosting-toggle-chevron {
       transition: transform 0.2s;
       color: var(--grey-400);
       display: flex;
       align-items: center;
+      flex-shrink: 0;
     }
-
     .hosting-section.expanded .hosting-toggle-chevron { transform: rotate(180deg); }
 
+    /* Hosting collapsible body */
     .hosting-collapsible {
       max-height: 0;
       overflow: hidden;
-      transition: max-height 0.3s ease;
+      transition: max-height 0.35s ease;
+    }
+    .hosting-section.expanded .hosting-collapsible { max-height: 2000px; }
+
+    .hosting-body {
+      padding-top: 0.625rem;
     }
 
-    .hosting-section.expanded .hosting-collapsible {
-      max-height: 2000px;
-    }
-
-    #hosting-banner-wrap { flex: 1; min-width: 0; }
-
-    .hosting-collapsible > div { padding-top: 0.75rem; }
-
-    .hosting-banner {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      border-radius: var(--radius);
-      padding: 0.75rem 1rem;
-      font-weight: 600;
-      font-size: 0.875rem;
-      box-shadow: var(--shadow-sm);
-    }
-    .hosting-banner.operational { background: var(--green-bg); border: 1px solid var(--green-border); color: var(--green-dark); }
-    .hosting-banner.degraded { background: var(--yellow-bg); border: 1px solid var(--yellow-border); color: var(--yellow-dark); }
-    .hosting-banner.down { background: var(--red-bg); border: 1px solid var(--red-border); color: var(--red-dark); }
-
-    .hosting-banner-label { white-space: nowrap; }
-
-    .hosting-banner-counts {
-      display: flex;
-      align-items: center;
+    .hosting-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
       gap: 0.5rem;
-      margin-left: auto;
     }
-
-    .hosting-banner-count {
-      font-size: 0.75rem;
-      font-weight: 500;
-      opacity: 0.85;
-      white-space: nowrap;
-    }
-    .hosting-banner-count.warn { color: var(--yellow-dark); }
-    .hosting-banner-count.bad { color: var(--red-dark); }
-
-    .hosting-banner-right {
-      font-size: 0.6875rem;
-      font-weight: 500;
-      opacity: 0.7;
-      white-space: nowrap;
-    }
-
-    .hosting-grid { display: flex; flex-direction: column; gap: 0.5rem; }
 
     .hosting-card {
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 1rem 1.25rem;
+      padding: 0.875rem 1rem;
       box-shadow: var(--shadow-sm);
-      transition: border-color 0.15s, box-shadow 0.15s;
+      transition: border-color 0.15s;
     }
-    .hosting-card:hover { border-color: var(--grey-300); box-shadow: var(--shadow); }
+    .hosting-card:hover { border-color: var(--grey-300); }
 
-    .hosting-card-header {
+    .hosting-card-top {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 0.625rem;
       gap: 0.5rem;
+      margin-bottom: 0.5rem;
     }
 
-    .hosting-card-name { display: flex; flex-direction: column; min-width: 0; flex: 1; }
-    .hosting-card-name-row { display: flex; align-items: center; gap: 0.5rem; }
-    .hosting-card-role-icon { color: var(--grey-400); display: flex; align-items: center; flex-shrink: 0; }
-    .hosting-card-role-icon .material-symbols-outlined { font-size: 20px; }
-    .hosting-card-label { font-weight: 600; font-size: 0.9375rem; color: var(--grey-800); }
-
-    .hosting-card-metrics {
+    .hosting-card-name-row {
       display: flex;
+      align-items: center;
       gap: 0.375rem;
-      flex-wrap: wrap;
-      margin-top: 0.25rem;
+      min-width: 0;
     }
 
-    .hosting-metric {
-      text-align: center;
-      padding: 0.375rem 0.625rem;
-      background: var(--grey-50);
-      border-radius: 6px;
-      flex: 1;
-      min-width: 70px;
+    .hosting-card-role-icon { color: var(--grey-400); display: flex; align-items: center; flex-shrink: 0; }
+    .hosting-card-role-icon .material-symbols-outlined { font-size: 18px; }
+    .hosting-card-label { font-weight: 600; font-size: 0.8125rem; color: var(--grey-800); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    .hosting-card-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.6875rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
     }
-    .hosting-metric-label { font-size: 0.5625rem; color: var(--grey-400); text-transform: uppercase; letter-spacing: 0.04em; }
-    .hosting-metric-value { font-size: 0.8125rem; font-weight: 600; color: var(--grey-700); }
-    .hosting-metric-value.good { color: var(--green-dark); }
-    .hosting-metric-value.warn { color: var(--yellow-dark); }
+
+    .hosting-card-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+    .hosting-card-meta-val { font-weight: 600; color: var(--grey-700); }
+    .hosting-card-meta-val.good { color: var(--green-dark); }
+    .hosting-card-meta-val.warn { color: var(--yellow-dark); }
 
     .hosting-services {
       display: flex;
-      gap: 0.375rem;
+      gap: 0.25rem;
       flex-wrap: wrap;
-      margin-top: 0.5rem;
     }
 
     .hosting-svc-badge {
       display: inline-flex;
       align-items: center;
-      gap: 0.25rem;
-      font-size: 0.6875rem;
+      gap: 0.2rem;
+      font-size: 0.625rem;
       font-weight: 500;
-      padding: 0.2rem 0.5rem;
+      padding: 0.125rem 0.4rem;
       border-radius: 100px;
       background: var(--grey-50);
       border: 1px solid var(--border);
       color: var(--text-secondary);
     }
-    .hosting-svc-badge .dot { width: 6px; height: 6px; border-radius: 50%; }
+    .hosting-svc-badge .dot { width: 5px; height: 5px; border-radius: 50%; }
     .hosting-svc-badge.up .dot { background: var(--green); }
     .hosting-svc-badge.degraded .dot { background: var(--yellow); }
     .hosting-svc-badge.down .dot { background: var(--red); }
@@ -885,35 +895,16 @@
     .hosting-svc-badge.degraded { color: var(--yellow-dark); background: var(--yellow-bg); border-color: var(--yellow-border); }
     .hosting-svc-badge.down { color: var(--red-dark); background: var(--red-bg); border-color: var(--red-border); }
 
-    .hosting-summary-stats {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0.75rem;
-      margin-bottom: 0.75rem;
-    }
-
-    .hosting-categories {
-      display: flex;
-      gap: 0.375rem;
-      flex-wrap: wrap;
-      margin-bottom: 0.75rem;
-    }
-
-    .hosting-loading {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-
-    .hosting-skeleton-banner {
-      height: 44px;
-      border-radius: var(--radius);
-      background: var(--grey-50);
+    /* Hosting loading skeleton */
+    .hosting-skeleton-toggle {
+      height: 46px;
+      background: var(--bg-card);
       border: 1px solid var(--border);
+      border-radius: var(--radius);
       display: flex;
       align-items: center;
       padding: 0 1rem;
-      gap: 0.75rem;
+      gap: 0.625rem;
     }
 
     .skeleton-line {
@@ -927,24 +918,20 @@
       opacity: 0.5;
     }
 
-@keyframes skeleton-pulse {
+    @keyframes skeleton-pulse {
       0%, 100% { opacity: 0.4; }
       50% { opacity: 1; }
     }
 
     @media (max-width: 640px) {
-      .hosting-banner { font-size: 0.8125rem; padding: 0.625rem 0.75rem; gap: 0.5rem; }
-      .hosting-banner-right { display: none; }
-      .hosting-banner-counts { display: none; }
-      .hosting-summary-stats { grid-template-columns: 1fr 1fr; }
+      .hosting-toggle { padding: 0.625rem 0.75rem; }
+      .hosting-toggle-title { font-size: 0.8125rem; }
+      .hosting-toggle-summary { display: none; }
+      .hosting-grid { grid-template-columns: 1fr; }
       .hosting-card { padding: 0.75rem; }
-      .hosting-card-header { flex-direction: column; align-items: flex-start; }
-      .hosting-card-label { font-size: 0.8125rem; }
-      .hosting-card-metrics { flex-direction: column; }
-      .hosting-card-metrics .hosting-metric { flex-direction: row; justify-content: space-between; padding: 0.25rem 0.5rem; }
-      .hosting-services { gap: 0.25rem; }
-      .hosting-svc-badge { font-size: 0.625rem; padding: 0.15rem 0.375rem; }
-      .hosting-categories { gap: 0.25rem; }
+      .hosting-card-top { flex-direction: column; align-items: flex-start; }
+      .hosting-card-label { font-size: 0.75rem; }
+      .hosting-services { gap: 0.2rem; }
     }
 
     /* Help CTA */
@@ -1259,22 +1246,22 @@
       </div>
 
       <div id="hosting-section" class="hosting-section">
-        <div class="hosting-toggle" onclick="toggleHosting()">
-          <div id="hosting-banner-wrap">
-            <div id="hosting-loading" class="hosting-loading">
-              <div class="hosting-skeleton-banner">
-                <div class="skeleton-line" style="width:10px;height:10px;border-radius:50%"></div>
-                <div class="skeleton-line" style="width:180px;height:14px"></div>
-              </div>
-            </div>
-            <div id="hosting-banner" style="display:none;"></div>
+        <div id="hosting-loading" class="hosting-loading">
+          <div class="hosting-skeleton-toggle">
+            <div class="skeleton-line" style="width:8px;height:8px;border-radius:50%"></div>
+            <div class="skeleton-line" style="width:150px;height:12px"></div>
           </div>
-          <span class="hosting-toggle-chevron"><svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg></span>
+        </div>
+        <div id="hosting-toggle" class="hosting-toggle" style="display:none;" onclick="toggleHosting()">
+          <div class="hosting-toggle-left">
+            <span id="hosting-dot" class="hosting-toggle-dot"></span>
+            <span class="hosting-toggle-title">Hosting Infrastructure</span>
+          </div>
+          <div id="hosting-toggle-summary" class="hosting-toggle-summary"></div>
+          <span class="hosting-toggle-chevron"><svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg></span>
         </div>
         <div class="hosting-collapsible">
-          <div id="hosting-content" style="display:none;">
-            <div id="hosting-summary"></div>
-            <div id="hosting-categories" class="hosting-categories"></div>
+          <div id="hosting-content" class="hosting-body" style="display:none;">
             <div id="hosting-grid" class="hosting-grid"></div>
           </div>
         </div>
@@ -1886,6 +1873,7 @@
 
     async function loadHostingStatus() {
       var loadingEl = document.getElementById('hosting-loading');
+      var toggleEl = document.getElementById('hosting-toggle');
       var contentEl = document.getElementById('hosting-content');
 
       try {
@@ -1893,58 +1881,24 @@
         if (!res.ok) throw new Error('HTTP ' + res.status);
         var data = await res.json();
 
-        var bannerEl = document.getElementById('hosting-banner');
-        var summaryEl = document.getElementById('hosting-summary');
-        var categoriesEl = document.getElementById('hosting-categories');
+        var dotEl = document.getElementById('hosting-dot');
+        var summaryEl = document.getElementById('hosting-toggle-summary');
         var gridEl = document.getElementById('hosting-grid');
 
         var statusMap = {
-          operational:    { cls: 'operational', label: 'All Components Operational', dot: 'up' },
-          degraded:       { cls: 'degraded',    label: 'Some Components Degraded',  dot: 'degraded' },
-          partial_outage: { cls: 'degraded',    label: 'Partial Outage',            dot: 'degraded' },
-          major_outage:   { cls: 'down',        label: 'Major Outage',              dot: 'down' }
+          operational:    { dot: 'up' },
+          degraded:       { dot: 'degraded' },
+          partial_outage: { dot: 'degraded' },
+          major_outage:   { dot: 'down' }
         };
         var s = statusMap[data.status] || statusMap.major_outage;
+        dotEl.className = 'hosting-toggle-dot ' + s.dot;
 
-        var updatedDate = new Date(data.updated_at);
-        var updatedStr = updatedDate.toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' });
-
-        var summaryParts = [];
-        summaryParts.push('<span class="hosting-banner-count">' + data.summary.operational + '/' + data.summary.total + ' up</span>');
-        if (data.summary.degraded > 0) summaryParts.push('<span class="hosting-banner-count warn">' + data.summary.degraded + ' degraded</span>');
-        if (data.summary.down > 0) summaryParts.push('<span class="hosting-banner-count bad">' + data.summary.down + ' down</span>');
-
-        bannerEl.innerHTML =
-          '<div class="hosting-banner ' + s.cls + '">' +
-            '<span class="pulse-dot ' + s.dot + '"></span>' +
-            '<span class="hosting-banner-label">' + s.label + '</span>' +
-            '<span class="hosting-banner-counts">' + summaryParts.join('') + '</span>' +
-            '<span class="hosting-banner-right">' + updatedStr + '</span>' +
-          '</div>';
-
-        summaryEl.innerHTML =
-          '<div class="hosting-summary-stats">' +
-            '<div class="stat-card"><div class="stat-value">' + data.summary.total + '</div><div class="stat-label">Total</div></div>' +
-            '<div class="stat-card"><div class="stat-value" style="color:var(--green-dark)">' + data.summary.operational + '</div><div class="stat-label">Operational</div></div>' +
-            '<div class="stat-card"><div class="stat-value' + (data.summary.degraded > 0 ? ' warn' : '') + '">' + data.summary.degraded + '</div><div class="stat-label">Degraded</div></div>' +
-            '<div class="stat-card"><div class="stat-value' + (data.summary.down > 0 ? ' bad' : '') + '">' + data.summary.down + '</div><div class="stat-label">Down</div></div>' +
-          '</div>';
-
-        var categoryLabels = {
-          press_platform: 'Press Platform', site_hosting: 'Site Hosting',
-          database: 'Database', proxy_cdn: 'Proxy / CDN',
-          monitoring: 'Monitoring', logging: 'Logging'
-        };
-
-        if (data.services) {
-          var catBadges = Object.keys(data.services).map(function(key) {
-            var st = data.services[key];
-            var cls = st === 'operational' ? 'up' : (st === 'degraded' ? 'degraded' : 'down');
-            var label = categoryLabels[key] || key;
-            return '<span class="hosting-svc-badge ' + cls + '"><span class="dot"></span>' + label + '</span>';
-          }).join('');
-          categoriesEl.innerHTML = catBadges;
-        }
+        var chips = [];
+        chips.push('<span class="hosting-toggle-chip ok">' + data.summary.operational + '/' + data.summary.total + ' up</span>');
+        if (data.summary.degraded > 0) chips.push('<span class="hosting-toggle-chip warn">' + data.summary.degraded + ' degraded</span>');
+        if (data.summary.down > 0) chips.push('<span class="hosting-toggle-chip bad">' + data.summary.down + ' down</span>');
+        summaryEl.innerHTML = chips.join('');
 
         var roleIcons = {
           press: '<span class="material-symbols-outlined">newspaper</span>',
@@ -1978,19 +1932,16 @@
           }).join('');
 
           return '<div class="hosting-card">' +
-            '<div class="hosting-card-header">' +
+            '<div class="hosting-card-top">' +
               '<div class="hosting-card-name-row">' +
                 (icon ? '<span class="hosting-card-role-icon">' + icon + '</span>' : '') +
-                '<div class="hosting-card-name">' +
-                  '<span class="hosting-card-label">' + c.label + '</span>' +
-                '</div>' +
+                '<span class="hosting-card-label">' + c.label + '</span>' +
               '</div>' +
               '<span class="service-badge ' + badgeClass + '"><span class="dot"></span>' + badgeLabel + '</span>' +
             '</div>' +
-            '<div class="hosting-card-metrics">' +
-              '<div class="hosting-metric"><div class="hosting-metric-label">Response</div><div class="hosting-metric-value ' + responseClass + '">' + responseVal + '</div></div>' +
-              '<div class="hosting-metric"><div class="hosting-metric-label">Uptime</div><div class="hosting-metric-value">' + uptimeStr + '</div></div>' +
-              '<div class="hosting-metric"><div class="hosting-metric-label">Services</div><div class="hosting-metric-value">' + c.services.length + '</div></div>' +
+            '<div class="hosting-card-meta">' +
+              '<div class="hosting-card-meta-item"><span>Response</span> <span class="hosting-card-meta-val ' + responseClass + '">' + responseVal + '</span></div>' +
+              '<div class="hosting-card-meta-item"><span>Uptime</span> <span class="hosting-card-meta-val">' + uptimeStr + '</span></div>' +
             '</div>' +
             '<div class="hosting-services">' + svcBadges + '</div>' +
           '</div>';
@@ -1998,7 +1949,7 @@
 
         gridEl.innerHTML = cards;
         loadingEl.style.display = 'none';
-        bannerEl.style.display = '';
+        toggleEl.style.display = '';
         contentEl.style.display = 'block';
       } catch (err) {
         console.error('Failed to load hosting status:', err);
