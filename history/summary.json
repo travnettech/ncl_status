@@ -53,11 +53,11 @@
     "icon": "https://portal-nelsoncollege-files.s3.eu-west-2.amazonaws.com/logo/One_NCL.svg",
     "slug": "nelson-one",
     "status": "down",
-    "uptime": "99.31%",
+    "uptime": "99.30%",
     "uptimeDay": "0.00%",
     "uptimeWeek": "0.00%",
-    "uptimeMonth": "73.13%",
-    "uptimeYear": "97.40%",
+    "uptimeMonth": "72.41%",
+    "uptimeYear": "97.34%",
     "time": 796,
     "timeDay": 712,
     "timeWeek": 912,
@@ -67,7 +67,7 @@
       "2025-11-16": 1307,
       "2025-11-15": 319,
       "2026-02-20": 243,
-      "2026-06-07": 67,
+      "2026-06-07": 381,
       "2026-06-06": 1440,
       "2026-06-05": 1440,
       "2026-06-04": 1440,
@@ -84,11 +84,11 @@
     "url": "https://portal.nelsoncollege.ac.uk",
     "icon": "https://portal-nelsoncollege-files.s3.eu-west-2.amazonaws.com/logo/NCL_logo.svg",
     "slug": "nelson-portal",
-    "status": "up",
+    "status": "down",
     "uptime": "98.95%",
-    "uptimeDay": "100.00%",
-    "uptimeWeek": "100.00%",
-    "uptimeMonth": "100.00%",
+    "uptimeDay": "99.65%",
+    "uptimeWeek": "99.95%",
+    "uptimeMonth": "99.99%",
     "uptimeYear": "99.97%",
     "time": 1217,
     "timeDay": 1026,
@@ -97,7 +97,8 @@
     "timeYear": 1228,
     "dailyMinutesDown": {
       "2026-01-09": 135,
-      "2026-02-23": 20
+      "2026-02-23": 20,
+      "2026-06-07": 5
     }
   },
   {
@@ -105,9 +106,9 @@
     "url": "https://alumni.nelsoncollege.ac.uk",
     "icon": "https://portal-nelsoncollege-files.s3.eu-west-2.amazonaws.com/logo/Alumni_NCL.svg",
     "slug": "ncl-alumni-association",
-    "status": "up",
+    "status": "down",
     "uptime": "100.00%",
-    "uptimeDay": "100.00%",
+    "uptimeDay": "99.98%",
     "uptimeWeek": "100.00%",
     "uptimeMonth": "100.00%",
     "uptimeYear": "100.00%",
@@ -116,7 +117,9 @@
     "timeWeek": 580,
     "timeMonth": 666,
     "timeYear": 713,
-    "dailyMinutesDown": {}
+    "dailyMinutesDown": {
+      "2026-06-07": 0
+    }
   },
   {
     "name": "Help Centre",
