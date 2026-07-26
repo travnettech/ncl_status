@@ -5,7 +5,7 @@
     "ssl": {
       "status": "valid",
       "expiry": "2026-09-02T02:02:50Z",
-      "daysLeft": 38,
+      "daysLeft": 37,
       "issuer": "Google Trust Services",
       "subject": "nelsoncollege.ac.uk"
     },
@@ -20,7 +20,7 @@
     "ssl": {
       "status": "valid",
       "expiry": "2026-10-02T02:53:49Z",
-      "daysLeft": 68,
+      "daysLeft": 67,
       "issuer": "Google Trust Services",
       "subject": "nclvle.co.uk"
     },
@@ -35,7 +35,7 @@
     "ssl": {
       "status": "valid",
       "expiry": "2026-08-31T04:19:27Z",
-      "daysLeft": 36,
+      "daysLeft": 35,
       "issuer": "Google Trust Services",
       "subject": "one.nelsoncollege.ac.uk"
     },
@@ -50,7 +50,7 @@
     "ssl": {
       "status": "valid",
       "expiry": "2026-09-07T21:20:30Z",
-      "daysLeft": 44,
+      "daysLeft": 43,
       "issuer": "Let's Encrypt",
       "subject": "portal.nelsoncollege.ac.uk"
     },
@@ -65,7 +65,7 @@
     "ssl": {
       "status": "valid",
       "expiry": "2026-10-05T18:05:39Z",
-      "daysLeft": 72,
+      "daysLeft": 71,
       "issuer": "Let's Encrypt",
       "subject": "alumni.nelsoncollege.ac.uk"
     },
@@ -80,7 +80,7 @@
     "ssl": {
       "status": "valid",
       "expiry": "2027-02-06T23:59:59Z",
-      "daysLeft": 196,
+      "daysLeft": 195,
       "issuer": "Amazon",
       "subject": "*.atlassian.net"
     },
@@ -95,13 +95,13 @@
     "ssl": {
       "status": "valid",
       "expiry": "2026-10-21T20:08:08Z",
-      "daysLeft": 88,
+      "daysLeft": 87,
       "issuer": "Google Trust Services",
       "subject": "status.nelsoncollege.ac.uk"
     },
     "dns": {
       "status": "ok",
-      "records": "ncl-status.pages.dev., 172.66.44.174, 172.66.47.82"
+      "records": "ncl-status.pages.dev., 172.66.47.82, 172.66.44.174"
     }
   }
 ]
