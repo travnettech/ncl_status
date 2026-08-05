@@ -24,7 +24,7 @@ sites:
       - 302
     __dangerous__body_down_if_text_missing: "Nelson"
   - name: Nelson One
-    url: https://one.nelsoncollege.ac.uk/login
+    url: https://one.nelsoncollege.ac.uk
     icon: https://portal-nelsoncollege-files.s3.eu-west-2.amazonaws.com/logo/One_NCL.svg
     maxResponseTime: 3000
     expectedStatusCodes:
